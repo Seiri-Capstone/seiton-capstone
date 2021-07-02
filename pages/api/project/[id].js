@@ -9,7 +9,9 @@ export default async (req, res) => {
     const result = await prisma.project.findUnique({
       where: { id: Number(id) },
       include: {
-        columns: true
+        columns: {
+          include: { tasks: true }
+        }
       }
     })
     res.status(200).json(result)
