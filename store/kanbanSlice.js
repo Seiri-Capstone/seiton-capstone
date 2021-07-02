@@ -1,30 +1,30 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-const initialState = { first: "last", key: "value" };
+const initialState = []
 
 //async
 export const fetchKanbanThunk = createAsyncThunk(
-  "kanban/fetchKanban",
-  async (kanbanId) => {
-    const response = await fetch("api/kanban");
-    return response.data;
+  'kanban/fetchKanban',
+  async kanbanId => {
+    const response = await fetch('api/kanban')
+    return response.data
   }
-);
+)
 
 const kanbanSlice = createSlice({
-  name: "kanban",
+  name: 'kanban',
   initialState,
   reducers: {
     fetchKanban(state) {
-      state = action.payload;
-    },
-  },
+      state = action.payload
+    }
+  }
   // extraReducers: {
   //   [fetchKanban.fulfilled]: (state, action) => {
   //     //return sth here
   //   },
   // },
-});
+})
 
-export const { fetchKanban } = kanbanSlice.actions;
-export default kanbanSlice.reducer;
+export const { fetchKanban } = kanbanSlice.actions
+export default kanbanSlice.reducer

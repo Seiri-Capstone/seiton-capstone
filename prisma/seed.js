@@ -1,50 +1,60 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
 async function main() {
-  const columnsAndTasks = await prisma.column.create({
+  const org = await prisma.org.create({
     data: {
-      title: "project 1",
-      tasks: {
-        create: [
-          { title: "task 1", body: "...", idx: 1 },
-          { title: "task 2", body: "...", idx: 2 },
-          { title: "task 3", body: "...", idx: 3 },
-        ],
-      },
-    },
-  });
-  const columnsAndTasks2 = await prisma.column.create({
+      name: 'seiton-team'
+    }
+  })
+
+  const project = await prisma.project.create({
     data: {
-      title: "project 2",
-      tasks: {
-        create: [
-          { title: "task 4", body: "...", idx: 1 },
-          { title: "task 5", body: "...", idx: 2 },
-          { title: "task 6", body: "...", idx: 3 },
-        ],
+      name: 'seiton-test-project',
+      orgId: 1
+    }
+  })
+
+  const columns = await prisma.column.createMany({
+    data: [
+      { title: 'to-do', projectId: 1 },
+      { title: 'in-progress', projectId: 1 },
+      { title: 'needs-review', projectId: 1 },
+      { title: 'completed', projectId: 1 }
+    ]
+  })
+
+  const tasks = await prisma.task.createMany({
+    data: [
+      {
+        title: 'task1',
+        body: 'watch videos on next.js',
+        columnId: 1,
+        index: 0
       },
-    },
-  });
-  const columnsAndTasks3 = await prisma.column.create({
-    data: {
-      title: "project 3",
-      tasks: {
-        create: [
-          { title: "task 5", body: "...", idx: 1 },
-          { title: "task 6", body: "...", idx: 2 },
-          { title: "task 7", body: "...", idx: 3 },
-        ],
+      {
+        title: 'task2',
+        body: 'practice using react hooks by refactoring class components',
+        columnId: 1,
+        index: 1
       },
-    },
-  });
+      {
+        title: 'task3',
+        body: 'read documentation on redux toolkit',
+        columnId: 2,
+        index: 2
+      },
+      { title: 'task4', body: 'write prisma schema', columnId: 4, index: 3 },
+      { title: 'task5', body: 'seed the database', columnId: 3, index: 4 }
+    ]
+  })
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
+  .catch(e => {
+    console.error(e)
+    process.exit(1)
   })
   .finally(async () => {
-    await prisma.$disconnect();
-  });
+    await prisma.$disconnect()
+  })
