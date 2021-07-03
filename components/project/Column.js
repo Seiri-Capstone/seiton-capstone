@@ -4,7 +4,6 @@ import Task from './Task'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 export default function Column({ column }) {
-  console.log('columns', column)
   return (
     <div>
       <h1>{column.title}</h1>
