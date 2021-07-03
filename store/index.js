@@ -1,11 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit'
 
-import kanbanReducer from "./kanbanSlice.js";
+import projectReducer from './projectSlice.js'
 
 const store = configureStore({
   reducer: {
-    kanban: kanbanReducer,
-  },
-});
+    project: projectReducer
+  }
+})
 
-export default store;
+export default store

@@ -5,7 +5,6 @@ import prisma from '../../../prisma/prisma'
 export default async (req, res) => {
   try {
     const { id } = req.query
-    console.log(id)
     const result = await prisma.project.findUnique({
       where: { id: Number(id) },
       include: {
