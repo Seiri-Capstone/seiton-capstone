@@ -2,7 +2,7 @@
 
 import prisma from '../../../prisma/prisma'
 
-export default async (req, res) => {
+export default async function handler(req, res) {
   try {
     const { id } = req.query
     const result = await prisma.project.findUnique({

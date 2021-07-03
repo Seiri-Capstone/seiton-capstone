@@ -9,12 +9,12 @@ export const fetchProject = createAsyncThunk(
     const response = await fetch(
       `http://localhost:3000/api/project/${projectId}`
     )
-    console.log(response)
-    return response.data
+    // console.log(payload)
+    return await response.json()
   }
 )
 
-const projectSlice = createSlice({
+export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {},
