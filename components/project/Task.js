@@ -2,20 +2,11 @@ import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
 
-export default function Task() {
+export default function Task({ task }) {
   return (
-    <Draggable draggableId={props.task.id} index={props.index}>
-      {(provided, snapshot) => (
-        <div
-          className={tw`border border-gray-300 p-2 mb-2 rounded`}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          isDragging={snapshot.isDragging}
-        >
-          {props.task.content}
-        </div>
-      )}
-    </Draggable>
+    <div>
+      <h3>{task.title}</h3>
+      <p>{task.body}</p>
+    </div>
   )
 }

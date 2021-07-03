@@ -11,8 +11,33 @@ export default function ProjectBoard() {
 
   useEffect(() => {
     dispatch(fetchProject(1))
-  }, [project])
+  }, [project.id])
   console.log(project)
 
-  return <div>hi</div>
+  const onDragEnd = result => {
+    const { destination, source, draggableId, type } = result
+    //If there is no destination
+    if (!destination) {
+      return
+    }
+
+    //If source and destination is the same
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return
+    }
+
+    const colOrder = project.columns.map(column => column.id)
+    console.log(colOrder)
+  }
+
+  return (
+    <div>
+      {project.columns.map(column => (
+        <Column column={column} key={column.id} />
+      ))}
+    </div>
+  )
 }
