@@ -3,9 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import Column from './Column'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
-import { fetchProject, updateColumnOrder } from '../../store/projectSlice'
-
-//to do: fix warning in console, check out resetServerContext and resetServerContext()
+import {
+  fetchProject,
+  updateColumnOrder,
+  updateTaskOrderSameCol,
+  updateTaskOrderDiffCol
+} from '../../store/projectSlice'
 
 export default function ProjectBoard() {
   const project = useSelector(state => state.project)
@@ -59,45 +62,42 @@ export default function ProjectBoard() {
 
     // // If dropped inside the same column
     if (start === finish) {
-      // console.log('start', start)
       const tasks = [...start.tasks]
       const sourceIdx = source.index
       const destIdx = destination.index
-      // const colId = start.id
+      const colId = start.index
       dispatch(
         updateTaskOrderSameCol({
           colId,
           tasks,
           sourceIdx,
-          destIdx,
-          draggableId
+          destIdx
         })
       )
       return
     }
 
     // // If dropped in a different column
-    // const startTasks = [...start.taskIds]
-    // const finishTasks = [...finish.taskIds]
-    // const sourceIdx = source.index
-    // const destIdx = destination.index
-    // const startColId = start.id
-    // const finishColId = finish.id
+    const startTasks = [...start.tasks]
+    const finishTasks = [...finish.tasks]
+    const sourceIdx = source.index
+    const destIdx = destination.index
+    const startColId = start.index
+    const finishColId = finish.index
 
-    // dispatch(
-    //   updateTaskOrderDiffCol({
-    //     startTasks,
-    //     finishTasks,
-    //     sourceIdx,
-    //     destIdx,
-    //     draggableId,
-    //     startColId,
-    //     finishColId
-    //   })
-    // )
-    // return
+    dispatch(
+      updateTaskOrderDiffCol({
+        startTasks,
+        finishTasks,
+        sourceIdx,
+        destIdx,
+        startColId,
+        finishColId
+      })
+    )
+    return
   }
-  console.log('project', project)
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="all-columns" direction="horizontal" type="column">

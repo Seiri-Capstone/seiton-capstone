@@ -29,11 +29,27 @@ export const projectSlice = createSlice({
       state.columns = newColumns
     },
     updateTaskOrderSameCol: (state, action) => {
-      const { colId, tasks, sourceIdx, destIdx, draggableId } = action.payload
+      const { colId, tasks, sourceIdx, destIdx } = action.payload
+      const taskToMove = tasks[sourceIdx]
       tasks.splice(sourceIdx, 1)
-      tasks.splice(destIdx, 0, draggableId)
+      tasks.splice(destIdx, 0, taskToMove)
       // ultimately, mutate state the way we want it...
-      state.columns[colId].taskIds = tasks
+      state.columns[colId].tasks = tasks
+    },
+    updateTaskOrderDiffCol: (state, action) => {
+      const {
+        startTasks,
+        finishTasks,
+        sourceIdx,
+        destIdx,
+        startColId,
+        finishColId
+      } = action.payload
+      const taskToMove = startTasks[sourceIdx]
+      startTasks.splice(sourceIdx, 1)
+      finishTasks.splice(destIdx, 0, taskToMove)
+      state.columns[startColId].tasks = startTasks
+      state.columns[finishColId].tasks = finishTasks
     }
   },
   extraReducers: {
@@ -44,9 +60,9 @@ export const projectSlice = createSlice({
 })
 
 export const {
-  updateColumnOrder
-  // updateTaskOrderSameCol,
-  // updateTaskOrderDiffCol,
+  updateColumnOrder,
+  updateTaskOrderSameCol,
+  updateTaskOrderDiffCol
 } = projectSlice.actions
 
 export default projectSlice.reducer
