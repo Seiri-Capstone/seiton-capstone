@@ -33,6 +33,20 @@ export const putColumn = createAsyncThunk(
   }
 )
 
+export const putTask = createAsyncThunk(
+  'project/putTask',
+  async updatedTask => {
+    const response = await fetch('/api/task/edit', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedTask)
+    })
+    return await response.json()
+  }
+)
+
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
