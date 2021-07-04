@@ -35,6 +35,7 @@ export const projectSlice = createSlice({
       tasks.splice(destIdx, 0, taskToMove)
       // ultimately, mutate state the way we want it...
       state.columns[colId].tasks = tasks
+      console.log('in updatetaskordersamecol', tasks)
     },
     updateTaskOrderDiffCol: (state, action) => {
       const {
@@ -48,6 +49,7 @@ export const projectSlice = createSlice({
       const taskToMove = startTasks[sourceIdx]
       startTasks.splice(sourceIdx, 1)
       finishTasks.splice(destIdx, 0, taskToMove)
+
       state.columns[startColId].tasks = startTasks
       state.columns[finishColId].tasks = finishTasks
     }
