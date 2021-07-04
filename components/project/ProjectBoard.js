@@ -3,19 +3,20 @@ import { useSelector, useDispatch } from 'react-redux'
 import Column from './Column'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
-import { fetchProject } from '../../store/projectSlice'
+import { fetchProject, updateColumnOrder } from '../../store/projectSlice'
 
 export default function ProjectBoard() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchProject(1))
+    dispatch(fetchProject(1)) //hard coded for now
   }, [])
   console.log('project', project)
 
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result
+
     console.log('result', result)
     //If there is no destination
     if (!destination) {
@@ -32,6 +33,12 @@ export default function ProjectBoard() {
 
     // If you're dragging columns
     if (type === 'column') {
+      console.log('source', source)
+      console.log('destination', destination)
+      console.log('draggableId', draggableId)
+      console.log('start', start)
+      console.log('finish', finish)
+
       dispatch(updateColumnOrder(result))
       return
     }
@@ -39,7 +46,6 @@ export default function ProjectBoard() {
     // // Anything below this happens if you're dragging tasks
     // const start = project.columns[source.droppableId]
     // const finish = project.columns[destination.droppableId]
-
     // // If dropped inside the same column
     // if (start === finish) {
     //   const tasks = [...start.taskIds]
@@ -81,11 +87,27 @@ export default function ProjectBoard() {
   }
 
   return (
-    <div className={tw`mx-auto flex justify-center`}>
-      {project.columns &&
-        project.columns.map(column => (
-          <Column key={column.id} column={column} />
-        ))}
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="all-columns" direction="horizontal" type="column">
+        {provided => (
+          <div
+            className={tw`mx-auto flex justify-center`}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {project.columns &&
+              project.columns.map((column, index) => (
+                <Column
+                  key={column.id}
+                  column={column}
+                  // tasks={tasks}
+                  index={index}
+                />
+              ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   )
 }
