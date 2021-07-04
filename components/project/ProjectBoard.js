@@ -3,28 +3,29 @@ import { useSelector, useDispatch } from 'react-redux'
 import Column from './Column'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
-import { fetchProject } from '../../store/projectSlice'
+import {
+  fetchProject,
+  updateColumnOrder,
+  updateTaskOrderSameCol,
+  updateTaskOrderDiffCol
+} from '../../store/projectSlice'
 
 export default function ProjectBoard() {
-  const data = useSelector(state => state.project)
+  const project = useSelector(state => state.project)
   const dispatch = useDispatch()
-  const [project, setProject] = useState(data)
 
   useEffect(() => {
-    dispatch(fetchProject(1))
-    setProject(project)
-  }, [])
-  // console.log(data)
+    dispatch(fetchProject(1)) //hard coded for now
+  }, [dispatch])
 
-  //function needed to keep the state updated
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result
-
-    // //If there is no destination
+    //If there is no destination
     if (!destination) {
       return
     }
-    // //If source and destination is the same
+
+    //If source and destination is the same
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -32,62 +33,93 @@ export default function ProjectBoard() {
       return
     }
 
-    const start = source.droppableId
-    const finish = destination.droppableId
-    if (start === finish) {
-      const column = data.columns.filter(col => col.id === +start)
-      const tasks = column[0].tasks
-      const taskIds = column[0].tasks.map(task => task.id)
+    // If you're dragging columns
+    if (type === 'column') {
+      console.log('project', project)
 
-      console.log('column', column)
-
-      taskIds.splice(source.index, 1)
-      taskIds.splice(destination.index, 0, +draggableId)
-
-      const newTaskIndex = []
-      let i = 0
-      while (i < taskIds.length) {
-        for (let j = 0; j < tasks.length; j++) {
-          if (taskIds[i] === tasks[j].id) {
-            newTaskIndex.push(tasks[j])
-          }
-        }
-        i++
-      }
-      const updatedTasks = newTaskIndex.map((task, idx) => {
-        return { ...task, index: idx }
-      })
-      // console.log('newtaskindex', newTaskIndex)
-      console.log('updated tasks', updatedTasks)
-
-      //output required: column = [{task2}, {task1}]
-      const updatedColumn = data.columns.map(col => {
-        if (col.id === +start) {
-          return { ...col, tasks: updatedTasks }
-        }
-        return col
-      })
-
-      const newState = {
-        ...data,
-        columns: updatedColumn
-      }
-
-      setProject(newState)
-      console.log('newstate', newState)
+      dispatch(updateColumnOrder(result))
+      return
     }
+    // Anything below this happens if you're dragging tasks
+
+    const sourceNum = Number(source.droppableId[source.droppableId.length - 1])
+    const destNum = Number(
+      destination.droppableId[destination.droppableId.length - 1]
+    )
+
+    // this is really brute-forced and probably can be done in a better way
+    // sourceNum & destNum is retrieving the column.id from droppableId
+    // droppableId needs to be column-${column.id} or task-${task.id} in order to differentiate between column and task, if theyre both just numbers (that are the same), logic gets messed up
+    // for start and finish, need to -1 from source/dest num so it matches up to the array index
+
+    const start = project.columns[sourceNum - 1]
+    const finish = project.columns[destNum - 1]
+
+    console.log('source', source)
+    console.log('destination', destination)
+    console.log('start', start)
+    console.log('finish', finish)
+
+    // // If dropped inside the same column
+    if (start === finish) {
+      const tasks = [...start.tasks]
+      const sourceIdx = source.index
+      const destIdx = destination.index
+      const colId = start.index
+      dispatch(
+        updateTaskOrderSameCol({
+          colId,
+          tasks,
+          sourceIdx,
+          destIdx
+        })
+      )
+      return
+    }
+
+    // // If dropped in a different column
+    const startTasks = [...start.tasks]
+    const finishTasks = [...finish.tasks]
+    const sourceIdx = source.index
+    const destIdx = destination.index
+    const startColId = start.index
+    const finishColId = finish.index
+
+    dispatch(
+      updateTaskOrderDiffCol({
+        startTasks,
+        finishTasks,
+        sourceIdx,
+        destIdx,
+        startColId,
+        finishColId
+      })
+    )
+    return
   }
 
   return (
-    <div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className={tw`mx-auto flex justify-center `}>
-          {data.columns &&
-            data.columns.map(column => (
-              <Column key={column.id} column={column} />
-            ))}
-        </div>
-      </DragDropContext>
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="all-columns" direction="horizontal" type="column">
+        {provided => (
+          <div
+            className={tw`mx-auto flex justify-center`}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {project.columns &&
+              project.columns.map((column, index) => (
+                <Column
+                  key={column.id}
+                  column={column}
+                  // tasks={column.tasks}
+                  index={index}
+                />
+              ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   )
 }
