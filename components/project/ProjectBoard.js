@@ -5,6 +5,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
 import {
   fetchProject,
+  putProject,
+  putColumn,
   updateColumnOrder,
   updateTaskOrderSameCol,
   updateTaskOrderDiffCol
@@ -13,12 +15,13 @@ import {
 export default function ProjectBoard() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
+  const [currProject, setCurrProject] = useState(project)
 
   useEffect(() => {
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch])
 
-  const onDragEnd = result => {
+  const onDragEnd = async result => {
     const { destination, source, draggableId, type } = result
     //If there is no destination
     if (!destination) {
@@ -35,9 +38,8 @@ export default function ProjectBoard() {
 
     // If you're dragging columns
     if (type === 'column') {
-      console.log('project', project)
-
-      dispatch(updateColumnOrder(result))
+      await dispatch(updateColumnOrder(result))
+      project.columns.map(column => dispatch(putColumn(column)))
       return
     }
     // Anything below this happens if you're dragging tasks
@@ -95,6 +97,7 @@ export default function ProjectBoard() {
         finishColId
       })
     )
+
     return
   }
 

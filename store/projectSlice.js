@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-// import { getProject } from '../pages/api/project/[id]' //do we need?
 
 const initialState = []
 
@@ -12,21 +11,44 @@ export const fetchProject = createAsyncThunk(
   }
 )
 
+export const putProject = createAsyncThunk(
+  'project/putProject',
+  async updatedProject => {
+    const response = await fetch('/api/project/edit', updatedProject)
+    return await response.json()
+  }
+)
+
+export const putColumn = createAsyncThunk(
+  'project/putColumn',
+  async updatedColumn => {
+    const response = await fetch('/api/column/edit', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedColumn)
+    })
+    return await response.json()
+  }
+)
+
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
     updateColumnOrder: (state, action) => {
       const { source, destination } = action.payload
-      // console.log('in reducer', JSON.parse(JSON.stringify(state.columns)))
       const columnToMove = state.columns[source.index]
       const newColumns = Array.from(state.columns)
       newColumns.splice(source.index, 1) //take out column from previous columns
       newColumns.splice(destination.index, 0, columnToMove) //insert column into new columns
       newColumns.map((column, index) => (column.index = index)) //change index property, may not be needed
       // return mutated array
-      // console.log('newColumns', newColumns)
       state.columns = newColumns
+      // state.columns.map(col => fetch('/api/column/edit', JSON.stringify(col)))
+
+      console.log('in reducer', JSON.parse(JSON.stringify(state)))
     },
     updateTaskOrderSameCol: (state, action) => {
       const { colId, tasks, sourceIdx, destIdx } = action.payload
@@ -35,7 +57,6 @@ export const projectSlice = createSlice({
       tasks.splice(destIdx, 0, taskToMove)
       // ultimately, mutate state the way we want it...
       state.columns[colId].tasks = tasks
-      console.log('in updatetaskordersamecol', tasks)
     },
     updateTaskOrderDiffCol: (state, action) => {
       const {
