@@ -17,10 +17,10 @@ async function main() {
 
   const columns = await prisma.column.createMany({
     data: [
-      { title: 'to-do', projectId: 1 },
-      { title: 'in-progress', projectId: 1 },
-      { title: 'needs-review', projectId: 1 },
-      { title: 'completed', projectId: 1 }
+      { title: 'to-do', projectId: 1, index: 0 },
+      { title: 'in-progress', projectId: 1, index: 1 },
+      { title: 'needs-review', projectId: 1, index: 2 },
+      { title: 'completed', projectId: 1, index: 3 }
     ]
   })
 

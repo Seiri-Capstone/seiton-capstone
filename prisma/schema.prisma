@@ -71,6 +71,7 @@ model Column {
   tasks     Task[]
   project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId Int?
+  index     Int
 }
 
 model Task {

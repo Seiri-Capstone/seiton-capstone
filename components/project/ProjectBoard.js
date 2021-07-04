@@ -3,25 +3,29 @@ import { useSelector, useDispatch } from 'react-redux'
 import Column from './Column'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
-import { fetchProject } from '../../store/projectSlice'
+import {
+  fetchProject,
+  updateColumnOrder,
+  updateTaskOrderSameCol,
+  updateTaskOrderDiffCol
+} from '../../store/projectSlice'
 
 export default function ProjectBoard() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchProject(1))
-  }, [project.id])
-  console.log(project.columns)
+    dispatch(fetchProject(1)) //hard coded for now
+  }, [dispatch])
 
-  //function needed to keep the state updated
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result
-    // //If there is no destination
+    //If there is no destination
     if (!destination) {
       return
     }
-    // //If source and destination is the same
+
+    //If source and destination is the same
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -30,82 +34,92 @@ export default function ProjectBoard() {
     }
 
     // If you're dragging columns
-    // const column = rightColumn(project.columns);
-    // const rightColumn = (project.columns) => {
+    if (type === 'column') {
+      console.log('project', project)
 
-    // }
-    // if (type === 'column') {
-    //   dispatch(updateColumnOrder(result))
-    //   return
-    // }
-    // // Anything below this happens if you're dragging tasks
-    // const start = kanban.columns[source.droppableId]
-    // const finish = kanban.columns[destination.droppableId]
+      dispatch(updateColumnOrder(result))
+      return
+    }
+    // Anything below this happens if you're dragging tasks
+
+    const sourceNum = Number(source.droppableId[source.droppableId.length - 1])
+    const destNum = Number(
+      destination.droppableId[destination.droppableId.length - 1]
+    )
+
+    // this is really brute-forced and probably can be done in a better way
+    // sourceNum & destNum is retrieving the column.id from droppableId
+    // droppableId needs to be column-${column.id} or task-${task.id} in order to differentiate between column and task, if theyre both just numbers (that are the same), logic gets messed up
+    // for start and finish, need to -1 from source/dest num so it matches up to the array index
+
+    const start = project.columns[sourceNum - 1]
+    const finish = project.columns[destNum - 1]
+
+    console.log('source', source)
+    console.log('destination', destination)
+    console.log('start', start)
+    console.log('finish', finish)
+
     // // If dropped inside the same column
-    // if (start === finish) {
-    //   const tasks = [...start.taskIds]
-    //   const sourceIdx = source.index
-    //   const destIdx = destination.index
-    //   const colId = start.id
-    //   dispatch(
-    //     updateTaskOrderSameCol({
-    //       colId,
-    //       tasks,
-    //       sourceIdx,
-    //       destIdx,
-    //       draggableId
-    //     })
-    //   )
-    //   return
-    // }
+    if (start === finish) {
+      const tasks = [...start.tasks]
+      const sourceIdx = source.index
+      const destIdx = destination.index
+      const colId = start.index
+      dispatch(
+        updateTaskOrderSameCol({
+          colId,
+          tasks,
+          sourceIdx,
+          destIdx
+        })
+      )
+      return
+    }
+
     // // If dropped in a different column
-    // const startTasks = [...start.taskIds]
-    // const finishTasks = [...finish.taskIds]
-    // const sourceIdx = source.index
-    // const destIdx = destination.index
-    // const startColId = start.id
-    // const finishColId = finish.id
-    // dispatch(
-    //   updateTaskOrderDiffCol({
-    //     startTasks,
-    //     finishTasks,
-    //     sourceIdx,
-    //     destIdx,
-    //     draggableId,
-    //     startColId,
-    //     finishColId
-    //   })
-    // )
-    // return
-    /////////////////////////////////////////////////////
-    // //example of result object
-    // const result = {
-    //   draggableId: 'task-1',  - user was dragging
-    //   type: 'TYPE',
-    //   reason: 'DROP',
-    //   whereDragStarted: {
-    //     droppableId: 'column-1',
-    //     index: 0
-    //   },
-    //   whereDragEnded: {
-    //     droppableId: 'column-1',
-    //     index: 1
-    //   }
-    // }
-    // //end of example
-    //////////////////////////////////////////////////
+    const startTasks = [...start.tasks]
+    const finishTasks = [...finish.tasks]
+    const sourceIdx = source.index
+    const destIdx = destination.index
+    const startColId = start.index
+    const finishColId = finish.index
+
+    dispatch(
+      updateTaskOrderDiffCol({
+        startTasks,
+        finishTasks,
+        sourceIdx,
+        destIdx,
+        startColId,
+        finishColId
+      })
+    )
+    return
   }
 
   return (
-    <div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className={tw`mx-auto flex justify-center `}>
-          {project.columns &&
-            project.columns.map(column => (
-              <Column key={column.id} column={column} />
-            ))}
-        </div>
-      </DragDropContext>
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="all-columns" direction="horizontal" type="column">
+        {provided => (
+          <div
+            className={tw`mx-auto flex justify-center`}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {project.columns &&
+              project.columns.map((column, index) => (
+                <Column
+                  key={column.id}
+                  column={column}
+                  // tasks={column.tasks}
+                  index={index}
+                />
+              ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   )
 }
