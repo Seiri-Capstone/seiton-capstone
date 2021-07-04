@@ -5,14 +5,15 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
 import { fetchProject, updateColumnOrder } from '../../store/projectSlice'
 
+//to do: fix warning in console, check out resetServerContext and resetServerContext()
+
 export default function ProjectBoard() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchProject(1)) //hard coded for now
-  }, [])
-  console.log('project', project)
+  }, [dispatch])
 
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result
@@ -33,11 +34,7 @@ export default function ProjectBoard() {
 
     // If you're dragging columns
     if (type === 'column') {
-      console.log('source', source)
-      console.log('destination', destination)
-      console.log('draggableId', draggableId)
-      console.log('start', start)
-      console.log('finish', finish)
+      console.log('project', project)
 
       dispatch(updateColumnOrder(result))
       return

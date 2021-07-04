@@ -7,10 +7,7 @@ const initialState = []
 export const fetchProject = createAsyncThunk(
   'project/fetchProject',
   async projectId => {
-    const response = await fetch(
-      `http://localhost:3000/api/project/${projectId}`
-    )
-    // console.log(payload)
+    const response = await fetch(`/api/project/${projectId}`)
     return await response.json()
   }
 )
@@ -20,19 +17,16 @@ export const projectSlice = createSlice({
   initialState,
   reducers: {
     updateColumnOrder: (state, action) => {
-      // const { source, destination, draggableId } = action.payload
-      // console.log('source', source)
-      // console.log('destination', destination)
-      // console.log('draggableId', draggableId)
-      // console.log('state', state)
-      const startIdx = source.index
-      const finishIdx = destination.index
-
-      // newColumnOrder.splice(source.index, 1)
-      // newColumnOrder.splice(destination.index, 0, draggableId)
-      // console.log('In updateColumnOrder Reducer: ', newColumnOrder)
-      // // return mutated array
-      // state.columnOrder = newColumnOrder
+      const { source, destination } = action.payload
+      // console.log('in reducer', JSON.parse(JSON.stringify(state.columns)))
+      const columnToMove = state.columns[source.index]
+      const newColumns = Array.from(state.columns)
+      newColumns.splice(source.index, 1) //take out column from previous columns
+      newColumns.splice(destination.index, 0, columnToMove) //insert column into new columns
+      newColumns.map((column, index) => (column.index = index)) //change index property
+      // return mutated array
+      // console.log('newColumns', newColumns)
+      state.columns = newColumns
     }
   },
   extraReducers: {

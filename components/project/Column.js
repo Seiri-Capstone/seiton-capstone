@@ -19,9 +19,10 @@ export default function Column(props) {
           <Droppable droppableId={String(props.column.id)} type="task">
             {provided => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {column.tasks.map((task, index) => (
-                  <Task task={task} key={task.id} index={index} />
-                ))}
+                {column.tasks &&
+                  column.tasks.map((task, index) => (
+                    <Task task={task} key={task.id} index={index} />
+                  ))}
                 {provided.placeholder}
               </div>
             )}
