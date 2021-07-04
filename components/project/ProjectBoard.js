@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Column from './Column'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
@@ -6,17 +6,20 @@ import { tw } from 'twind'
 import { fetchProject } from '../../store/projectSlice'
 
 export default function ProjectBoard() {
-  const project = useSelector(state => state.project)
+  const data = useSelector(state => state.project)
   const dispatch = useDispatch()
+  const [project, setProject] = useState(data)
 
   useEffect(() => {
     dispatch(fetchProject(1))
-  }, [project.id])
-  console.log(project.columns)
+    setProject(project)
+  }, [])
+  // console.log(data)
 
   //function needed to keep the state updated
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result
+
     // //If there is no destination
     if (!destination) {
       return
@@ -29,79 +32,58 @@ export default function ProjectBoard() {
       return
     }
 
-    // If you're dragging columns
-    // const column = rightColumn(project.columns);
-    // const rightColumn = (project.columns) => {
+    const start = source.droppableId
+    const finish = destination.droppableId
+    if (start === finish) {
+      const column = data.columns.filter(col => col.id === +start)
+      const tasks = column[0].tasks
+      const taskIds = column[0].tasks.map(task => task.id)
 
-    // }
-    // if (type === 'column') {
-    //   dispatch(updateColumnOrder(result))
-    //   return
-    // }
-    // // Anything below this happens if you're dragging tasks
-    // const start = kanban.columns[source.droppableId]
-    // const finish = kanban.columns[destination.droppableId]
-    // // If dropped inside the same column
-    // if (start === finish) {
-    //   const tasks = [...start.taskIds]
-    //   const sourceIdx = source.index
-    //   const destIdx = destination.index
-    //   const colId = start.id
-    //   dispatch(
-    //     updateTaskOrderSameCol({
-    //       colId,
-    //       tasks,
-    //       sourceIdx,
-    //       destIdx,
-    //       draggableId
-    //     })
-    //   )
-    //   return
-    // }
-    // // If dropped in a different column
-    // const startTasks = [...start.taskIds]
-    // const finishTasks = [...finish.taskIds]
-    // const sourceIdx = source.index
-    // const destIdx = destination.index
-    // const startColId = start.id
-    // const finishColId = finish.id
-    // dispatch(
-    //   updateTaskOrderDiffCol({
-    //     startTasks,
-    //     finishTasks,
-    //     sourceIdx,
-    //     destIdx,
-    //     draggableId,
-    //     startColId,
-    //     finishColId
-    //   })
-    // )
-    // return
-    /////////////////////////////////////////////////////
-    // //example of result object
-    // const result = {
-    //   draggableId: 'task-1',  - user was dragging
-    //   type: 'TYPE',
-    //   reason: 'DROP',
-    //   whereDragStarted: {
-    //     droppableId: 'column-1',
-    //     index: 0
-    //   },
-    //   whereDragEnded: {
-    //     droppableId: 'column-1',
-    //     index: 1
-    //   }
-    // }
-    // //end of example
-    //////////////////////////////////////////////////
+      console.log('column', column)
+
+      taskIds.splice(source.index, 1)
+      taskIds.splice(destination.index, 0, +draggableId)
+
+      const newTaskIndex = []
+      let i = 0
+      while (i < taskIds.length) {
+        for (let j = 0; j < tasks.length; j++) {
+          if (taskIds[i] === tasks[j].id) {
+            newTaskIndex.push(tasks[j])
+          }
+        }
+        i++
+      }
+      const updatedTasks = newTaskIndex.map((task, idx) => {
+        return { ...task, index: idx }
+      })
+      // console.log('newtaskindex', newTaskIndex)
+      console.log('updated tasks', updatedTasks)
+
+      //output required: column = [{task2}, {task1}]
+      const updatedColumn = data.columns.map(col => {
+        if (col.id === +start) {
+          return { ...col, tasks: updatedTasks }
+        }
+        return col
+      })
+
+      const newState = {
+        ...data,
+        columns: updatedColumn
+      }
+
+      setProject(newState)
+      console.log('newstate', newState)
+    }
   }
 
   return (
     <div>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={tw`mx-auto flex justify-center `}>
-          {project.columns &&
-            project.columns.map(column => (
+          {data.columns &&
+            data.columns.map(column => (
               <Column key={column.id} column={column} />
             ))}
         </div>

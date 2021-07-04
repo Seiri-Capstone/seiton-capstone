@@ -14,7 +14,9 @@ export default function Task({ task, index }) {
             className={tw`border border-gray-300 p-2 mb-2 rounded bg-white`}
           >
             <h6>{task.title}</h6>
-            <p>{task.body}</p>
+            <p>
+              {task.body} idx:{index}
+            </p>
           </div>
         )
       }}

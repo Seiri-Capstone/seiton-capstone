@@ -42,10 +42,10 @@ async function main() {
         title: 'task3',
         body: 'read documentation on redux toolkit',
         columnId: 2,
-        index: 2
+        index: 0
       },
-      { title: 'task4', body: 'write prisma schema', columnId: 4, index: 3 },
-      { title: 'task5', body: 'seed the database', columnId: 3, index: 4 }
+      { title: 'task4', body: 'write prisma schema', columnId: 4, index: 0 },
+      { title: 'task5', body: 'seed the database', columnId: 3, index: 0 }
     ]
   })
 }
