@@ -5,7 +5,7 @@ import { tw } from 'twind'
 export default function Task(props) {
   const task = props.task
   return (
-    <Draggable draggableId={String(props.task.id)} index={props.index}>
+    <Draggable draggableId={`task-${task.id}`} index={props.index}>
       {provided => (
         <div
           className={tw`bg-white rounded-lg my-4 p-1`}

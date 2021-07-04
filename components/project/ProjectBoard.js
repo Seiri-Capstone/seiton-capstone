@@ -17,8 +17,6 @@ export default function ProjectBoard() {
 
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result
-
-    console.log('result', result)
     //If there is no destination
     if (!destination) {
       return
@@ -39,27 +37,44 @@ export default function ProjectBoard() {
       dispatch(updateColumnOrder(result))
       return
     }
+    // Anything below this happens if you're dragging tasks
 
-    // // Anything below this happens if you're dragging tasks
-    // const start = project.columns[source.droppableId]
-    // const finish = project.columns[destination.droppableId]
+    const sourceNum = Number(source.droppableId[source.droppableId.length - 1])
+    const destNum = Number(
+      destination.droppableId[destination.droppableId.length - 1]
+    )
+
+    // this is really brute-forced and probably can be done in a better way
+    // sourceNum & destNum is retrieving the column.id from droppableId
+    // droppableId needs to be column-${column.id} or task-${task.id} in order to differentiate between column and task, if theyre both just numbers (that are the same), logic gets messed up
+    // for start and finish, need to -1 from source/dest num so it matches up to the array index
+
+    const start = project.columns[sourceNum - 1]
+    const finish = project.columns[destNum - 1]
+
+    console.log('source', source)
+    console.log('destination', destination)
+    console.log('start', start)
+    console.log('finish', finish)
+
     // // If dropped inside the same column
-    // if (start === finish) {
-    //   const tasks = [...start.taskIds]
-    //   const sourceIdx = source.index
-    //   const destIdx = destination.index
-    //   const colId = start.id
-    //   dispatch(
-    //     updateTaskOrderSameCol({
-    //       colId,
-    //       tasks,
-    //       sourceIdx,
-    //       destIdx,
-    //       draggableId
-    //     })
-    //   )
-    // return
-    // }
+    if (start === finish) {
+      // console.log('start', start)
+      const tasks = [...start.tasks]
+      const sourceIdx = source.index
+      const destIdx = destination.index
+      // const colId = start.id
+      dispatch(
+        updateTaskOrderSameCol({
+          colId,
+          tasks,
+          sourceIdx,
+          destIdx,
+          draggableId
+        })
+      )
+      return
+    }
 
     // // If dropped in a different column
     // const startTasks = [...start.taskIds]
@@ -82,7 +97,7 @@ export default function ProjectBoard() {
     // )
     // return
   }
-
+  console.log('project', project)
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
@@ -97,7 +112,7 @@ export default function ProjectBoard() {
                 <Column
                   key={column.id}
                   column={column}
-                  // tasks={tasks}
+                  // tasks={column.tasks}
                   index={index}
                 />
               ))}

@@ -23,10 +23,17 @@ export const projectSlice = createSlice({
       const newColumns = Array.from(state.columns)
       newColumns.splice(source.index, 1) //take out column from previous columns
       newColumns.splice(destination.index, 0, columnToMove) //insert column into new columns
-      newColumns.map((column, index) => (column.index = index)) //change index property
+      newColumns.map((column, index) => (column.index = index)) //change index property, may not be needed
       // return mutated array
       // console.log('newColumns', newColumns)
       state.columns = newColumns
+    },
+    updateTaskOrderSameCol: (state, action) => {
+      const { colId, tasks, sourceIdx, destIdx, draggableId } = action.payload
+      tasks.splice(sourceIdx, 1)
+      tasks.splice(destIdx, 0, draggableId)
+      // ultimately, mutate state the way we want it...
+      state.columns[colId].taskIds = tasks
     }
   },
   extraReducers: {
