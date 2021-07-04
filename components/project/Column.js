@@ -1,7 +1,7 @@
 import React from 'react'
 import { tw } from 'twind'
 import Task from './Task'
-import { Droppable, Draggable } from 'react-beautiful-dnd'
+import { Droppable } from 'react-beautiful-dnd'
 
 export default function Column(props) {
   const column = props.column
