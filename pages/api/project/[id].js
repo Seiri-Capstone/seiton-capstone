@@ -17,7 +17,7 @@ export default async function getProject(req, res) {
     //incredibly not optimal very brute force-y
 
     //order tasks within a column by its index
-    const columns = results.columns
+    const columns = result.columns
     const tasks = columns.map(col => col.tasks)
 
     //get array of sorted indexes
@@ -50,7 +50,7 @@ export default async function getProject(req, res) {
     }
 
     //order column by index
-    const colOrder = results.columns.map(col => col.index).sort((a, b) => a - b)
+    const colOrder = result.columns.map(col => col.index).sort((a, b) => a - b)
 
     let i = 0
     let newColumns = []
@@ -64,7 +64,7 @@ export default async function getProject(req, res) {
       i++
     }
 
-    const newResults = { ...results, columns: newColumns }
+    const newResults = { ...result, columns: newColumns }
 
     res.status(200).json(newResults)
   } catch (error) {
