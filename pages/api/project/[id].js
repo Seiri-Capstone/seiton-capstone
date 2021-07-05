@@ -14,6 +14,7 @@ export default async function getProject(req, res) {
       }
     })
 
+    //order columns based on index brute force-y method
     const colOrder = result.columns.map(col => col.index).sort((a, b) => a - b)
 
     const columns = result.columns

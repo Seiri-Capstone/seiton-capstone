@@ -60,7 +60,6 @@ export const projectSlice = createSlice({
       newColumns.map((column, idx) => (column.index = idx)) //change index property, may not be needed
       // return mutated array
       state.columns = newColumns
-      // state.columns.map(col => fetch('/api/column/edit', JSON.stringify(col)))
 
       console.log('in reducer', JSON.parse(JSON.stringify(state)))
     },
@@ -69,8 +68,10 @@ export const projectSlice = createSlice({
       const taskToMove = tasks[sourceIdx]
       tasks.splice(sourceIdx, 1)
       tasks.splice(destIdx, 0, taskToMove)
-      // ultimately, mutate state the way we want it...
-      state.columns[colId].tasks = tasks
+      const reorderedTask = tasks.map((task, idx) => {
+        return { ...task, index: idx }
+      }) //update index property
+      state.columns[colId].tasks = reorderedTask
     },
     updateTaskOrderDiffCol: (state, action) => {
       const {
