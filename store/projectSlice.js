@@ -57,7 +57,7 @@ export const projectSlice = createSlice({
       const newColumns = Array.from(state.columns)
       newColumns.splice(source.index, 1) //take out column from previous columns
       newColumns.splice(destination.index, 0, columnToMove) //insert column into new columns
-      newColumns.map((column, index) => (column.index = index)) //change index property, may not be needed
+      newColumns.map((column, idx) => (column.index = idx)) //change index property, may not be needed
       // return mutated array
       state.columns = newColumns
       // state.columns.map(col => fetch('/api/column/edit', JSON.stringify(col)))

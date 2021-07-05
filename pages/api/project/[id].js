@@ -13,7 +13,23 @@ export default async function getProject(req, res) {
         }
       }
     })
-    res.status(200).json(result)
+
+    const colOrder = result.columns.map(col => col.index).sort((a, b) => a - b)
+
+    const columns = result.columns
+    let i = 0
+    let newColumns = []
+    while (i <= colOrder.length) {
+      for (let j = 0; j < columns.length; j++) {
+        if (colOrder[i] === columns[j].index) {
+          newColumns.push(columns[j])
+        }
+      }
+      i++
+    }
+
+    const newResults = { ...result, columns: newColumns }
+    res.status(200).json(newResults)
   } catch (error) {
     console.log('error in the project id api call!', error)
   }
