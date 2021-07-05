@@ -1,0 +1,39 @@
+@base = http://localhost:3000/api
+@type = application/json
+@createdAt = {{$datetime iso8601}}
+
+###
+
+GET {{base}}/task
+
+###
+
+GET {{base}}/project/1
+
+###
+
+PUT http://localhost:3000/api/project/edit
+content-type: application/json
+
+{
+	"name": "something crazy"
+}
+
+// update works with a little bit of change to code
+
+###
+
+GET http://localhost:3000/api/task
+
+###
+
+PUT {{base}}/task/edit
+content-type: application/json
+
+{
+	"id": 1,
+	"title": "hello",
+	"body": "this is the body",
+	"columnId": 100,
+	"index": 100
+}
