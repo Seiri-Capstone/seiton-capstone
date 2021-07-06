@@ -3,7 +3,7 @@
 import prisma from '../../../prisma/prisma'
 
 export default async function handler(req, res) {
-  // GET
+  // 📡 GET /api/project/1
   if (req.method === 'GET') {
     try {
       const { id } = req.query
@@ -76,7 +76,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // PUT api/project/1
+  // 📡 PUT api/project/1
   if (req.method === 'PUT') {
     try {
       console.log("we're in the put project request!")
