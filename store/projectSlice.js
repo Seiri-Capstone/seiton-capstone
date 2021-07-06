@@ -1,13 +1,17 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 const initialState = []
 
-//async
 export const fetchProject = createAsyncThunk(
   'project/fetchProject',
   async projectId => {
+    // try catch here
     const response = await fetch(`/api/project/${projectId}`)
+
+    // ultimately we want it to represent an array form
     return await response.json()
+    // Get back sorted array
   }
 )
 
@@ -24,16 +28,22 @@ export const fetchReorderColumn = createAsyncThunk(
       return { ...column, index: idx }
     })
 
-    // would be great to separate the thunks but was running into problems when dispatching second thunk
-    reorderedCol.map(async column => {
-      await fetch('/api/column/edit', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(column)
-      })
-    })
+    Promise.all(reorderedCol.map(column => axios.put('/api/column', column)))
+
+    /**
+     * Curently, the code below is not async 👇
+     */
+    // reorderedCol.map(async column => {
+    //   await fetch('/api/column', {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(column)
+    //   })
+    //   console.log('fetch api')
+    // })
+
     return reorderedCol
   }
 )
@@ -50,15 +60,21 @@ export const fetchReorderTask = createAsyncThunk(
       return { ...task, index: idx }
     }) //update index property
 
-    reorderedTask.map(async task => {
-      await fetch('/api/task/edit', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(task)
-      })
-    })
+    /**
+     * Promise all seems to be awaited?
+     * no flicker or re-rendering issues
+     */
+    Promise.all(reorderedTask.map(task => axios.put('/api/task', task)))
+
+    // reorderedTask.map(async task => {
+    //   await fetch('/api/task', {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(task)
+    //   })
+    // })
     return reorderedTask
   }
 )
@@ -87,28 +103,42 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
     console.log('start', startTasks, startColId)
     console.log('finish', updatedFinishTasks, destColId)
 
-    updatedFinishTasks.map(async task => {
-      await fetch('/api/task/edit', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(task)
-      })
-    })
+    Promise.all(updatedFinishTasks.map(task => axios.put('/api/task', task)))
+    // updatedFinishTasks.map(async task => {
+    //   await fetch('/api/task', {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(task)
+    //   })
+    // })
 
     return { startTasks, finishTasks, startColId, finishColId }
+  }
+)
+
+export const createColumn = createAsyncThunk(
+  'project/createColumn',
+  async body => {
+    // send the body from the front end
+    const res = await axios.post('/api/column', body)
+    // update the state as well?
+    return res
   }
 )
 
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
-  reducers: {},
+  reducers: {
+    // updateColumn: (state, action) => (state.columns = action.payload.columns)
+  },
   extraReducers: {
-    [fetchProject.fulfilled]: (state, action) => {
-      return action.payload
-    },
+    [fetchProject.fulfilled]: (state, action) => action.payload,
+    // [fetchReorderColumn.pending]: (state, action) => {
+    //   state.columns = action.payload
+    // },
     [fetchReorderColumn.fulfilled]: (state, action) => {
       state.columns = action.payload
     },
@@ -123,24 +153,20 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const {
-        startTasks,
-        finishTasks,
-        startColId,
-        finishColId
-      } = action.payload
+      const { startTasks, finishTasks, startColId, finishColId } =
+        action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
         if (idx === finishColId) column.tasks = finishTasks
       })
-    }
+    },
+    [createColumn.fulfilled]: (state, action) =>
+      state.columns.push(action.payload)
   }
 })
 
-export const {
-  updateTaskOrderSameCol,
-  updateTaskOrderDiffCol
-} = projectSlice.actions
+export const { updateTaskOrderSameCol, updateTaskOrderDiffCol } =
+  projectSlice.actions
 
 export default projectSlice.reducer

@@ -95,6 +95,9 @@ export default function ProjectBoard() {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
+        {/* <button className={tw`border border-red-500 mx-auto`}>
+          Add New Column
+        </button> */}
         <Droppable
           droppableId="all-columns"
           direction="horizontal"
@@ -102,7 +105,7 @@ export default function ProjectBoard() {
         >
           {provided => (
             <div
-              className={tw`mx-auto flex justify-center`}
+              className={tw`mx-auto flex flex-col md:flex-row min-w-[300px] justify-center`}
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
