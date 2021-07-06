@@ -12,6 +12,7 @@
   "dependencies": {
     "@prisma/client": "^2.26.0",
     "@reduxjs/toolkit": "^1.6.0",
+    "@tailwindcss/forms": "^0.3.3",
     "@twind/next": "^1.0.8",
     "next": "11.0.1",
     "react": "17.0.2",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "eslint": "7.29.0",
     "eslint-config-next": "11.0.1",
-    "prisma": "^2.26.0"
+    "prisma": "^2.26.0",
+    "tailwindcss": "^2.2.4"
   }
 }

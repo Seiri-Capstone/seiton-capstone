@@ -1,8 +1,8 @@
 // import typography from "@twind/typography";
 // import { forms, formInput } from "@twind/forms";
-import { setup, apply } from "twind";
-import { css } from "twind/css";
-import * as colors from "twind/colors";
+import { setup, apply } from 'twind'
+import { css } from 'twind/css'
+import * as colors from 'twind/colors'
 
 // Don't need to explicitly set up Configuration and Token
 // TODO: Figure out how to deal with typography...
@@ -12,18 +12,19 @@ setup({
       preflight,
       {
         body: {
-          backgroundColor: theme("colors.gray.100"),
+          backgroundColor: theme('colors.gray.100')
         },
         // Theme: https://github.com/tailwindlabs/tailwindcss/blob/v1/stubs/defaultConfig.stub.js#L5
         h1: {
-          fontSize: theme("fontSize.6xl"),
-          fontWeight: theme("fontWeight.bold"),
-          "&:hover": {
-            color: theme("colors.blue.800"),
-          },
+          fontSize: theme('fontSize.6xl'),
+          fontWeight: theme('fontWeight.bold'),
+          '&:hover': {
+            color: theme('colors.blue.800')
+          }
           // color: theme('colors.blue.200')
         },
-        h3: apply`text(8xl red-300)`,
+
+        h3: apply`text(8xl red-300)`
       }
       // { body: apply`text-gray-100` }
     ),
@@ -34,26 +35,34 @@ setup({
   // 	// color: 'palevioletred' // COLOR cannot match with fontSize?
   // }
   // *** For Dark Mode ***
-  darkMode: "class",
+  darkMode: 'class',
   theme: {
     extend: {
+      container: {
+        center: true
+      },
       fontFamily: {
         // extend to explicitly set the font name as Open Sans or Lora, etc.
-        open: "Open Sans",
-        lora: "Lora",
+        open: 'Open Sans',
+        lora: 'Lora'
       },
       colors: {
         gray: colors.trueGray,
         yellow: {
-          custom: "#edf060",
-        },
+          custom: '#edf060'
+        }
       },
       spacing: {
-        128: "32rem", // TODO: figure out how to use spacing,
-        144: "36rem",
-      },
-    },
+        128: '32rem', // TODO: figure out how to use spacing,
+        144: '36rem'
+      }
+    }
   },
+  plugins: [
+    require('@tailwindcss/forms')({
+      strategy: 'className'
+    })
+  ]
   // plugins: {
   // 	// https://twind.dev/handbook/plugins.html#plugin-as-alias
   // 	forms,
@@ -65,4 +74,4 @@ setup({
   // 		className: 'my-prose' // Defaults to 'prose', => TODO (for rendered markdown...)
   // 	})
   // }
-});
+})
