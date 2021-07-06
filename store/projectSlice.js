@@ -45,6 +45,7 @@ export const fetchReorderTask = createAsyncThunk(
     const taskToMove = tasks[sourceIdx]
     tasks.splice(sourceIdx, 1)
     tasks.splice(destIdx, 0, taskToMove)
+
     const reorderedTask = tasks.map((task, idx) => {
       return { ...task, index: idx }
     }) //update index property
@@ -58,43 +59,36 @@ export const fetchReorderTask = createAsyncThunk(
         body: JSON.stringify(task)
       })
     })
-
     return reorderedTask
+  }
+)
+
+export const fetchTaskOrderDiffCol = createAsyncThunk(
+  'project/fetchTaskOrderDiffCol',
+  async thunkArg => {
+    const {
+      startTasks,
+      finishTasks,
+      sourceIdx,
+      destIdx,
+      startColId,
+      finishColId
+    } = thunkArg
+    const taskToMove = startTasks[sourceIdx]
+    startTasks.splice(sourceIdx, 1)
+    finishTasks.splice(destIdx, 0, taskToMove)
+    //   state.columns[startColId].tasks = startTasks
+    //   state.columns[finishColId].tasks = finishTasks
+    // }
+
+    return { startTasks, finishTasks, startColId, finishColId }
   }
 )
 
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
-  reducers: {
-    // updateTaskOrderSameCol: (state, action) => {
-    //   const { colId, tasks, sourceIdx, destIdx } = action.payload
-    //   const taskToMove = tasks[sourceIdx]
-    //   tasks.splice(sourceIdx, 1)
-    //   tasks.splice(destIdx, 0, taskToMove)
-    //   const reorderedTask = tasks.map((task, idx) => {
-    //     return { ...task, index: idx }
-    //   }) //update index property
-    //   console.log(reorderedTask)
-    //   state.columns[colId].tasks = reorderedTask
-    // },
-    updateTaskOrderDiffCol: (state, action) => {
-      const {
-        startTasks,
-        finishTasks,
-        sourceIdx,
-        destIdx,
-        startColId,
-        finishColId
-      } = action.payload
-      const taskToMove = startTasks[sourceIdx]
-      startTasks.splice(sourceIdx, 1)
-      finishTasks.splice(destIdx, 0, taskToMove)
-
-      state.columns[startColId].tasks = startTasks
-      state.columns[finishColId].tasks = finishTasks
-    }
-  },
+  reducers: {},
   extraReducers: {
     [fetchProject.fulfilled]: (state, action) => {
       return action.payload
@@ -112,7 +106,20 @@ export const projectSlice = createSlice({
           column.tasks = action.payload
         }
       })
-      console.log('state col', JSON.parse(JSON.stringify(state.columns)))
+    },
+    [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
+      const {
+        startTasks,
+        finishTasks,
+        startColId,
+        finishColId
+      } = action.payload
+      const columns = state.columns
+      console.log('start', startColId, startTasks)
+      columns.forEach((column, idx) => {
+        if (idx === startColId) column.tasks = startTasks
+        if (idx === finishColId) column.tasks = finishTasks
+      })
     }
   }
 })

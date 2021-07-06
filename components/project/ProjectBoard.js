@@ -7,8 +7,7 @@ import {
   fetchProject,
   fetchReorderColumn,
   fetchReorderTask,
-  updateTaskOrderSameCol,
-  updateTaskOrderDiffCol
+  fetchTaskOrderDiffCol
 } from '../../store/projectSlice'
 
 export default function ProjectBoard() {
@@ -75,10 +74,7 @@ export default function ProjectBoard() {
       const tasks = [...start.tasks]
       const sourceIdx = source.index
       const destIdx = destination.index
-      const colId = start.index
-
       const thunkArg = { tasks, sourceIdx, destIdx }
-
       dispatch(fetchReorderTask(thunkArg))
       return
     }
@@ -90,17 +86,16 @@ export default function ProjectBoard() {
     const destIdx = destination.index
     const startColId = start.index
     const finishColId = finish.index
+    const thunkArg = {
+      startTasks,
+      finishTasks,
+      sourceIdx,
+      destIdx,
+      startColId,
+      finishColId
+    }
 
-    dispatch(
-      updateTaskOrderDiffCol({
-        startTasks,
-        finishTasks,
-        sourceIdx,
-        destIdx,
-        startColId,
-        finishColId
-      })
-    )
+    dispatch(fetchTaskOrderDiffCol(thunkArg))
 
     return
   }
