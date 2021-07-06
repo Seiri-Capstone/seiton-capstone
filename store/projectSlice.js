@@ -6,8 +6,12 @@ const initialState = []
 export const fetchProject = createAsyncThunk(
   'project/fetchProject',
   async projectId => {
+    // try catch here
     const response = await fetch(`/api/project/${projectId}`)
+
+    // ultimately we want it to represent an array form
     return await response.json()
+    // Get back sorted array
   }
 )
 
@@ -121,9 +125,7 @@ export const projectSlice = createSlice({
     updateColumn: (state, action) => (state.columns = action.payload.columns)
   },
   extraReducers: {
-    [fetchProject.fulfilled]: (state, action) => {
-      return action.payload
-    },
+    [fetchProject.fulfilled]: (state, action) => action.payload,
     // [fetchReorderColumn.pending]: (state, action) => {
     //   state.columns = action.payload
     // },
