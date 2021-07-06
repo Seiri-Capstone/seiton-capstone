@@ -95,6 +95,9 @@ export default function ProjectBoard() {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
+        {/* <button className={tw`border border-red-500 mx-auto`}>
+          Add New Column
+        </button> */}
         <Droppable
           droppableId="all-columns"
           direction="horizontal"

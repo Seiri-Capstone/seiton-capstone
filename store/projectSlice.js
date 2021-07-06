@@ -118,11 +118,21 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
   }
 )
 
+export const createColumn = createAsyncThunk(
+  'project/createColumn',
+  async body => {
+    // send the body from the front end
+    const res = await axios.post('/api/column', body)
+    // update the state as well?
+    return res
+  }
+)
+
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    updateColumn: (state, action) => (state.columns = action.payload.columns)
+    // updateColumn: (state, action) => (state.columns = action.payload.columns)
   },
   extraReducers: {
     [fetchProject.fulfilled]: (state, action) => action.payload,
@@ -150,7 +160,9 @@ export const projectSlice = createSlice({
         if (idx === startColId) column.tasks = startTasks
         if (idx === finishColId) column.tasks = finishTasks
       })
-    }
+    },
+    [createColumn.fulfilled]: (state, action) =>
+      state.columns.push(action.payload)
   }
 })
 
