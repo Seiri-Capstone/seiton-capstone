@@ -31,3 +31,7 @@ content-type: application/json
 	"columnId": 100,
 	"index": 100
 }
+
+###
+
+PUT {{base}}

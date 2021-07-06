@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ProjectBoard from '../../components/project/ProjectBoard'
+import ProjectBoard from '../components/project/ProjectBoard'
 
 const Project = () => {
   return (
