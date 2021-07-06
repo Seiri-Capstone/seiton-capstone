@@ -5,9 +5,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
 import {
   fetchProject,
-  putColumn,
-  putTask,
-  updateColumnOrder,
+  fetchReorderColumn,
+  fetchReorderTask,
   updateTaskOrderSameCol,
   updateTaskOrderDiffCol
 } from '../../store/projectSlice'
@@ -37,17 +36,12 @@ export default function ProjectBoard() {
 
     // If you're dragging columns
     if (type === 'column') {
-      await dispatch(updateColumnOrder(result))
-
-      project.columns.map(column => {
-        dispatch(putColumn(column))
-      })
-
-      console.log('state project', project)
+      const thunkArg = { result, project }
+      await dispatch(fetchReorderColumn(thunkArg))
       return
     }
-    // Anything below this happens if you're dragging tasks
 
+    // Anything below this happens if you're dragging tasks
     const sourceNum = Number(source.droppableId[source.droppableId.length - 1])
     const destNum = Number(
       destination.droppableId[destination.droppableId.length - 1]
@@ -69,12 +63,12 @@ export default function ProjectBoard() {
 
     // const start = project.columns[source.index]
     // const finish = project.columns[destination.index]
-    console.log('result', result)
+    // console.log('result', result)
 
-    console.log('source', source)
-    console.log('destination', destination)
-    console.log('start', start)
-    console.log('finish', finish)
+    // console.log('source', source)
+    // console.log('destination', destination)
+    // console.log('start', start)
+    // console.log('finish', finish)
 
     // // If dropped inside the same column
     if (start === finish) {
@@ -83,15 +77,9 @@ export default function ProjectBoard() {
       const destIdx = destination.index
       const colId = start.index
 
-      dispatch(
-        updateTaskOrderSameCol({
-          colId,
-          tasks,
-          sourceIdx,
-          destIdx
-        })
-      )
+      const thunkArg = { tasks, sourceIdx, destIdx }
 
+      dispatch(fetchReorderTask(thunkArg))
       return
     }
 
@@ -116,8 +104,6 @@ export default function ProjectBoard() {
 
     return
   }
-
-  console.log('state project right before return', project)
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
