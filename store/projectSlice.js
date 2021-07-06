@@ -72,14 +72,30 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
       sourceIdx,
       destIdx,
       startColId,
-      finishColId
+      finishColId,
+      columns
     } = thunkArg
     const taskToMove = startTasks[sourceIdx]
     startTasks.splice(sourceIdx, 1)
     finishTasks.splice(destIdx, 0, taskToMove)
-    //   state.columns[startColId].tasks = startTasks
-    //   state.columns[finishColId].tasks = finishTasks
-    // }
+    const destColId = columns[finishColId].id
+
+    const updatedFinishTasks = finishTasks.map((task, idx) => {
+      return { ...task, columnId: destColId, index: idx }
+    })
+
+    console.log('start', startTasks, startColId)
+    console.log('finish', updatedFinishTasks, destColId)
+
+    updatedFinishTasks.map(async task => {
+      await fetch('/api/task/edit', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(task)
+      })
+    })
 
     return { startTasks, finishTasks, startColId, finishColId }
   }
@@ -97,7 +113,6 @@ export const projectSlice = createSlice({
       state.columns = action.payload
     },
     [fetchReorderTask.fulfilled]: (state, action) => {
-      console.log('action', action.payload)
       const columns = state.columns
       const colId = action.payload[0].columnId
       console.log(columns, colId)
@@ -115,7 +130,6 @@ export const projectSlice = createSlice({
         finishColId
       } = action.payload
       const columns = state.columns
-      console.log('start', startColId, startTasks)
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
         if (idx === finishColId) column.tasks = finishTasks
