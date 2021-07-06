@@ -9,8 +9,14 @@ import {
   updateTaskOrderSameCol,
   updateTaskOrderDiffCol
 } from '../../store/projectSlice'
+import NewTask from './NewTask'
 
 export default function ProjectBoard() {
+  //   // toggle new task
+  //   const [toggleTask, setToggleTask] = useState(false)
+  //   const toggleNewTask = () => setToggleTask(!toggleTask)
+  //  // end toggle new task
+
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
 
@@ -99,27 +105,37 @@ export default function ProjectBoard() {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="all-columns" direction="horizontal" type="column">
-        {provided => (
-          <div
-            className={tw`mx-auto flex justify-center`}
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {project.columns &&
-              project.columns.map((column, index) => (
-                <Column
-                  key={column.id}
-                  column={column}
-                  // tasks={column.tasks}
-                  index={index}
-                />
-              ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
+        >
+          {provided => (
+            <div
+              className={tw`mx-auto flex justify-center`}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {project.columns &&
+                project.columns.map((column, index) => (
+                  <>
+                    <Column
+                      key={column.id}
+                      column={column}
+                      // toggleTask={toggleTask}
+                      // onChange={toggleNewTask}
+                      index={index}
+                    />
+                  </>
+                ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {/* {toggleTask && <NewTask />} */}
+    </>
   )
 }
