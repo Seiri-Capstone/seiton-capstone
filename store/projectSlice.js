@@ -19,6 +19,10 @@ export const putProject = createAsyncThunk(
   }
 )
 
+export const reorderColumn = createAsyncThunk()
+//reordering column logic here
+// putColumn(updatedColumn)
+
 export const putColumn = createAsyncThunk(
   'project/putColumn',
   async updatedColumn => {

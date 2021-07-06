@@ -38,6 +38,7 @@ export default function ProjectBoard() {
     // If you're dragging columns
     if (type === 'column') {
       await dispatch(updateColumnOrder(result))
+
       project.columns.map(column => {
         dispatch(putColumn(column))
       })
@@ -115,6 +116,8 @@ export default function ProjectBoard() {
 
     return
   }
+
+  console.log('state project right before return', project)
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
