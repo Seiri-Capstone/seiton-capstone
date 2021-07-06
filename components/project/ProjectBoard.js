@@ -5,9 +5,9 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
 import {
   fetchProject,
-  updateColumnOrder,
-  updateTaskOrderSameCol,
-  updateTaskOrderDiffCol
+  fetchReorderColumn,
+  fetchReorderTask,
+  fetchTaskOrderDiffCol
 } from '../../store/projectSlice'
 
 export default function ProjectBoard() {
@@ -18,7 +18,7 @@ export default function ProjectBoard() {
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch])
 
-  const onDragEnd = result => {
+  const onDragEnd = async result => {
     const { destination, source, draggableId, type } = result
     //If there is no destination
     if (!destination) {
@@ -35,13 +35,12 @@ export default function ProjectBoard() {
 
     // If you're dragging columns
     if (type === 'column') {
-      console.log('project', project)
-
-      dispatch(updateColumnOrder(result))
+      const thunkArg = { result, project }
+      await dispatch(fetchReorderColumn(thunkArg))
       return
     }
-    // Anything below this happens if you're dragging tasks
 
+    // Anything below this happens if you're dragging tasks
     const sourceNum = Number(source.droppableId[source.droppableId.length - 1])
     const destNum = Number(
       destination.droppableId[destination.droppableId.length - 1]
@@ -52,28 +51,16 @@ export default function ProjectBoard() {
     // droppableId needs to be column-${column.id} or task-${task.id} in order to differentiate between column and task, if theyre both just numbers (that are the same), logic gets messed up
     // for start and finish, need to -1 from source/dest num so it matches up to the array index
 
-    const start = project.columns[sourceNum - 1]
-    const finish = project.columns[destNum - 1]
-
-    console.log('source', source)
-    console.log('destination', destination)
-    console.log('start', start)
-    console.log('finish', finish)
+    const start = project.columns.filter(col => col.id === sourceNum)[0]
+    const finish = project.columns.filter(col => col.id === destNum)[0]
 
     // // If dropped inside the same column
     if (start === finish) {
       const tasks = [...start.tasks]
       const sourceIdx = source.index
       const destIdx = destination.index
-      const colId = start.index
-      dispatch(
-        updateTaskOrderSameCol({
-          colId,
-          tasks,
-          sourceIdx,
-          destIdx
-        })
-      )
+      const thunkArg = { tasks, sourceIdx, destIdx }
+      dispatch(fetchReorderTask(thunkArg))
       return
     }
 
@@ -84,17 +71,18 @@ export default function ProjectBoard() {
     const destIdx = destination.index
     const startColId = start.index
     const finishColId = finish.index
+    const columns = project.columns
+    const thunkArg = {
+      startTasks,
+      finishTasks,
+      sourceIdx,
+      destIdx,
+      startColId,
+      finishColId,
+      columns
+    }
 
-    dispatch(
-      updateTaskOrderDiffCol({
-        startTasks,
-        finishTasks,
-        sourceIdx,
-        destIdx,
-        startColId,
-        finishColId
-      })
-    )
+    dispatch(fetchTaskOrderDiffCol(thunkArg))
     return
   }
 
