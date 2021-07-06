@@ -30,20 +30,6 @@ export const fetchReorderColumn = createAsyncThunk(
 
     Promise.all(reorderedCol.map(column => axios.put('/api/column', column)))
 
-    /**
-     * Curently, the code below is not async 👇
-     */
-    // reorderedCol.map(async column => {
-    //   await fetch('/api/column', {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(column)
-    //   })
-    //   console.log('fetch api')
-    // })
-
     return reorderedCol
   }
 )
@@ -66,16 +52,6 @@ export const fetchReorderTask = createAsyncThunk(
      * no flicker or re-rendering issues
      */
     Promise.all(reorderedTask.map(task => axios.put('/api/task', task)))
-
-    // reorderedTask.map(async task => {
-    //   await fetch('/api/task', {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(task)
-    //   })
-    // })
     return reorderedTask
   }
 )
@@ -105,15 +81,6 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
     console.log('finish', updatedFinishTasks, finishColId)
 
     Promise.all(updatedFinishTasks.map(task => axios.put('/api/task', task)))
-    // updatedFinishTasks.map(async task => {
-    //   await fetch('/api/task', {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(task)
-    //   })
-    // })
 
     return { startTasks, finishTasks, startColId, finishColId }
   }
@@ -152,7 +119,6 @@ export const projectSlice = createSlice({
           column.tasks = action.payload
         }
       })
-      console.log('tasks in reducer', action.payload)
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
       const {
@@ -171,10 +137,5 @@ export const projectSlice = createSlice({
       state.columns.push(action.payload)
   }
 })
-
-export const {
-  updateTaskOrderSameCol,
-  updateTaskOrderDiffCol
-} = projectSlice.actions
 
 export default projectSlice.reducer
