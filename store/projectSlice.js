@@ -30,20 +30,6 @@ export const fetchReorderColumn = createAsyncThunk(
 
     Promise.all(reorderedCol.map(column => axios.put('/api/column', column)))
 
-    /**
-     * Curently, the code below is not async 👇
-     */
-    // reorderedCol.map(async column => {
-    //   await fetch('/api/column', {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(column)
-    //   })
-    //   console.log('fetch api')
-    // })
-
     return reorderedCol
   }
 )
@@ -51,13 +37,14 @@ export const fetchReorderColumn = createAsyncThunk(
 export const fetchReorderTask = createAsyncThunk(
   'project/fetchReorderTask',
   async thunkArg => {
-    const { tasks, sourceIdx, destIdx } = thunkArg
+    const { tasks, sourceIdx, destIdx, columns, finishColId } = thunkArg
     const taskToMove = tasks[sourceIdx]
     tasks.splice(sourceIdx, 1)
     tasks.splice(destIdx, 0, taskToMove)
+    const destColId = columns[finishColId].id
 
     const reorderedTask = tasks.map((task, idx) => {
-      return { ...task, index: idx }
+      return { ...task, index: idx, columnId: destColId }
     }) //update index property
 
     /**
@@ -65,16 +52,6 @@ export const fetchReorderTask = createAsyncThunk(
      * no flicker or re-rendering issues
      */
     Promise.all(reorderedTask.map(task => axios.put('/api/task', task)))
-
-    // reorderedTask.map(async task => {
-    //   await fetch('/api/task', {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(task)
-    //   })
-    // })
     return reorderedTask
   }
 )
@@ -101,18 +78,9 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
     })
 
     console.log('start', startTasks, startColId)
-    console.log('finish', updatedFinishTasks, destColId)
+    console.log('finish', updatedFinishTasks, finishColId)
 
     Promise.all(updatedFinishTasks.map(task => axios.put('/api/task', task)))
-    // updatedFinishTasks.map(async task => {
-    //   await fetch('/api/task', {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(task)
-    //   })
-    // })
 
     return { startTasks, finishTasks, startColId, finishColId }
   }
@@ -145,7 +113,7 @@ export const projectSlice = createSlice({
     [fetchReorderTask.fulfilled]: (state, action) => {
       const columns = state.columns
       const colId = action.payload[0].columnId
-      console.log(columns, colId)
+
       columns.forEach(column => {
         if (column.id === colId) {
           column.tasks = action.payload
@@ -153,8 +121,12 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const { startTasks, finishTasks, startColId, finishColId } =
-        action.payload
+      const {
+        startTasks,
+        finishTasks,
+        startColId,
+        finishColId
+      } = action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
@@ -165,8 +137,5 @@ export const projectSlice = createSlice({
       state.columns.push(action.payload)
   }
 })
-
-export const { updateTaskOrderSameCol, updateTaskOrderDiffCol } =
-  projectSlice.actions
 
 export default projectSlice.reducer

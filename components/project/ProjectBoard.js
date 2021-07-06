@@ -59,13 +59,15 @@ export default function ProjectBoard() {
 
     const start = project.columns.filter(col => col.id === sourceNum)[0]
     const finish = project.columns.filter(col => col.id === destNum)[0]
+    const finishColId = finish.index
+    const columns = project.columns
 
     // // If dropped inside the same column
     if (start === finish) {
       const tasks = [...start.tasks]
       const sourceIdx = source.index
       const destIdx = destination.index
-      const thunkArg = { tasks, sourceIdx, destIdx }
+      const thunkArg = { tasks, sourceIdx, destIdx, columns, finishColId }
       dispatch(fetchReorderTask(thunkArg))
       return
     }
@@ -76,8 +78,6 @@ export default function ProjectBoard() {
     const sourceIdx = source.index
     const destIdx = destination.index
     const startColId = start.index
-    const finishColId = finish.index
-    const columns = project.columns
     const thunkArg = {
       startTasks,
       finishTasks,
