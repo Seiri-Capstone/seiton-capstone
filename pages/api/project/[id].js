@@ -11,7 +11,12 @@ export default async function handler(req, res) {
         where: { id: Number(id) },
         include: {
           columns: {
-            include: { tasks: true }
+            orderBy: { index: 'asc' },
+            include: {
+              tasks: {
+                orderBy: { index: 'asc' }
+              }
+            }
           }
         }
       })
@@ -19,64 +24,68 @@ export default async function handler(req, res) {
       //incredibly not optimal very brute force-y
 
       //order tasks within a column by its index
-      const columns = result.columns
-      const tasks = columns.map(col => col.tasks)
 
-      //get array of sorted indexes
-      const taskIndex = []
-      for (let i = 0; i < columns.length; i++) {
-        let colTask = []
-        for (let j = 0; j < columns[i].tasks.length; j++) {
-          colTask.push(columns[i].tasks[j].index)
-        }
-        taskIndex.push(colTask)
-      }
+      // const columns = result.columns
+      // const tasks = columns.map(col => col.tasks)
 
-      const sortedTaskIdx = taskIndex.map(task => task.sort((a, b) => a - b))
+      // //get array of sorted indexes
+      // const taskIndex = []
+      // for (let i = 0; i < columns.length; i++) {
+      //   let colTask = []
+      //   for (let j = 0; j < columns[i].tasks.length; j++) {
+      //     colTask.push(columns[i].tasks[j].index)
+      //   }
+      //   taskIndex.push(colTask)
+      // }
 
-      //match index back to task and in order
-      let newTasks = []
-      let k = 0
+      // const sortedTaskIdx = taskIndex.map(task => task.sort((a, b) => a - b))
 
-      while (k < sortedTaskIdx.length) {
-        let innerArr = []
-        for (let i = 0; i < sortedTaskIdx[k].length; i++) {
-          for (let j = 0; j < tasks[k].length; j++) {
-            if (sortedTaskIdx[k][i] === tasks[k][j].index) {
-              innerArr.push(tasks[k][j])
-            }
-          }
-        }
-        newTasks.push(innerArr)
-        k++
-      }
+      // //match index back to task and in order
+      // let newTasks = []
+      // let k = 0
 
-      //order column by index
-      const colOrder = result.columns
-        .map(col => col.index)
-        .sort((a, b) => a - b)
+      // while (k < sortedTaskIdx.length) {
+      //   let innerArr = []
+      //   for (let i = 0; i < sortedTaskIdx[k].length; i++) {
+      //     for (let j = 0; j < tasks[k].length; j++) {
+      //       if (sortedTaskIdx[k][i] === tasks[k][j].index) {
+      //         innerArr.push(tasks[k][j])
+      //       }
+      //     }
+      //   }
+      //   newTasks.push(innerArr)
+      //   k++
+      // }
 
-      let i = 0
-      let newColumns = []
-      while (i <= colOrder.length) {
-        for (let j = 0; j < columns.length; j++) {
-          if (colOrder[i] === columns[j].index) {
-            columns[j].tasks = newTasks[j] //add newly ordered task to the columns's task field
-            newColumns.push(columns[j])
-          }
-        }
-        i++
-      }
+      // //order column by index
+      // const colOrder = result.columns
+      //   .map(col => col.index)
+      //   .sort((a, b) => a - b)
 
-      const newResults = { ...result, columns: newColumns }
+      // let i = 0
+      // let newColumns = []
+      // while (i <= colOrder.length) {
+      //   for (let j = 0; j < columns.length; j++) {
+      //     if (colOrder[i] === columns[j].index) {
+      //       columns[j].tasks = newTasks[j] //add newly ordered task to the columns's task field
+      //       newColumns.push(columns[j])
+      //     }
+      //   }
+      //   i++
+      // }
 
-      res.status(200).json(newResults)
+      // const newResults = { ...result, columns: newColumns }
+      // console.log(`🟢  newResults `, newResults)
+      // res.status(200).json(newResults)
+
+      res.status(200).json(result)
     } catch (error) {
-      console.log('error in the project id api call!', error)
+      console.error(error) // Which one is idiomatic?
+      throw new Error('Error getting project')
     }
   }
 
-  // 📡 PUT api/project/1
+  // PUT api/project/1
   if (req.method === 'PUT') {
     try {
       console.log("we're in the put project request!")

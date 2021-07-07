@@ -59,13 +59,15 @@ export default function ProjectBoard() {
 
     const start = project.columns.filter(col => col.id === sourceNum)[0]
     const finish = project.columns.filter(col => col.id === destNum)[0]
+    const finishColId = finish.index
+    const columns = project.columns
 
     // // If dropped inside the same column
     if (start === finish) {
       const tasks = [...start.tasks]
       const sourceIdx = source.index
       const destIdx = destination.index
-      const thunkArg = { tasks, sourceIdx, destIdx }
+      const thunkArg = { tasks, sourceIdx, destIdx, columns, finishColId }
       dispatch(fetchReorderTask(thunkArg))
       return
     }
@@ -76,8 +78,6 @@ export default function ProjectBoard() {
     const sourceIdx = source.index
     const destIdx = destination.index
     const startColId = start.index
-    const finishColId = finish.index
-    const columns = project.columns
     const thunkArg = {
       startTasks,
       finishTasks,
@@ -95,6 +95,9 @@ export default function ProjectBoard() {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
+        {/* <button className={tw`border border-red-500 mx-auto`}>
+          Add New Column
+        </button> */}
         <Droppable
           droppableId="all-columns"
           direction="horizontal"
@@ -102,7 +105,7 @@ export default function ProjectBoard() {
         >
           {provided => (
             <div
-              className={tw`mx-auto flex justify-center`}
+              className={tw`mx-auto flex flex-col md:flex-row min-w-[300px] justify-center`}
               {...provided.droppableProps}
               ref={provided.innerRef}
             >

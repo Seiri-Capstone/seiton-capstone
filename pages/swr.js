@@ -1,13 +1,12 @@
-import useSWR from 'swr'
+import * as React from 'react'
+import { useGetProjectQuery } from '../store/apiSlice'
 
-const fetcher = (...args) => fetch(...args).then(res => res.json())
+export default function App() {
+  // Using a query hook automatically fetches data and returns query values
+  const { data, error, isLoading } = useGetProjectQuery(1)
 
-// https://swr.vercel.app/getting-started
-
-export default function ClientSide() {
-  const { data, error } = useSWR('/api/user', fetcher)
-
-  if (error) return <div>failed to load</div>
-  if (!data) return <div>Loading...</div>
-  return <div>Hello {data.name}!</div>
+  if (error) return <div>Error!</div>
+  if (isLoading) return <div>Loading!</div>
+  if (data) return <div>{JSON.stringify(data)}</div>
+  // render UI based on data and loading state
 }
