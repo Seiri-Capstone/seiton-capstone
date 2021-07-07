@@ -59,9 +59,9 @@ setup({
     }
   },
   plugins: [
-    require('@tailwindcss/forms')({
-      strategy: 'className'
-    })
+    // require('@tailwindcss/forms')({
+    //   strategy: 'className'
+    // })
   ]
   // plugins: {
   // 	// https://twind.dev/handbook/plugins.html#plugin-as-alias
