@@ -54,7 +54,7 @@ export default function AuthForm() {
         {/* </div> */}
         {/*error && error.response && <div> {error.response.data} </div>*/}
         {/* </form> */}
-        {/* <button
+        <button
           type="submit"
           className={tw`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow`}
           onClick={() => signIn('github')}
@@ -67,7 +67,7 @@ export default function AuthForm() {
           onClick={() => signIn('google')}
         >
           LOG IN WITH GOOGLE
-        </button> */}
+        </button>
       </div>
     )
   } else {

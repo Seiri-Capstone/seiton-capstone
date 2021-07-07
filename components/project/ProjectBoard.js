@@ -11,7 +11,7 @@ import {
 } from '../../store/projectSlice'
 import NewTask from './NewTask'
 import AuthForm from '../auth/AuthForm'
-import { useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 export default function ProjectBoard() {
   const [session, loading] = useSession()
@@ -132,6 +132,13 @@ export default function ProjectBoard() {
           </Droppable>
         </DragDropContext>
         {/* {toggleTask && <NewTask />} */}
+        <button
+          type="submit"
+          className={tw`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow`}
+          onClick={() => signOut()}
+        >
+          SIGN OUT
+        </button>
       </>
     )
   }
