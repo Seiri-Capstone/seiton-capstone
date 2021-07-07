@@ -1,4 +1,10 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  current
+} from '@reduxjs/toolkit'
+import axios from 'axios'
 
 const initialState = []
 
@@ -10,6 +16,11 @@ export const fetchProject = createAsyncThunk(
     return await response.json()
   }
 )
+// POST route for tasks with axios
+export const createTask = createAsyncThunk('project/createTask', async body => {
+  const { data: createdTask } = await axios.post('/api/task', body)
+  return createdTask
+})
 
 export const fetchReorderColumn = createAsyncThunk(
   'project/fetchReorderColumn',
@@ -106,6 +117,15 @@ export const projectSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    [createTask.fulfilled]: (state, action) => {
+      const { columnId } = action.payload
+      // Parse columns from proxy state to an array
+      // Get index of column for added task by columnId
+      const updatedColId = JSON.parse(JSON.stringify(state.columns)).filter(
+        col => col.id === columnId
+      )[0].index
+      state.columns[updatedColId].tasks.push(action.payload)
+    },
     [fetchProject.fulfilled]: (state, action) => {
       return action.payload
     },
@@ -123,12 +143,8 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const {
-        startTasks,
-        finishTasks,
-        startColId,
-        finishColId
-      } = action.payload
+      const { startTasks, finishTasks, startColId, finishColId } =
+        action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
@@ -138,9 +154,7 @@ export const projectSlice = createSlice({
   }
 })
 
-export const {
-  updateTaskOrderSameCol,
-  updateTaskOrderDiffCol
-} = projectSlice.actions
+export const { updateTaskOrderSameCol, updateTaskOrderDiffCol } =
+  projectSlice.actions
 
 export default projectSlice.reducer
