@@ -13,7 +13,10 @@ export default function Task(props) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <h3>{task.title}</h3>
+          <div className={tw`flex flex-row justify-between items-center`}>
+            <h3>{task.title}</h3>
+            <button className={tw`mr-2`}>x</button>
+          </div>
           <p>{task.body}</p>
         </div>
       )}

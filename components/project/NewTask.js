@@ -21,25 +21,25 @@ export default function NewTask(props) {
 
   return (
     <form
-      className={tw`px-4 my-3 max-w-3xl mx-auto space-y-6 bg-gray-50 rounded-lg`}
+      className={tw`p-4 my-3 max-w-3xl mx-auto space-y-6 bg-gray-50 rounded-lg`}
     >
       <label>
         Title:
         <input
-          className={tw`w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none rows=4 mb-3 focus:outline-none`}
+          className={tw`w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none "rows=4" mb-3 focus:outline-none`}
           onChange={e => setTitle(e.target.value)}
         ></input>
       </label>
       <label>
         Task:
         <textarea
-          className={tw`w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" rows="4 mt-2 focus:outline-none`}
+          className={tw`w-full p-3  text-gray-700 border rounded-lg focus:outline-none" "rows=4" mt-2 focus:outline-none`}
           onChange={e => setTask(e.target.value)}
         ></textarea>
       </label>
       <button
         type="submit"
-        className={tw`bg-gray-300 text-gray-900 rounded hover:bg-gray-200 px-4 py-2 focus:outline-none`}
+        className={tw`bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none`}
         onClick={addTask}
       >
         Add Task
