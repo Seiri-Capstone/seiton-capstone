@@ -1,19 +1,17 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  PayloadAction,
-  current
-} from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = []
 
-//async
 export const fetchProject = createAsyncThunk(
   'project/fetchProject',
   async projectId => {
+    // try catch here
     const response = await fetch(`/api/project/${projectId}`)
+
+    // ultimately we want it to represent an array form
     return await response.json()
+    // Get back sorted array
   }
 )
 // POST route for tasks with axios
@@ -35,16 +33,8 @@ export const fetchReorderColumn = createAsyncThunk(
       return { ...column, index: idx }
     })
 
-    // would be great to separate the thunks but was running into problems when dispatching second thunk
-    reorderedCol.map(async column => {
-      await fetch('/api/column/edit', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(column)
-      })
-    })
+    Promise.all(reorderedCol.map(column => axios.put('/api/column', column)))
+
     return reorderedCol
   }
 )
@@ -52,24 +42,21 @@ export const fetchReorderColumn = createAsyncThunk(
 export const fetchReorderTask = createAsyncThunk(
   'project/fetchReorderTask',
   async thunkArg => {
-    const { tasks, sourceIdx, destIdx } = thunkArg
+    const { tasks, sourceIdx, destIdx, columns, finishColId } = thunkArg
     const taskToMove = tasks[sourceIdx]
     tasks.splice(sourceIdx, 1)
     tasks.splice(destIdx, 0, taskToMove)
+    const destColId = columns[finishColId].id
 
     const reorderedTask = tasks.map((task, idx) => {
-      return { ...task, index: idx }
+      return { ...task, index: idx, columnId: destColId }
     }) //update index property
 
-    reorderedTask.map(async task => {
-      await fetch('/api/task/edit', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(task)
-      })
-    })
+    /**
+     * Promise all seems to be awaited?
+     * no flicker or re-rendering issues
+     */
+    Promise.all(reorderedTask.map(task => axios.put('/api/task', task)))
     return reorderedTask
   }
 )
@@ -96,26 +83,30 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
     })
 
     console.log('start', startTasks, startColId)
-    console.log('finish', updatedFinishTasks, destColId)
+    console.log('finish', updatedFinishTasks, finishColId)
 
-    updatedFinishTasks.map(async task => {
-      await fetch('/api/task/edit', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(task)
-      })
-    })
+    Promise.all(updatedFinishTasks.map(task => axios.put('/api/task', task)))
 
     return { startTasks, finishTasks, startColId, finishColId }
+  }
+)
+
+export const createColumn = createAsyncThunk(
+  'project/createColumn',
+  async body => {
+    // send the body from the front end
+    const res = await axios.post('/api/column', body)
+    // update the state as well?
+    return res
   }
 )
 
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
-  reducers: {},
+  reducers: {
+    // updateColumn: (state, action) => (state.columns = action.payload.columns)
+  },
   extraReducers: {
     [createTask.fulfilled]: (state, action) => {
       const { columnId } = action.payload
@@ -135,7 +126,7 @@ export const projectSlice = createSlice({
     [fetchReorderTask.fulfilled]: (state, action) => {
       const columns = state.columns
       const colId = action.payload[0].columnId
-      console.log(columns, colId)
+
       columns.forEach(column => {
         if (column.id === colId) {
           column.tasks = action.payload
@@ -150,7 +141,9 @@ export const projectSlice = createSlice({
         if (idx === startColId) column.tasks = startTasks
         if (idx === finishColId) column.tasks = finishTasks
       })
-    }
+    },
+    [createColumn.fulfilled]: (state, action) =>
+      state.columns.push(action.payload)
   }
 })
 
