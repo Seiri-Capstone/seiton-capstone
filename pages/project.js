@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 const ProjectBoard = dynamic(import('../components/project/ProjectBoard'))
 import { tw } from 'twind'
-import Modal from '../components/project/Modal'
 
 const Project = () => {
   const [show, setShow] = useState(false)
@@ -13,7 +12,7 @@ const Project = () => {
         My Project
       </h1>
       <ProjectBoard />
-      <div id="root"></div>
+      <div id="modal"></div>
     </div>
   )
 }

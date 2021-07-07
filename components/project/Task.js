@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
-import Modal from './Modal'
+import EditTaskModal from './EditTaskModal'
 
 export default function Task(props) {
   const [show, setShow] = useState(false)
@@ -29,7 +29,7 @@ export default function Task(props) {
           </div>
         )}
       </Draggable>
-      <Modal task={task} show={show} onClose={() => setShow(false)} />
+      <EditTaskModal task={task} show={show} onClose={() => setShow(false)} />
     </React.Fragment>
   )
 }
