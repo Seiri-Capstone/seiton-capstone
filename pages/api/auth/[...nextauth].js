@@ -16,18 +16,23 @@ const options = {
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET
     }),
-    Providers.Email({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
-      },
-      from: process.env.EMAIL_SERVER_FROM
+    Providers.Auth0({
+      clientId: process.env.AUTH0_ID,
+      clientSecret: process.env.AUTH0_SECRET,
+      domain: process.env.AUTH0_DOMAIN
     })
+    // Providers.Email({
+    //   server: process.env.EMAIL_SERVER,
+    //   from: process.env.EMAIL_FROM
+    // })
   ],
+  // session: {
+  //   jwt: true
+  // },
+  // jwt: {
+  //   secret: '5a6e2a2cf7169da9eea17587421ee890', //use a random secret token here
+  //   encryption: true
+  // },
   adapter: Adapters.Prisma.Adapter({ prisma })
   // secret: process.env.SECRET
 }
