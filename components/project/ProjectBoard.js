@@ -93,11 +93,8 @@ export default function ProjectBoard() {
   }
 
   return (
-    <>
+    <React.Fragment>
       <DragDropContext onDragEnd={onDragEnd}>
-        {/* <button className={tw`border border-red-500 mx-auto`}>
-          Add New Column
-        </button> */}
         <Droppable
           droppableId="all-columns"
           direction="horizontal"
@@ -111,22 +108,15 @@ export default function ProjectBoard() {
             >
               {project.columns &&
                 project.columns.map((column, index) => (
-                  <>
-                    <Column
-                      key={column.id}
-                      column={column}
-                      // toggleTask={toggleTask}
-                      // onChange={toggleNewTask}
-                      index={index}
-                    />
-                  </>
+                  <div key={column.id}>
+                    <Column key={column.id} column={column} index={index} />
+                  </div>
                 ))}
               {provided.placeholder}
             </div>
           )}
         </Droppable>
       </DragDropContext>
-      {/* {toggleTask && <NewTask />} */}
-    </>
+    </React.Fragment>
   )
 }

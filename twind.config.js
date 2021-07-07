@@ -57,12 +57,8 @@ setup({
         144: '36rem'
       }
     }
-  },
-  plugins: [
-    require('@tailwindcss/forms')({
-      strategy: 'className'
-    })
-  ]
+  }
+
   // plugins: {
   // 	// https://twind.dev/handbook/plugins.html#plugin-as-alias
   // 	forms,
