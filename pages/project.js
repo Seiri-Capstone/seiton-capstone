@@ -13,6 +13,7 @@ const Project = () => {
         My Project
       </h1>
       <ProjectBoard />
+      <div id="root"></div>
     </div>
   )
 }

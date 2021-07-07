@@ -29,7 +29,7 @@ export default function Task(props) {
           </div>
         )}
       </Draggable>
-      <Modal show={show} onClose={() => setShow(false)} />
+      <Modal task={task} show={show} onClose={() => setShow(false)} />
     </React.Fragment>
   )
 }
