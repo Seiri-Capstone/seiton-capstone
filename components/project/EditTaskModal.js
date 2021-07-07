@@ -1,11 +1,20 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { tw } from 'twind/css'
 import ReactDOM from 'react-dom'
 import marked from 'marked'
+import { fetchEditTask } from '../../store/projectSlice'
 
 export default function EditTaskModal({ task, show, onClose }) {
   const [taskBody, setTaskBody] = useState(task.body)
   const [isEditActive, setEditActive] = useState(false)
+
+  const dispatch = useDispatch()
+
+  const handleSave = () => {
+    setEditActive(false)
+    dispatch(fetchEditTask({ ...task, body: taskBody }))
+  }
 
   if (!show) return null
   return ReactDOM.createPortal(
@@ -27,13 +36,12 @@ export default function EditTaskModal({ task, show, onClose }) {
             <div className={tw`relative p-6 flex-auto`}>
               {isEditActive ? (
                 <textarea
+                  ref={input => input && input.focus()}
                   className={tw`my-4 text-lg leading-relaxed`}
                   name="body"
                   value={taskBody}
                   onChange={e => setTaskBody(e.target.value)}
-                >
-                  {task.body}
-                </textarea>
+                ></textarea>
               ) : (
                 <div className={tw`my-6 mx-auto`}>
                   <div
@@ -66,7 +74,7 @@ export default function EditTaskModal({ task, show, onClose }) {
               <button
                 className={tw`text-blue-500  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
                 type="button"
-                onClick={() => setEditActive(false)}
+                onClick={handleSave}
               >
                 Save Changes
               </button>
@@ -78,9 +86,3 @@ export default function EditTaskModal({ task, show, onClose }) {
     document.getElementById('modal')
   )
 }
-
-// ;<div>
-//   <h1>{task.title}</h1>
-//   <textarea>{task.body}</textarea>
-//   <button onClick={onClose}>Close</button>
-// </div>

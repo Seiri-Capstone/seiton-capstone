@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
 import EditTaskModal from './EditTaskModal'
+import marked from 'marked'
 
 export default function Task(props) {
   const [show, setShow] = useState(false)
@@ -25,7 +26,11 @@ export default function Task(props) {
                 Edit
               </button>
             </div>
-            <p>{task.body}</p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: marked(task.body)
+              }}
+            ></div>
           </div>
         )}
       </Draggable>

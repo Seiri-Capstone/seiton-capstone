@@ -9,7 +9,6 @@ import {
   fetchReorderTask,
   fetchTaskOrderDiffCol
 } from '../../store/projectSlice'
-import NewTask from './NewTask'
 
 export default function ProjectBoard() {
   //   // toggle new task
