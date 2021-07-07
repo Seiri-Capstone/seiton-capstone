@@ -13,14 +13,9 @@ export default function Task(props) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <div className={tw`flex justify-between align-middle`}>
+          <div className={tw`flex flex-row justify-between items-center`}>
             <h3>{task.title}</h3>
-            <button
-              className={tw`border px-2 rounded text-blue-800 hover:text-blue-500 border-blue-500`}
-              onClick={() => console.log('hello')}
-            >
-              Hello!
-            </button>
+            <button className={tw`mr-2`}>x</button>
           </div>
           <p>{task.body}</p>
         </div>

@@ -95,45 +95,45 @@ export default function ProjectBoard() {
     dispatch(fetchTaskOrderDiffCol(thunkArg))
     return
   }
-  if (!session) {
-    return "You're not logged in!"
-  } else {
-    return (
-      <>
-        <DragDropContext onDragEnd={onDragEnd}>
-          {/* <button className={tw`border border-red-500 mx-auto`}>
+  // if (!session) {
+  //   return "You're not logged in!"
+  // } else {
+  return (
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        {/* <button className={tw`border border-red-500 mx-auto`}>
           Add New Column
         </button> */}
-          <Droppable
-            droppableId="all-columns"
-            direction="horizontal"
-            type="column"
-          >
-            {provided => (
-              <div
-                className={tw`mx-auto flex flex-col md:flex-row min-w-[300px] justify-center`}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {project.columns &&
-                  project.columns.map((column, index) => (
-                    <>
-                      <Column
-                        key={column.id}
-                        column={column}
-                        // toggleTask={toggleTask}
-                        // onChange={toggleNewTask}
-                        index={index}
-                      />
-                    </>
-                  ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        {/* {toggleTask && <NewTask />} */}
-      </>
-    )
-  }
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
+        >
+          {provided => (
+            <div
+              className={tw`mx-auto flex flex-col md:flex-row min-w-[300px] justify-center`}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {project.columns &&
+                project.columns.map((column, index) => (
+                  <>
+                    <Column
+                      key={column.id}
+                      column={column}
+                      // toggleTask={toggleTask}
+                      // onChange={toggleNewTask}
+                      index={index}
+                    />
+                  </>
+                ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {/* {toggleTask && <NewTask />} */}
+    </>
+  )
 }
+// }

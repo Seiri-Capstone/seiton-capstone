@@ -14,6 +14,11 @@ export const fetchProject = createAsyncThunk(
     // Get back sorted array
   }
 )
+// POST route for tasks with axios
+export const createTask = createAsyncThunk('project/createTask', async body => {
+  const { data: createdTask } = await axios.post('/api/task', body)
+  return createdTask
+})
 
 export const fetchReorderColumn = createAsyncThunk(
   'project/fetchReorderColumn',
@@ -103,10 +108,18 @@ export const projectSlice = createSlice({
     // updateColumn: (state, action) => (state.columns = action.payload.columns)
   },
   extraReducers: {
-    [fetchProject.fulfilled]: (state, action) => action.payload,
-    // [fetchReorderColumn.pending]: (state, action) => {
-    //   state.columns = action.payload
-    // },
+    [createTask.fulfilled]: (state, action) => {
+      const { columnId } = action.payload
+      // Parse columns from proxy state to an array
+      // Get index of column for added task by columnId
+      const updatedColId = JSON.parse(JSON.stringify(state.columns)).filter(
+        col => col.id === columnId
+      )[0].index
+      state.columns[updatedColId].tasks.push(action.payload)
+    },
+    [fetchProject.fulfilled]: (state, action) => {
+      return action.payload
+    },
     [fetchReorderColumn.fulfilled]: (state, action) => {
       state.columns = action.payload
     },
@@ -121,12 +134,8 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const {
-        startTasks,
-        finishTasks,
-        startColId,
-        finishColId
-      } = action.payload
+      const { startTasks, finishTasks, startColId, finishColId } =
+        action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
@@ -137,5 +146,8 @@ export const projectSlice = createSlice({
       state.columns.push(action.payload)
   }
 })
+
+export const { updateTaskOrderSameCol, updateTaskOrderDiffCol } =
+  projectSlice.actions
 
 export default projectSlice.reducer

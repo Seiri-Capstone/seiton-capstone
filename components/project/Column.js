@@ -7,15 +7,10 @@ import NewTask from './NewTask'
 
 export default function Column(props) {
   const column = props.column
-  const btn = apply`inline-block bg-gray-200 text-base rounded-md m-2 p-2 `
+  const btn = apply`text-base rounded-md focus:outline-none`
 
   const [toggleTask, setToggleTask] = useState(false)
   const toggleNewTask = () => setToggleTask(!toggleTask)
-
-  // New task toggle func, passed by props from parent
-  // function toggleNewTask(event) {
-  //   props.onChange(event.target.value)
-  // }
 
   return (
     <Draggable draggableId={`column-${column.id}`} index={props.index}>
@@ -25,9 +20,22 @@ export default function Column(props) {
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
-          <h3 className={tw`text-2xl`} {...provided.dragHandleProps}>
-            {column.title}
-          </h3>
+          <div className={tw`flex flex-row justify-between items-center`}>
+            <h3 className={tw`text-2xl`} {...provided.dragHandleProps}>
+              {column.title}({column.tasks.length})
+            </h3>
+            {
+              <button
+                onClick={toggleNewTask}
+                value={props.value}
+                className={tw`flex justify-end ${btn}`}
+              >
+                <a>+</a>
+              </button>
+            }
+          </div>
+
+          {toggleTask && <NewTask props={props} toggleTask={toggleNewTask} />}
           <Droppable droppableId={`column-${column.id}`} type="task">
             {provided => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -41,17 +49,6 @@ export default function Column(props) {
               </div>
             )}
           </Droppable>
-          {
-            // column.title == 'to-do' &&
-            <button
-              onClick={toggleNewTask}
-              value={props.value}
-              className={tw`flex justify-left ${btn}`}
-            >
-              <a>+</a>
-            </button>
-          }
-          {toggleTask && <NewTask />}
         </div>
       )}
     </Draggable>
