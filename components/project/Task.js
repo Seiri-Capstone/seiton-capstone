@@ -1,9 +1,17 @@
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { tw } from 'twind'
+import { useDispatch } from 'react-redux'
+import { deleteTask } from '../../store/projectSlice'
 
 export default function Task(props) {
-  const task = props.task
+  const { task } = props
+  const dispatch = useDispatch()
+  const taskId = task.id
+
+  const submitHandle = event => {
+    dispatch(deleteTask(event.target.value))
+  }
   return (
     <Draggable draggableId={`task-${task.id}`} index={props.index}>
       {provided => (
@@ -15,7 +23,9 @@ export default function Task(props) {
         >
           <div className={tw`flex flex-row justify-between items-center`}>
             <h3>{task.title}</h3>
-            <button className={tw`mr-2`}>x</button>
+            <button value={taskId} onClick={submitHandle} className={tw`mr-2`}>
+              ...(D&E)
+            </button>
           </div>
           <p>{task.body}</p>
         </div>

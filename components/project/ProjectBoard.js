@@ -15,11 +15,6 @@ import { useSession } from 'next-auth/client'
 
 export default function ProjectBoard() {
   const [session, loading] = useSession()
-  console.log('session in project', session)
-  //   // toggle new task
-  //   const [toggleTask, setToggleTask] = useState(false)
-  //   const toggleNewTask = () => setToggleTask(!toggleTask)
-  //  // end toggle new task
 
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()

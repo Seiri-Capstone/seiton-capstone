@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { tw } from 'twind'
-// import useForm from 'react-hook-form'
 import { createTask } from '../../store/projectSlice'
 
 export default function NewTask(props) {

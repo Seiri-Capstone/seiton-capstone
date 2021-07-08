@@ -12,7 +12,6 @@ export default async function handler(req, res) {
   } else if (req.method === 'POST') {
     try {
       const { title, task, columnId, index } = req.body
-      console.log('in backend before new task created', req.body)
       const newTask = await prisma.task.create({
         data: {
           title,
@@ -21,7 +20,6 @@ export default async function handler(req, res) {
           index
         }
       })
-      console.log('BACKEND TASK CREATED', newTask)
       res.status(200).json(newTask)
     } catch (error) {
       console.error('error in the column api call!', error)
