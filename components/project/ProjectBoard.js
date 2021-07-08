@@ -9,9 +9,9 @@ import {
   fetchReorderTask,
   fetchTaskOrderDiffCol
 } from '../../store/projectSlice'
-import NewTask from './NewTask'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
+import axios from 'axios'
 
 export default function ProjectBoard() {
   const [session, loading] = useSession()
@@ -50,6 +50,7 @@ export default function ProjectBoard() {
     if (type === 'column') {
       const thunkArg = { result, project }
       await dispatch(fetchReorderColumn(thunkArg))
+      await axios.post('/api/pusher/reorder', { thunkArg })
       return
     }
 
