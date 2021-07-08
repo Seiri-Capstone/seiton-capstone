@@ -1,10 +1,6 @@
 import prisma from '../../../prisma/prisma'
 import { getSession } from 'next-auth/client'
 
-/**
- * GET /api/task
- */
-
 export default async function handler(req, res) {
   const session = await getSession({ req })
   if (!session) {
@@ -42,5 +38,5 @@ export default async function handler(req, res) {
         `The HTTP ${req.method} is not supported at this route: /api/task`
       )
     }
-  }
+  } 
 }
