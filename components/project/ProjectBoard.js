@@ -10,7 +10,7 @@ import {
   fetchTaskOrderDiffCol
 } from '../../store/projectSlice'
 import NewTask from './NewTask'
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 
 export default function ProjectBoard() {
@@ -103,6 +103,7 @@ export default function ProjectBoard() {
   // } else {
   return (
     <React.Fragment>
+      <div className={tw`text-right mr-12`}>+ Add New Column</div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
           droppableId="all-columns"

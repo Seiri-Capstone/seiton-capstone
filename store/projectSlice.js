@@ -19,6 +19,14 @@ export const createTask = createAsyncThunk('project/createTask', async body => {
   const { data: createdTask } = await axios.post('/api/task', body)
   return createdTask
 })
+// POST route for columns with axios
+export const createColumn = createAsyncThunk(
+  'project/createColumn',
+  async body => {
+    const { data: createdColumn } = await axios.post('/api/column', body)
+    return createdColumn
+  }
+)
 
 export const fetchReorderColumn = createAsyncThunk(
   'project/fetchReorderColumn',
@@ -91,16 +99,6 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
   }
 )
 
-export const createColumn = createAsyncThunk(
-  'project/createColumn',
-  async body => {
-    // send the body from the front end
-    const res = await axios.post('/api/column', body)
-    // update the state as well?
-    return res
-  }
-)
-
 export const fetchEditTask = createAsyncThunk(
   'project/fetchEditTask',
   async task => {
@@ -124,6 +122,9 @@ export const projectSlice = createSlice({
         col => col.id === columnId
       )[0].index
       state.columns[updatedColId].tasks.push(action.payload)
+    },
+    [createColumn.fulfilled]: (state, action) => {
+      state.columns.push(action.payload)
     },
     [fetchProject.fulfilled]: (state, action) => {
       return action.payload
@@ -149,9 +150,6 @@ export const projectSlice = createSlice({
         if (idx === startColId) column.tasks = startTasks
         if (idx === finishColId) column.tasks = finishTasks
       })
-    },
-    [createColumn.fulfilled]: (state, action) => {
-      state.columns.push(action.payload)
     },
     [fetchEditTask.fulfilled]: (state, action) => {
       console.log('here')
