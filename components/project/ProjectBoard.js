@@ -15,10 +15,6 @@ import { useRouter } from 'next/router'
 
 export default function ProjectBoard() {
   const [session, loading] = useSession()
-  //   // toggle new task
-  //   const [toggleTask, setToggleTask] = useState(false)
-  //   const toggleNewTask = () => setToggleTask(!toggleTask)
-  //  // end toggle new task
 
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
@@ -102,11 +98,8 @@ export default function ProjectBoard() {
   //   return "You're not logged in!"
   // } else {
   return (
-    <>
+    <React.Fragment>
       <DragDropContext onDragEnd={onDragEnd}>
-        {/* <button className={tw`border border-red-500 mx-auto`}>
-          Add New Column
-        </button> */}
         <Droppable
           droppableId="all-columns"
           direction="horizontal"
@@ -120,15 +113,9 @@ export default function ProjectBoard() {
             >
               {project.columns &&
                 project.columns.map((column, index) => (
-                  <>
-                    <Column
-                      key={column.id}
-                      column={column}
-                      // toggleTask={toggleTask}
-                      // onChange={toggleNewTask}
-                      index={index}
-                    />
-                  </>
+                  <div key={column.id}>
+                    <Column key={column.id} column={column} index={index} />
+                  </div>
                 ))}
               {provided.placeholder}
             </div>
@@ -143,7 +130,7 @@ export default function ProjectBoard() {
       >
         SIGN OUT
       </button>
-    </>
+    </React.Fragment>
   )
 }
 // }
