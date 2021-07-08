@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useGetProjectQuery } from '../store/apiSlice'
+import { useGetProjectQuery } from '../../store/apiSlice'
 
 export default function App() {
   // Using a query hook automatically fetches data and returns query values
