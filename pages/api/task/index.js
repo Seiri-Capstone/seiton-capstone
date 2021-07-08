@@ -6,43 +6,6 @@ import { getSession } from 'next-auth/client'
  */
 
 export default async function handler(req, res) {
-<<<<<<< HEAD
-  // GET /api/task
-  if (req.method === 'GET') {
-    const result = await prisma.task.findMany()
-    res.json(result)
-  } else if (req.method === 'POST') {
-    try {
-      const { title, task, columnId, index } = req.body
-      console.log('in backend before new task created', req.body)
-      const newTask = await prisma.task.create({
-        data: {
-          title,
-          body: task,
-          columnId,
-          index
-        }
-      })
-      console.log('BACKEND TASK CREATED', newTask)
-      res.status(200).json(newTask)
-    } catch (error) {
-      console.error('error in the column api call!', error)
-    }
-  }
-  // PUT /api/task
-  else if (req.method === 'PUT') {
-    try {
-      const { id, title, body, columnId, index } = req.body
-      const result = await prisma.task.update({
-        where: { id },
-        data: {
-          title,
-          body,
-          columnId,
-          index
-        }
-      })
-=======
   const session = await getSession({ req })
   if (!session) {
     res.status(403).json({
@@ -68,7 +31,6 @@ export default async function handler(req, res) {
             index
           }
         })
->>>>>>> auth
 
         res.status(200).json(result)
       } catch (error) {
