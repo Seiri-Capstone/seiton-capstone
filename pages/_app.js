@@ -1,14 +1,20 @@
-import { Provider as ReduxProvider } from "react-redux";
-import store from "../store";
-import withTwindApp from "@twind/next/app";
-import twindConfig from "../twind.config";
+import { Provider as ReduxProvider } from 'react-redux'
+import store from '../store'
+import withTwindApp from '@twind/next/app'
+import twindConfig from '../twind.config'
+import { Provider as NextAuthProvider } from 'next-auth/client'
+import { ThemeProvider } from 'next-themes'
 
 const App = ({ Component, pageProps }) => {
   return (
-    <ReduxProvider store={store}>
-      <Component {...pageProps} />
-    </ReduxProvider>
-  );
-};
+    <ThemeProvider attribute="class">
+      <ReduxProvider store={store}>
+        <NextAuthProvider session={pageProps.session}>
+          <Component {...pageProps} />
+        </NextAuthProvider>
+      </ReduxProvider>
+    </ThemeProvider>
+  )
+}
 
-export default withTwindApp(twindConfig, App);
+export default withTwindApp(twindConfig, App)

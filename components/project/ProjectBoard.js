@@ -9,8 +9,12 @@ import {
   fetchReorderTask,
   fetchTaskOrderDiffCol
 } from '../../store/projectSlice'
+import NewTask from './NewTask'
+import { signIn, signOut, useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
 
 export default function ProjectBoard() {
+  const [session, loading] = useSession()
   //   // toggle new task
   //   const [toggleTask, setToggleTask] = useState(false)
   //   const toggleNewTask = () => setToggleTask(!toggleTask)
@@ -19,9 +23,13 @@ export default function ProjectBoard() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
 
+  const router = useRouter()
   useEffect(() => {
+    // if (!session) {
+    //   router.push('/')
+    // }
     dispatch(fetchProject(1)) //hard coded for now
-  }, [dispatch])
+  }, [dispatch, session, router])
 
   const onDragEnd = async result => {
     const { destination, source, draggableId, type } = result
@@ -90,7 +98,9 @@ export default function ProjectBoard() {
     dispatch(fetchTaskOrderDiffCol(thunkArg))
     return
   }
-
+  // if (!session) {
+  //   return "You're not logged in!"
+  // } else {
   return (
     <React.Fragment>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -116,6 +126,15 @@ export default function ProjectBoard() {
           )}
         </Droppable>
       </DragDropContext>
+      {/* {toggleTask && <NewTask />} */}
+      <button
+        type="submit"
+        className={tw`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow`}
+        onClick={() => signOut()}
+      >
+        SIGN OUT
+      </button>
     </React.Fragment>
   )
 }
+// }

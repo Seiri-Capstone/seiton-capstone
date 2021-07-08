@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
+import AuthForm from '../components/auth/AuthForm'
 import { tw } from 'twind'
 
 export default function Home() {
@@ -11,9 +10,7 @@ export default function Home() {
         <meta name="description" content="A Kanban for Pros" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Link href="/project">
-        <h1 className={tw`text(8xl red-800 center) font-bold`}>Seiton</h1>
-      </Link>
+      <AuthForm />
     </div>
   )
 }
