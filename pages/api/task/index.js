@@ -1,10 +1,14 @@
 import prisma from '../../../prisma/prisma'
-
-/**
- * GET /api/task
- */
+import { getSession } from 'next-auth/client'
 
 export default async function handler(req, res) {
+  const session = await getSession({ req })
+  if (!session) {
+    res.status(403).json({
+      message: 'You must be signed in to view this page.'
+    })
+    return
+  }
   // GET /api/task
   if (req.method === 'GET') {
     const result = await prisma.task.findMany()
@@ -38,7 +42,6 @@ export default async function handler(req, res) {
           index
         }
       })
-
       res.status(200).json(result)
     } catch (error) {
       throw new Error('error in the column api call')

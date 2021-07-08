@@ -1,6 +1,13 @@
 import prisma from '../../../prisma/prisma'
+import { getSession } from 'next-auth/client'
 
 export default async function handler(req, res) {
+  // const session = await getSession({ req })
+  // if (!session) {
+  //   res.status(403).json({
+  //     message: 'You must be signed in to view this page.'
+  //   })
+  // }
   // PUT /api/column
   if (req.method === 'PUT') {
     try {

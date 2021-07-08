@@ -12,18 +12,30 @@ generator client {
 }
 
 model User {
-  id        Int           @id @default(autoincrement())
-  name      String
-  email     String?       @unique
-  image     String?
-  createdAt DateTime      @default(now()) @map(name: "created_at")
-  updatedAt DateTime      @updatedAt @map(name: "updated_at")
-  orgs      UserOrg[]
-  tasks     Task[]
-  projects  UserProject[]
-  comments  Comment[]
+  id             Int           @id @default(autoincrement())
+  name           String?
+  email          String?       @unique
+  email_verified DateTime?
+  image          String?
+  createdAt      DateTime      @default(now()) @map(name: "created_at")
+  updatedAt      DateTime?     @updatedAt @map(name: "updated_at")
+  orgs           UserOrg[]
+  tasks          Task[]
+  projects       UserProject[]
+  comments       Comment[]
 
   @@map(name: "users")
+}
+
+model VerificationRequest {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now()) @map(name: "created_at")
+  updatedAt  DateTime? @updatedAt @map(name: "updated_at")
+  identifier String
+  token      String
+  expires    DateTime?
+
+  @@map(name: "verification_requests")
 }
 
 model Project {
