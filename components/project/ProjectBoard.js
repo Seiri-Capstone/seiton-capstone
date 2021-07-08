@@ -12,6 +12,7 @@ import {
 import NewTask from './NewTask'
 import AuthForm from '../auth/AuthForm'
 import { signIn, signOut, useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
 
 export default function ProjectBoard() {
   const [session, loading] = useSession()
@@ -23,7 +24,11 @@ export default function ProjectBoard() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
 
+  const router = useRouter()
   useEffect(() => {
+    if (!session) {
+      router.push('/')
+    }
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch])
 
@@ -94,52 +99,49 @@ export default function ProjectBoard() {
     dispatch(fetchTaskOrderDiffCol(thunkArg))
     return
   }
-  if (!session) {
-    return "You're not logged in!"
-  } else {
-    return (
-      <>
-        <DragDropContext onDragEnd={onDragEnd}>
-          {/* <button className={tw`border border-red-500 mx-auto`}>
+
+  return (
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        {/* <button className={tw`border border-red-500 mx-auto`}>
           Add New Column
         </button> */}
-          <Droppable
-            droppableId="all-columns"
-            direction="horizontal"
-            type="column"
-          >
-            {provided => (
-              <div
-                className={tw`mx-auto flex flex-col md:flex-row min-w-[300px] justify-center`}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {project.columns &&
-                  project.columns.map((column, index) => (
-                    <>
-                      <Column
-                        key={column.id}
-                        column={column}
-                        // toggleTask={toggleTask}
-                        // onChange={toggleNewTask}
-                        index={index}
-                      />
-                    </>
-                  ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        {/* {toggleTask && <NewTask />} */}
-        <button
-          type="submit"
-          className={tw`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow`}
-          onClick={() => signOut()}
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
         >
-          SIGN OUT
-        </button>
-      </>
-    )
-  }
+          {provided => (
+            <div
+              className={tw`mx-auto flex flex-col md:flex-row min-w-[300px] justify-center`}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {project.columns &&
+                project.columns.map((column, index) => (
+                  <>
+                    <Column
+                      key={column.id}
+                      column={column}
+                      // toggleTask={toggleTask}
+                      // onChange={toggleNewTask}
+                      index={index}
+                    />
+                  </>
+                ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {/* {toggleTask && <NewTask />} */}
+      <button
+        type="submit"
+        className={tw`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow`}
+        onClick={() => signOut()}
+      >
+        SIGN OUT
+      </button>
+    </>
+  )
 }

@@ -37,16 +37,16 @@ const options = {
       from: process.env.EMAIL_FROM
     })
   ],
-  // session: {
-  //   jwt: true
-  // },
-  // jwt: {
-  //   secret: '5a6e2a2cf7169da9eea17587421ee890', //use a random secret token here
-  //   encryption: true
-  // },
+  session: {
+    jwt: true,
+    maxAge: 30 * 24 * 60 * 60 // 30 days
+  },
+  jwt: {
+    secret: process.env.SECRET, //use a random secret token here
+    encryption: true
+  },
   database: process.env.DATABASE_URL
   // adapter: Adapters.Prisma.Adapter({ prisma })
-  // secret: process.env.SECRET
 }
 
 export default (req, res) => NextAuth(req, res, options)
