@@ -10,7 +10,6 @@ import {
   fetchTaskOrderDiffCol
 } from '../../store/projectSlice'
 import NewTask from './NewTask'
-import AuthForm from '../auth/AuthForm'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 
@@ -30,7 +29,7 @@ export default function ProjectBoard() {
       router.push('/')
     }
     dispatch(fetchProject(1)) //hard coded for now
-  }, [dispatch])
+  }, [dispatch, session, router])
 
   const onDragEnd = async result => {
     const { destination, source, draggableId, type } = result

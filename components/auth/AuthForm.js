@@ -73,7 +73,7 @@ export default function AuthForm() {
   } else {
     //redirect to dashboard
     router.push('/project')
-    return <p>Redirecting...</p>
+    return <p className={tw`text-center`}>Redirecting...</p>
     // <button
     //   type="submit"
     //   className={tw`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow`}
