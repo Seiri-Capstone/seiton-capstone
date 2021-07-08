@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   // Hit this route when I go to Socket.js Pages
   console.log(
-    `🟠🟠🟠 socket_id: ${socket_id}, channel_name: ${channel_name}, username: ${username}`
+    `🟠🟠🟠 socket_id: ${socket_id}, channel_name: ${channel_name}, username ${username}`
   )
 
   /**
