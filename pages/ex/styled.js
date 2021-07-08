@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Button from '../components/styled/Button'
-import Card from '../components/styled/Card'
+import Button from '../../components/styled/Button'
+import Card from '../../components/styled/Card'
 import { tw } from 'twind'
 import { useTheme } from 'next-themes'
 
