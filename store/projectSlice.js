@@ -100,7 +100,7 @@ export const fetchEditTask = createAsyncThunk(
   'project/fetchEditTask',
   async task => {
     const res = await axios.put('/api/task', task)
-    return res.json()
+    return res
   }
 )
 
@@ -145,12 +145,19 @@ export const projectSlice = createSlice({
       state.columns.push(action.payload)
     },
     [fetchEditTask.fulfilled]: (state, action) => {
+      console.log('here')
       const colId = action.payload.data.columnId
       const taskId = action.payload.data.id
-      const column = state.columns.filter(col => col.id === colId)
-      column[0].tasks.forEach(task => {
-        if (task.id === taskId) task = action.payload.data
-      })
+      const columns = state.columns
+      //this can probably be refactored
+      for (let i = 0; i < columns.length; i++) {
+        for (let j = 0; j < columns[i].tasks.length; j++) {
+          const tasks = columns[i].tasks
+          if (tasks[j].id === taskId) {
+            tasks[j] = action.payload.data
+          }
+        }
+      }
     }
   }
 })
