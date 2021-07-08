@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import dynamic from 'next/dynamic'
 const ProjectBoard = dynamic(import('../components/project/ProjectBoard'))
 import { tw } from 'twind'
