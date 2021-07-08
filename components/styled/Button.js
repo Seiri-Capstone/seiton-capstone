@@ -44,9 +44,3 @@ export default function Button({
   // Allow passed classNames to override instance styles
   return <button className={tw(instanceStyles, className)}>{children}</button>
 }
-
-// render(
-//   <Button variant="info" className="text-lg rounded-md">
-//     Click me
-//   </Button>,
-// )

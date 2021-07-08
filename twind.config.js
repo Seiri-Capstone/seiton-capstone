@@ -16,25 +16,23 @@ setup({
         },
         // Theme: https://github.com/tailwindlabs/tailwindcss/blob/v1/stubs/defaultConfig.stub.js#L5
         h1: {
-          fontSize: theme('fontSize.6xl'),
+          fontSize: theme('fontSize.2xl'),
           fontWeight: theme('fontWeight.bold'),
           '&:hover': {
             color: theme('colors.blue.800')
           }
           // color: theme('colors.blue.200')
         },
-
-        h3: apply`text(8xl red-300)`
+        h2: {
+          fontSize: theme('fontSize.xl')
+        },
+        h3: {
+          fontSize: theme('fontSize.lg')
+        },
+        button: apply`border border-gray-500 rounded px-2 py-1`
       }
       // { body: apply`text-gray-100` }
     ),
-  // ...preflight,
-  // h1: {
-  // 	fontSize: '48px',
-  // 	fontWeight: 'bold'
-  // 	// color: 'palevioletred' // COLOR cannot match with fontSize?
-  // }
-  // *** For Dark Mode ***
   darkMode: 'class',
   theme: {
     extend: {
