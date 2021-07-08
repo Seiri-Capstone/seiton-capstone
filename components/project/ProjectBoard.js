@@ -25,9 +25,9 @@ export default function ProjectBoard() {
 
   const router = useRouter()
   useEffect(() => {
-    if (!session) {
-      router.push('/')
-    }
+    // if (!session) {
+    //   router.push('/')
+    // }
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch, session, router])
 
