@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  current
+} from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = []
@@ -27,6 +32,11 @@ export const createColumn = createAsyncThunk(
     return createdColumn
   }
 )
+// DELETE task
+export const deleteTask = createAsyncThunk('project/deleteTask', async id => {
+  const { data: deletedTask } = await axios.delete(`/api/task/${id}`)
+  return deletedTask
+})
 
 export const fetchReorderColumn = createAsyncThunk(
   'project/fetchReorderColumn',
@@ -116,15 +126,22 @@ export const projectSlice = createSlice({
   extraReducers: {
     [createTask.fulfilled]: (state, action) => {
       const { columnId } = action.payload
-      // Parse columns from proxy state to an array
-      // Get index of column for added task by columnId
-      const updatedColId = JSON.parse(JSON.stringify(state.columns)).filter(
-        col => col.id === columnId
-      )[0].index
+      const updatedColId = state.columns.filter(col => col.id === columnId)[0]
+        .index
       state.columns[updatedColId].tasks.push(action.payload)
     },
     [createColumn.fulfilled]: (state, action) => {
       state.columns.push(action.payload)
+    },
+    [deleteTask.fulfilled]: (state, action) => {
+      // grab columnId from a task that's beind deleted
+      const { columnId } = action.payload
+      //grab column I'm updating
+      const column = state.columns.filter(column => column.id === columnId)[0]
+      //Update tasks inside a certain column
+      state.columns[column.index].tasks = state.columns[
+        column.index
+      ].tasks.filter(task => task.id !== action.payload.id)
     },
     [fetchProject.fulfilled]: (state, action) => {
       return action.payload
