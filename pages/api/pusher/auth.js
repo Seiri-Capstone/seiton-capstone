@@ -1,6 +1,6 @@
 //not sure how to use this pusher authentication
 
-import pusher from '../../../lib/pusher'
+import { pusher } from '../../../lib/pusher'
 
 export default async function handler(req, res) {
   // see https://pusher.com/docs/channels/server_api/authenticating-users

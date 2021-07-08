@@ -7,7 +7,7 @@ import Pusher from 'pusher-js'
 const Project = () => {
   const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
     cluster: 'us2', // based on my website
-    authEndpoint: `api/pusher/auth`, // make sure to change in production
+    authEndpoint: `/api/pusher/auth`, // make sure to change in production
     auth: { params: { username: 'helen' } }
   })
 
@@ -17,7 +17,7 @@ const Project = () => {
     const channel = pusher.subscribe('presence-channel')
 
     channel.bind('reorder-col', arg => {
-      console.log(`🟢  pusher:subscription_succeded! `, arg)
+      console.log(`🟢  pusher:reorder-col succeeded `, arg)
     })
 
     // Make sure to unsubscribe once component unmounts
