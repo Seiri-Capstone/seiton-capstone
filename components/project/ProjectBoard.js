@@ -7,7 +7,8 @@ import {
   fetchProject,
   fetchReorderColumn,
   fetchReorderTask,
-  fetchTaskOrderDiffCol
+  fetchTaskOrderDiffCol,
+  createColumn
 } from '../../store/projectSlice'
 import NewTask from './NewTask'
 import { signOut, useSession } from 'next-auth/client'
@@ -26,6 +27,19 @@ export default function ProjectBoard() {
     // }
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch, session, router])
+
+  // const [task, setTask] = useState('')
+  // const [title, setTitle] = useState('')
+  // const columnId = props.props.column.id
+  // const index = props.props.column.tasks.length
+  console.log('project', project)
+  const addColumn = e => {
+    const index = project.columns.length
+    const title = `Column-${index}`
+    const projectId = project.id
+    const body = { title, projectId, index }
+    dispatch(createColumn(body))
+  }
 
   const onDragEnd = async result => {
     const { destination, source, draggableId, type } = result
@@ -99,7 +113,9 @@ export default function ProjectBoard() {
   // } else {
   return (
     <React.Fragment>
-      <div className={tw`text-right mr-12`}>+ Add New Column</div>
+      <div className={tw`flex justify-end mr-12`}>
+        <button onClick={addColumn}>+ Add New Column</button>
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
           droppableId="all-columns"
