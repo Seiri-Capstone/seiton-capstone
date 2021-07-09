@@ -42,7 +42,7 @@ export default async function handler(req, res) {
         res.status(200).json(newColumn)
       } catch (error) {
         console.error(error)
-        // throw new Error('Column POST error', error)
+        throw new Error('Column POST error', error)
       }
     }
   }
