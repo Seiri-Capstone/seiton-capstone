@@ -108,9 +108,6 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
       return { ...task, columnId: destColId, index: idx }
     })
 
-    console.log('start', startTasks, startColId)
-    console.log('finish', updatedFinishTasks, finishColId)
-
     Promise.all(updatedFinishTasks.map(task => axios.put('/api/task', task)))
 
     return { startTasks, finishTasks, startColId, finishColId }

@@ -37,7 +37,6 @@ export default async function handler(req, res) {
     // PUT api/project/1
     if (req.method === 'PUT') {
       try {
-        console.log("we're in the put project request!")
         const { name, orgId } = req.body
         const result = await prisma.project.update({
           where: { id: 1 },

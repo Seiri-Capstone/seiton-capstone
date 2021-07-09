@@ -40,7 +40,7 @@ export default function Column(props) {
                 <a>+</a>
               </button>
 
-              <button onClick={removeColumn} className="px-2 ${btn}">
+              <button onClick={removeColumn}>
                 <a>x</a>
               </button>
             </div>

@@ -38,7 +38,6 @@ export default async function handler(req, res) {
             index
           }
         })
-        console.log(newColumn)
         res.status(200).json(newColumn)
       } catch (error) {
         console.error(error)
