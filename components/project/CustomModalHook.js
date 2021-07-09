@@ -1,3 +1,4 @@
+// all it does true false, thats it. Import it when needed
 import { useState } from 'react'
 
 const useModal = () => {

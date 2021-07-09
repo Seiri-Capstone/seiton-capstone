@@ -15,7 +15,6 @@ export default function Task(props) {
   const taskId = task.id
 
   const submitHandle = event => {
-    // toggle
     dispatch(deleteTask(event.target.value))
   }
   return (
@@ -37,7 +36,7 @@ export default function Task(props) {
                     toggle
                     // submitHandle
                   }
-                  className="mr-2"
+                  className="mr-2 border-black-500"
                 >
                   Delete
                 </button>
