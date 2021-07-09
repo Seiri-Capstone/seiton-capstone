@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import { tw } from 'twind'
 import { signIn, signOut, useSession } from 'next-auth/client'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 export default function AuthForm() {
   const [session] = useSession()
-  const router = useRouter()
+  // const router = useRouter()
 
   // const [email, setEmail] = useState('')
   // const [password, setPassword] = useState('')
@@ -13,7 +14,7 @@ export default function AuthForm() {
   // if (!session) {
   return (
     <div className="container mx-auto px-10 mt-72">
-      <h1 className="text-4xl font-bold">Organize your workflow.</h1>
+      <h1>Organize your workflow.</h1>
       <p className="text-2xl">
         Inspired by the 5S of Japanese workplace organization methodology,
         <br />
