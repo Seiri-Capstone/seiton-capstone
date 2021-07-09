@@ -22,6 +22,7 @@ export default function ProjectBoard() {
   const router = useRouter()
   const [isColumnReordered, setIsColumnReordered] = useState(false)
   const [isTaskReordered, setIsTaskReordered] = useState(false)
+  const [isTaskDiffColReordered, setIsTaskDiffColReordered] = useState(false)
 
   const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
     cluster: 'us2', // based on my website
@@ -43,7 +44,12 @@ export default function ProjectBoard() {
       setIsTaskReordered(false)
       axios.post('/api/pusher/reorder', { project })
     }
-  }, [isColumnReordered, isTaskReordered])
+
+    if (isTaskDiffColReordered) {
+      setIsTaskDiffColReordered(false)
+      axios.post('/api/pusher/reorder', { project })
+    }
+  }, [isColumnReordered, isTaskReordered, isTaskDiffColReordered])
 
   useEffect(() => {
     const channel = pusher.subscribe('presence-channel')
@@ -137,11 +143,10 @@ export default function ProjectBoard() {
       columns
     }
 
-    dispatch(fetchTaskOrderDiffCol(thunkArg))
+    await dispatch(fetchTaskOrderDiffCol(thunkArg))
+    await setIsTaskDiffColReordered(true)
     return
   }
-
-  console.log('state/ global', project.columns)
 
   // if (!session) {
   //   return "You're not logged in!"
