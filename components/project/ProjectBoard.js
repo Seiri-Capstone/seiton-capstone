@@ -7,26 +7,48 @@ import {
   fetchReorderColumn,
   fetchReorderTask,
   fetchTaskOrderDiffCol,
+  reorderCol,
   createColumn
 } from '../../store/projectSlice'
+import { signIn, signOut, useSession } from 'next-auth/client'
+
 import NewTask from './NewTask'
 import { signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
+import axios from 'axios'
+import Pusher from 'pusher-js'
 
 export default function ProjectBoard() {
   const [session, loading] = useSession()
-
   const project = useSelector(state => state.project)
+  const [isReorderedCol, setIsReorderedCol] = useState(false)
+  // const [thunkArg, setThunkArg] = useState(null)
   const dispatch = useDispatch()
-
   const router = useRouter()
+  const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
+    cluster: 'us2', // based on my website
+    authEndpoint: `/api/pusher/auth`, // make sure to change in production
+    auth: { params: { username: 'helen' } }
+  })
+
   useEffect(() => {
-    // if (!session) {
-    //   router.push('/')
-    // }
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch, session, router])
 
+  useEffect(() => {
+    console.log(`🟢  useEffect for Chat.js running!`)
+
+    const channel = pusher.subscribe('presence-channel')
+
+    channel.bind('reorder-col', async project => {
+      console.log(`🟢  pusher:reorder-col succeeded `, project)
+      dispatch(reorderCol(project))
+    })
+
+    return () => {
+      pusher.unsubscribe('presence-channel')
+    }
+  }, [])
   // const [task, setTask] = useState('')
   // const [title, setTitle] = useState('')
   // const columnId = props.props.column.id
@@ -58,7 +80,10 @@ export default function ProjectBoard() {
     // If you're dragging columns
     if (type === 'column') {
       const thunkArg = { result, project }
+
       await dispatch(fetchReorderColumn(thunkArg))
+      setIsReorderedCol(true)
+      // await axios.post('/api/pusher/reorder', { project })
       return
     }
 
@@ -107,6 +132,7 @@ export default function ProjectBoard() {
     dispatch(fetchTaskOrderDiffCol(thunkArg))
     return
   }
+
   // if (!session) {
   //   return "You're not logged in!"
   // } else {

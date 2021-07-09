@@ -59,8 +59,10 @@ export const fetchReorderColumn = createAsyncThunk(
       return { ...column, index: idx }
     })
 
-    Promise.all(reorderedCol.map(column => axios.put('/api/column', column)))
+    // const pusherProject = { ...project, columns: reorderedCol }
 
+    // await axios.post('/api/pusher/reorder', { pusherProject })
+    Promise.all(reorderedCol.map(column => axios.put('/api/column', column)))
     return reorderedCol
   }
 )
@@ -82,6 +84,7 @@ export const fetchReorderTask = createAsyncThunk(
      * Promise all seems to be awaited?
      * no flicker or re-rendering issues
      */
+
     Promise.all(reorderedTask.map(task => axios.put('/api/task', task)))
     return reorderedTask
   }
@@ -134,7 +137,9 @@ export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    // updateColumn: (state, action) => (state.columns = action.payload.columns)
+    reorderCol(state, action) {
+      return action.payload.project
+    }
   },
   extraReducers: {
     [createTask.fulfilled]: (state, action) => {
@@ -179,8 +184,12 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const { startTasks, finishTasks, startColId, finishColId } =
-        action.payload
+      const {
+        startTasks,
+        finishTasks,
+        startColId,
+        finishColId
+      } = action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
@@ -212,7 +221,10 @@ export const projectSlice = createSlice({
   }
 })
 
-export const { updateTaskOrderSameCol, updateTaskOrderDiffCol } =
-  projectSlice.actions
+export const {
+  updateTaskOrderSameCol,
+  updateTaskOrderDiffCol,
+  reorderCol
+} = projectSlice.actions
 
 export default projectSlice.reducer
