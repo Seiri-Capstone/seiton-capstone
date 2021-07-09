@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import { signIn, signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Link from 'next/link'

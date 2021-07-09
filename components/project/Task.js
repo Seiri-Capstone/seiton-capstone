@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-
 import { useDispatch } from 'react-redux'
 import EditTaskModal from './EditTaskModal'
 import marked from 'marked'

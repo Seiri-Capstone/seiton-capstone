@@ -7,7 +7,7 @@ import NewTask from './NewTask'
 
 export default function Column(props) {
   const column = props.column
-  const btn = apply`text-base rounded-md focus:outline-none`
+  // const btn = apply`text-base rounded-md focus:outline-none`
 
   const [toggleTask, setToggleTask] = useState(false)
   const toggleNewTask = () => setToggleTask(!toggleTask)
@@ -28,7 +28,7 @@ export default function Column(props) {
               <button
                 onClick={toggleNewTask}
                 value={props.value}
-                className="flex justify-end ${btn}"
+                className="flex justify-end"
               >
                 <a>+</a>
               </button>
