@@ -6,7 +6,6 @@ import { deleteTask } from '../../store/projectSlice'
 // Reusable modal, copy to new component and modify to your needs
 // working example on how to use it, look at Task model, only 4 lines of code
 function Modal({ isShowing, hide, taskId }) {
-  // const { isShowing, hide, taskId } = props
   const dispatch = useDispatch()
 
   //delete task handler
