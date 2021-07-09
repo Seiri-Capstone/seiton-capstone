@@ -5,14 +5,18 @@ import { useDispatch } from 'react-redux'
 import EditTaskModal from './EditTaskModal'
 import marked from 'marked'
 import { deleteTask } from '../../store/projectSlice'
+import Modal from './DeleteTaskModal'
+import useModal from './CustomModalHook'
 
 export default function Task(props) {
   const dispatch = useDispatch()
+  const { isShowing, toggle } = useModal()
   const { task } = props
   const [show, setShow] = useState(false)
   const taskId = task.id
 
   const submitHandle = event => {
+    // toggle
     dispatch(deleteTask(event.target.value))
   }
   return (
@@ -27,13 +31,19 @@ export default function Task(props) {
           >
             <div className={tw`flex flex-row justify-between items-center`}>
               <h3>{task.title}</h3>
-              <button
-                value={taskId}
-                onClick={submitHandle}
-                className={tw`mr-2`}
-              >
-                ...(D&E)
-              </button>
+              <div className="App">
+                <button
+                  value={taskId}
+                  onClick={
+                    toggle
+                    // submitHandle
+                  }
+                  className={tw`mr-2`}
+                >
+                  Delete
+                </button>
+                <Modal isShowing={isShowing} hide={toggle} />
+              </div>
               <button
                 className={tw`border px-2 rounded text-blue-800 hover:text-blue-500 border-blue-500`}
                 onClick={() => setShow(true)}
