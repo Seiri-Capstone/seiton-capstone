@@ -1,10 +1,6 @@
 import prisma from '../../../prisma/prisma'
 import { getSession } from 'next-auth/client'
 
-/**
- * GET /api/task
- */
-
 export default async function handler(req, res) {
   const session = await getSession({ req })
   if (!session) {
@@ -17,6 +13,17 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const result = await prisma.task.findMany()
       res.json(result)
+    } else if (req.method === 'POST') {
+      const { title, task, columnId, index } = req.body
+      const newTask = await prisma.task.create({
+        data: {
+          title,
+          body: task,
+          columnId,
+          index
+        }
+      })
+      res.status(200).json(newTask)
     }
     // PUT /api/task
     else if (req.method === 'PUT') {
@@ -37,10 +44,11 @@ export default async function handler(req, res) {
         throw new Error('error in the column api call')
       }
     } else {
+      console.error(error)
       // OTHER Routes
-      throw new Error(
-        `The HTTP ${req.method} is not supported at this route: /api/task`
-      )
+      // throw new Error(
+      //   `The HTTP ${req.method} is not supported at this route: /api/task`
+      // )
     }
   }
 }

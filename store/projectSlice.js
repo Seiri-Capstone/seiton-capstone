@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  current
+} from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = []
@@ -14,11 +19,32 @@ export const fetchProject = createAsyncThunk(
     // Get back sorted array
   }
 )
-// POST route for tasks with axios
+// POST tasks
 export const createTask = createAsyncThunk('project/createTask', async body => {
   const { data: createdTask } = await axios.post('/api/task', body)
   return createdTask
 })
+// POST columns
+export const createColumn = createAsyncThunk(
+  'project/createColumn',
+  async body => {
+    const { data: createdColumn } = await axios.post('/api/column', body)
+    return createdColumn
+  }
+)
+// DELETE task
+export const deleteTask = createAsyncThunk('project/deleteTask', async id => {
+  const { data: deletedTask } = await axios.delete(`/api/task/${id}`)
+  return deletedTask
+})
+// DELETE column
+export const deleteColumn = createAsyncThunk(
+  'project/deleteColumn',
+  async id => {
+    const { data: deletedColumn } = await axios.delete(`/api/column/${id}`)
+    return deletedColumn
+  }
+)
 
 export const fetchReorderColumn = createAsyncThunk(
   'project/fetchReorderColumn',
@@ -85,30 +111,25 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
       return { ...task, columnId: destColId, index: idx }
     })
 
-    console.log('start', startTasks, startColId)
-    console.log('finish', updatedFinishTasks, finishColId)
-
     Promise.all(updatedFinishTasks.map(task => axios.put('/api/task', task)))
 
     return { startTasks, finishTasks, startColId, finishColId }
   }
 )
-
-export const createColumn = createAsyncThunk(
-  'project/createColumn',
-  async body => {
-    // send the body from the front end
-    const res = await axios.post('/api/column', body)
-    // update the state as well?
-    return res
-  }
-)
-
+//PUT EDIT task body
 export const fetchEditTask = createAsyncThunk(
   'project/fetchEditTask',
   async task => {
     const res = await axios.put('/api/task', task)
     return res
+  }
+)
+//PUT EDIT column name
+export const updateColumnName = createAsyncThunk(
+  'project/updateColumnName',
+  async column => {
+    const { data: updatedColumn } = await axios.put('/api/column', column)
+    return updatedColumn
   }
 )
 
@@ -123,12 +144,28 @@ export const projectSlice = createSlice({
   extraReducers: {
     [createTask.fulfilled]: (state, action) => {
       const { columnId } = action.payload
-      // Parse columns from proxy state to an array
-      // Get index of column for added task by columnId
-      const updatedColId = JSON.parse(JSON.stringify(state.columns)).filter(
-        col => col.id === columnId
-      )[0].index
+      const updatedColId = state.columns.filter(col => col.id === columnId)[0]
+        .index
       state.columns[updatedColId].tasks.push(action.payload)
+    },
+    [createColumn.fulfilled]: (state, action) => {
+      action.payload['tasks'] = []
+      state.columns.push(action.payload)
+    },
+    [deleteTask.fulfilled]: (state, action) => {
+      // grab columnId from a task that's beind deleted
+      const { columnId } = action.payload
+      //grab column I'm updating
+      const column = state.columns.filter(column => column.id === columnId)[0]
+      //Update tasks inside a certain column
+      state.columns[column.index].tasks = state.columns[
+        column.index
+      ].tasks.filter(task => task.id !== action.payload.id)
+    },
+    [deleteColumn.fulfilled]: (state, action) => {
+      state.columns = state.columns.filter(
+        column => column.id !== action.payload.id
+      )
     },
     [fetchProject.fulfilled]: (state, action) => {
       return action.payload
@@ -159,11 +196,7 @@ export const projectSlice = createSlice({
         if (idx === finishColId) column.tasks = finishTasks
       })
     },
-    [createColumn.fulfilled]: (state, action) => {
-      state.columns.push(action.payload)
-    },
     [fetchEditTask.fulfilled]: (state, action) => {
-      console.log('here')
       const colId = action.payload.data.columnId
       const taskId = action.payload.data.id
       const columns = state.columns
@@ -176,6 +209,14 @@ export const projectSlice = createSlice({
           }
         }
       }
+    },
+    [updateColumnName.fulfilled]: (state, action) => {
+      state.columns.forEach((column, i) => {
+        if (column.id === action.payload.id) {
+          action.payload['tasks'] = column.tasks
+          state.columns[i] = action.payload
+        }
+      })
     }
   }
 })

@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Column from './Column'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import { tw } from 'twind'
 import {
   fetchProject,
   fetchReorderColumn,
   fetchReorderTask,
   fetchTaskOrderDiffCol,
-  reorderCol
+  reorderCol,
+  createColumn
 } from '../../store/projectSlice'
 import { signIn, signOut, useSession } from 'next-auth/client'
+
+import NewTask from './NewTask'
+import { signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Pusher from 'pusher-js'
@@ -46,6 +49,18 @@ export default function ProjectBoard() {
       pusher.unsubscribe('presence-channel')
     }
   }, [])
+  // const [task, setTask] = useState('')
+  // const [title, setTitle] = useState('')
+  // const columnId = props.props.column.id
+  // const index = props.props.column.tasks.length
+  console.log('project', project)
+  const addColumn = e => {
+    const index = project.columns.length
+    const title = `Column-${index}`
+    const projectId = project.id
+    const body = { title, projectId, index }
+    dispatch(createColumn(body))
+  }
 
   const onDragEnd = async result => {
     const { destination, source, draggableId, type } = result
@@ -123,6 +138,9 @@ export default function ProjectBoard() {
   // } else {
   return (
     <React.Fragment>
+      <div className="flex justify-end mr-12">
+        <button onClick={addColumn}>+ Add New Column</button>
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
           droppableId="all-columns"
@@ -131,7 +149,7 @@ export default function ProjectBoard() {
         >
           {provided => (
             <div
-              className={tw`mx-auto flex flex-col md:flex-row min-w-[300px] justify-center`}
+              className="mx-auto flex flex-col md:flex-row min-w-[300px] justify-center"
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
@@ -149,7 +167,7 @@ export default function ProjectBoard() {
       {/* {toggleTask && <NewTask />} */}
       <button
         type="submit"
-        className={tw`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow`}
+        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
         onClick={() => signOut()}
       >
         SIGN OUT

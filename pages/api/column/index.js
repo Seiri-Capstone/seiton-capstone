@@ -11,32 +11,53 @@ export default async function handler(req, res) {
     // PUT /api/column
     if (req.method === 'PUT') {
       try {
-        const { id, title, projectId, index } = req.body
-        const result = await prisma.column.update({
-          where: { id },
+        if (req.body.length) {
+          const columnToUpdate = req.body[0]
+          const { id, projectId, index } = columnToUpdate
+          const title = req.body[1]
+          console.log('title', title)
+          const result = await prisma.column.update({
+            where: { id },
+            data: {
+              title,
+              projectId,
+              index
+            }
+          })
+          res.status(200).json(result)
+        } else {
+          const { id, title, projectId, index } = req.body
+          const result = await prisma.column.update({
+            where: { id },
+            data: {
+              title,
+              projectId,
+              index
+            }
+          })
+          res.status(200).json(result)
+        }
+      } catch (error) {
+        console.error(error)
+        throw new Error('Column PUT error')
+      }
+    }
+
+    // POST /api/column
+    else if (req.method === 'POST') {
+      try {
+        const { title, projectId, index } = req.body
+        const newColumn = await prisma.column.create({
           data: {
             title,
             projectId,
             index
           }
         })
-
-        res.status(200).json(result)
+        res.status(200).json(newColumn)
       } catch (error) {
-        throw new Error('Column POST edit')
-      }
-    }
-
-    if (req.method === 'POST') {
-      try {
-        // always create the index
-        // const { id, title, projectId, index } = req.body
-        const result = await prisma.column.create(req.body)
-
-        // What status code?
-        res.status(200).json(result)
-      } catch (error) {
-        throw new Error('POST route ...')
+        console.error(error)
+        throw new Error('Column POST error', error)
       }
     }
   }

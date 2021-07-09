@@ -1,4 +1,5 @@
 import prisma from '../../../prisma/prisma'
+import { getSession } from 'next-auth/client'
 
 export default async function createTask(req, res) {
   try {
