@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
+}
+
+model User {
+  id             Int           @id @default(autoincrement())
+  name           String?
+  email          String?       @unique
+  email_verified DateTime?
+  image          String?
+  createdAt      DateTime      @default(now()) @map(name: "created_at")
+  updatedAt      DateTime?     @updatedAt @map(name: "updated_at")
+  orgs           UserOrg[]
+  tasks          Task[]
+  projects       UserProject[]
+  comments       Comment[]
+
+  @@map(name: "users")
+}
+
+model VerificationRequest {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now()) @map(name: "created_at")
+  updatedAt  DateTime? @updatedAt @map(name: "updated_at")
+  identifier String
+  token      String
+  expires    DateTime?
+
+  @@map(name: "verification_requests")
+}
+
+model Project {
+  id      Int           @id @default(autoincrement())
+  name    String
+  users   UserProject[]
+  org     Org           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId   Int
+  columns Column[]
+
+}
+
+model UserProject {
+
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int
+  isAdmin   Boolean
+
+
+  @@id([userId, projectId])
+}
+
+model Org {
+  id       Int       @id @default(autoincrement())
+  name     String?
+  users    UserOrg[]
+  projects Project[]
+}
+
+model UserOrg {
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  org       Org     @relation(fields: [orgId], references: [id])
+  orgId     Int
+  isCreator Boolean @default(true)
+
+  @@id([userId, orgId])
+}
+
+model Column {
+  id        Int      @id @default(autoincrement())
+  title     String
+  tasks     Task[]
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int?
+  index     Int
+}
+
+model Task {
+  id       Int       @id @default(autoincrement())
+  title    String
+  body     String
+  user     User[]
+  column   Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  columnId Int
+  comments Comment[]
+  index    Int
+}
+
+model Comment {
+  id     Int    @id @default(autoincrement())
+  body   String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  tasks  Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId Int
+}
+
+model Account {
+  id                 Int       @id @default(autoincrement())
+  compoundId         String    @unique @map(name: "compound_id")
+  userId             Int       @map(name: "user_id")
+  providerType       String    @map(name: "provider_type")
+  providerId         String    @map(name: "provider_id")
+  providerAccountId  String    @map(name: "provider_account_id")
+  refreshToken       String?   @map(name: "refresh_token")
+  accessToken        String?   @map(name: "access_token")
+  accessTokenExpires DateTime? @map(name: "access_token_expires")
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+
+
+  @@index([providerAccountId], name: "providerAccountId")
+  @@index([providerId], name: "providerId")
+  @@index([userId], name: "userId")
+  @@map(name: "accounts")
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map(name: "user_id")
+  expires      DateTime
+  sessionToken String   @unique @map(name: "session_token")
+  accessToken  String   @unique @map(name: "access_token")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "sessions")
+}
