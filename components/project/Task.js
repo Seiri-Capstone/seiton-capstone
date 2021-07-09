@@ -31,7 +31,7 @@ export default function Task(props) {
           >
             <div className={tw`flex flex-row justify-between items-center`}>
               <h3>{task.title}</h3>
-              <div className="App">
+              <div>
                 <button
                   value={taskId}
                   onClick={
