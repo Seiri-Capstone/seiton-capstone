@@ -19,16 +19,32 @@ export const fetchProject = createAsyncThunk(
     // Get back sorted array
   }
 )
-// POST route for tasks with axios
+// POST tasks
 export const createTask = createAsyncThunk('project/createTask', async body => {
   const { data: createdTask } = await axios.post('/api/task', body)
   return createdTask
 })
+// POST columns
+export const createColumn = createAsyncThunk(
+  'project/createColumn',
+  async body => {
+    const { data: createdColumn } = await axios.post('/api/column', body)
+    return createdColumn
+  }
+)
 // DELETE task
 export const deleteTask = createAsyncThunk('project/deleteTask', async id => {
   const { data: deletedTask } = await axios.delete(`/api/task/${id}`)
   return deletedTask
 })
+// DELETE column
+export const deleteColumn = createAsyncThunk(
+  'project/deleteColumn',
+  async id => {
+    const { data: deletedColumn } = await axios.delete(`/api/column/${id}`)
+    return deletedColumn
+  }
+)
 
 export const fetchReorderColumn = createAsyncThunk(
   'project/fetchReorderColumn',
@@ -101,16 +117,6 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
   }
 )
 
-export const createColumn = createAsyncThunk(
-  'project/createColumn',
-  async body => {
-    // send the body from the front end
-    const res = await axios.post('/api/column', body)
-    // update the state as well?
-    return res
-  }
-)
-
 export const fetchEditTask = createAsyncThunk(
   'project/fetchEditTask',
   async task => {
@@ -132,6 +138,10 @@ export const projectSlice = createSlice({
         .index
       state.columns[updatedColId].tasks.push(action.payload)
     },
+    [createColumn.fulfilled]: (state, action) => {
+      action.payload['tasks'] = []
+      state.columns.push(action.payload)
+    },
     [deleteTask.fulfilled]: (state, action) => {
       // grab columnId from a task that's beind deleted
       const { columnId } = action.payload
@@ -141,6 +151,11 @@ export const projectSlice = createSlice({
       state.columns[column.index].tasks = state.columns[
         column.index
       ].tasks.filter(task => task.id !== action.payload.id)
+    },
+    [deleteColumn.fulfilled]: (state, action) => {
+      state.columns = state.columns.filter(
+        column => column.id !== action.payload.id
+      )
     },
     [fetchProject.fulfilled]: (state, action) => {
       return action.payload
@@ -167,11 +182,7 @@ export const projectSlice = createSlice({
         if (idx === finishColId) column.tasks = finishTasks
       })
     },
-    [createColumn.fulfilled]: (state, action) => {
-      state.columns.push(action.payload)
-    },
     [fetchEditTask.fulfilled]: (state, action) => {
-      console.log('here')
       const colId = action.payload.data.columnId
       const taskId = action.payload.data.id
       const columns = state.columns
