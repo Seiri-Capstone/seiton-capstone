@@ -4,6 +4,8 @@ import Task from './Task'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import Link from 'next/link'
 import NewTask from './NewTask'
+import { deleteColumn } from '../../store/projectSlice'
+import { useDispatch } from 'react-redux'
 
 export default function Column(props) {
   const column = props.column
@@ -11,6 +13,11 @@ export default function Column(props) {
 
   const [toggleTask, setToggleTask] = useState(false)
   const toggleNewTask = () => setToggleTask(!toggleTask)
+
+  const dispatch = useDispatch()
+  const removeColumn = e => {
+    dispatch(deleteColumn(column.id))
+  }
 
   return (
     <Draggable draggableId={`column-${column.id}`} index={props.index}>
@@ -24,15 +31,19 @@ export default function Column(props) {
             <h3 className={tw`text-2xl`} {...provided.dragHandleProps}>
               {column.title}({column.tasks.length})
             </h3>
-            {
+            <div className="flex justify-end">
               <button
                 onClick={toggleNewTask}
                 value={props.value}
-                className={tw`flex justify-end ${btn}`}
+                className={tw`mr-4 px-2 ${btn}`}
               >
                 <a>+</a>
               </button>
-            }
+
+              <button onClick={removeColumn} className={tw`px-2 ${btn}`}>
+                <a>x</a>
+              </button>
+            </div>
           </div>
 
           {toggleTask && <NewTask props={props} toggleTask={toggleNewTask} />}

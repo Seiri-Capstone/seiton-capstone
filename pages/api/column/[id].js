@@ -1,7 +1,7 @@
 import prisma from '../../../prisma/prisma'
 import { getSession } from 'next-auth/client'
 
-// DELETE/TASK/:id
+// DELETE/COLUMN/:id
 export default async function handler(req, res) {
   const session = await getSession({ req })
   if (!session) {
@@ -11,10 +11,10 @@ export default async function handler(req, res) {
   } else {
     if (req.method === 'DELETE') {
       try {
-        const deletedTask = await prisma.task.delete({
+        const deletedColumn = await prisma.column.delete({
           where: { id: Number(req.query.id) }
         })
-        res.status(200).json(deletedTask)
+        res.status(200).json(deletedColumn)
       } catch (error) {
         console.error(error)
       }
