@@ -26,7 +26,7 @@ export default function Card({
 	`
   return (
     <div className={tw(instanceStyles, className)}>
-      <h1 className={tw`text-2xl font-light`}>{title}</h1>
+      <h1 className="text-2xl font-light">{title}</h1>
       {children}
     </div>
   )

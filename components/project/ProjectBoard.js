@@ -112,7 +112,7 @@ export default function ProjectBoard() {
   // } else {
   return (
     <React.Fragment>
-      <div className={tw`flex justify-end mr-12`}>
+      <div className="flex justify-end mr-12">
         <button onClick={addColumn}>+ Add New Column</button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
