@@ -25,6 +25,7 @@ export default function NewTask(props) {
       <label>
         Title:
         <input
+          placeholder="Title of the task"
           className={tw`w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none "rows=4" mb-3 focus:outline-none`}
           onChange={e => setTitle(e.target.value)}
         ></input>
@@ -32,6 +33,7 @@ export default function NewTask(props) {
       <label>
         Task:
         <textarea
+          placeholder="Enter  Your Task Here"
           className={tw`w-full p-3  text-gray-700 border rounded-lg focus:outline-none" "rows=4" mt-2 focus:outline-none`}
           onChange={e => setTask(e.target.value)}
         ></textarea>

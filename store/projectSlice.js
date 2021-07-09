@@ -171,7 +171,6 @@ export const projectSlice = createSlice({
       state.columns.push(action.payload)
     },
     [fetchEditTask.fulfilled]: (state, action) => {
-      console.log('here')
       const colId = action.payload.data.columnId
       const taskId = action.payload.data.id
       const columns = state.columns
