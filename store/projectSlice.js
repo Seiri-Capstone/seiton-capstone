@@ -113,12 +113,20 @@ export const fetchTaskOrderDiffCol = createAsyncThunk(
     return { startTasks, finishTasks, startColId, finishColId }
   }
 )
-
+//PUT EDIT task body
 export const fetchEditTask = createAsyncThunk(
   'project/fetchEditTask',
   async task => {
     const res = await axios.put('/api/task', task)
     return res
+  }
+)
+//PUT EDIT column name
+export const updateColumnName = createAsyncThunk(
+  'project/updateColumnName',
+  async column => {
+    const { data: updatedColumn } = await axios.put('/api/column', column)
+    return updatedColumn
   }
 )
 
@@ -192,6 +200,14 @@ export const projectSlice = createSlice({
           }
         }
       }
+    },
+    [updateColumnName.fulfilled]: (state, action) => {
+      state.columns.forEach((column, i) => {
+        if (column.id === action.payload.id) {
+          action.payload['tasks'] = column.tasks
+          state.columns[i] = action.payload
+        }
+      })
     }
   }
 })
