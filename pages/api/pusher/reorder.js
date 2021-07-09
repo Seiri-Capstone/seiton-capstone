@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     project
   })
 
-  console.log(`🟢  The reponse AFTER pusher.trigger: `, response)
+  console.log(`🟢  The reponse AFTER pusher.trigger: `, response.status)
 
   res.json({ status: 200 })
 }

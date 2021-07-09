@@ -7,7 +7,8 @@ import {
   fetchProject,
   fetchReorderColumn,
   fetchReorderTask,
-  fetchTaskOrderDiffCol
+  fetchTaskOrderDiffCol,
+  reorderCol
 } from '../../store/projectSlice'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
@@ -17,12 +18,10 @@ import Pusher from 'pusher-js'
 export default function ProjectBoard() {
   const [session, loading] = useSession()
   const project = useSelector(state => state.project)
+  const [isReorderedCol, setIsReorderedCol] = useState(false)
+  // const [thunkArg, setThunkArg] = useState(null)
   const dispatch = useDispatch()
   const router = useRouter()
-  useEffect(() => {
-    dispatch(fetchProject(1)) //hard coded for now
-  }, [dispatch, session, router])
-
   const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
     cluster: 'us2', // based on my website
     authEndpoint: `/api/pusher/auth`, // make sure to change in production
@@ -30,15 +29,19 @@ export default function ProjectBoard() {
   })
 
   useEffect(() => {
+    dispatch(fetchProject(1)) //hard coded for now
+  }, [dispatch, session, router])
+
+  useEffect(() => {
     console.log(`🟢  useEffect for Chat.js running!`)
 
     const channel = pusher.subscribe('presence-channel')
 
-    channel.bind('reorder-col', arg => {
-      console.log(`🟢  pusher:reorder-col succeeded `, arg)
+    channel.bind('reorder-col', async project => {
+      console.log(`🟢  pusher:reorder-col succeeded `, project)
+      dispatch(reorderCol(project))
     })
 
-    // Make sure to unsubscribe once component unmounts
     return () => {
       pusher.unsubscribe('presence-channel')
     }
@@ -62,8 +65,10 @@ export default function ProjectBoard() {
     // If you're dragging columns
     if (type === 'column') {
       const thunkArg = { result, project }
+
       await dispatch(fetchReorderColumn(thunkArg))
-      await axios.post('/api/pusher/reorder', { project })
+      setIsReorderedCol(true)
+      // await axios.post('/api/pusher/reorder', { project })
       return
     }
 
@@ -112,6 +117,7 @@ export default function ProjectBoard() {
     dispatch(fetchTaskOrderDiffCol(thunkArg))
     return
   }
+
   // if (!session) {
   //   return "You're not logged in!"
   // } else {
