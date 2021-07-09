@@ -30,10 +30,7 @@ export default function Task(props) {
           >
             <div className="flex flex-row justify-between items-center">
               <h3>{task.title}</h3>
-//               <button value={taskId} onClick={submitHandle} className="mr-2">
-//                 ...(D&E)
-//               </button>
-              <div className="App">
+              <div>
                 <button
                   value={taskId}
                   onClick={
