@@ -5,6 +5,8 @@ import store from '../store'
 import { Provider as NextAuthProvider } from 'next-auth/client'
 import { ThemeProvider } from 'next-themes'
 import 'windi.css'
+import '@fontsource/ibm-plex-serif'
+import '@fontsource/ibm-plex-serif/500.css'
 
 const App = ({ Component, pageProps }) => {
   return (

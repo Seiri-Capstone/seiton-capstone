@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 
 export default function Column(props) {
   const column = props.column
-  const btn = apply`text-base rounded-md focus:outline-none`
+  // const btn = apply`text-base rounded-md focus:outline-none`
 
   const [toggleTask, setToggleTask] = useState(false)
   const toggleNewTask = () => setToggleTask(!toggleTask)
@@ -23,19 +23,19 @@ export default function Column(props) {
     <Draggable draggableId={`column-${column.id}`} index={props.index}>
       {provided => (
         <div
-          className={tw`bg-gray-200 w-80 rounded-lg m-4 p-4 flex flex-col`}
+          className="bg-gray-200 w-80 rounded-lg m-4 p-4 flex flex-col"
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
-          <div className={tw`flex flex-row justify-between items-center`}>
-            <h3 className={tw`text-2xl`} {...provided.dragHandleProps}>
+          <div className="flex flex-row justify-between items-center">
+            <h3 className="text-2xl" {...provided.dragHandleProps}>
               {column.title}({column.tasks.length})
             </h3>
             <div className="flex justify-end">
               <button
                 onClick={toggleNewTask}
                 value={props.value}
-                className={tw`mr-4 px-2 ${btn}`}
+                className="mr-4 px-2"
               >
                 <a>+</a>
               </button>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { tw } from 'twind'
 import { createTask } from '../../store/projectSlice'
 
 export default function NewTask(props) {
@@ -19,28 +18,24 @@ export default function NewTask(props) {
   }
 
   return (
-    <form
-      className={tw`p-4 my-3 max-w-3xl mx-auto space-y-6 bg-gray-50 rounded-lg`}
-    >
+    <form className="p-4 my-3 max-w-3xl mx-auto space-y-6 bg-gray-50 rounded-lg">
       <label>
         Title:
         <input
-          placeholder="Title of the task"
-          className={tw`w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none "rows=4" mb-3 focus:outline-none`}
+          className="w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none rows=4 mb-3 focus:outline-none"
           onChange={e => setTitle(e.target.value)}
         ></input>
       </label>
       <label>
         Task:
         <textarea
-          placeholder="Enter  Your Task Here"
-          className={tw`w-full p-3  text-gray-700 border rounded-lg focus:outline-none" "rows=4" mt-2 focus:outline-none`}
+          className="w-full p-3  text-gray-700 border rounded-lg focus:outline-none rows=4 mt-2 focus:outline-none"
           onChange={e => setTask(e.target.value)}
         ></textarea>
       </label>
       <button
         type="submit"
-        className={tw`bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none`}
+        className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
         onClick={addTask}
       >
         Add Task
