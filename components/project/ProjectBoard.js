@@ -7,12 +7,9 @@ import {
   fetchReorderColumn,
   fetchReorderTask,
   fetchTaskOrderDiffCol,
-  reorderCol,
+  reorderTaskCol,
   createColumn
 } from '../../store/projectSlice'
-import { signIn, signOut, useSession } from 'next-auth/client'
-
-import NewTask from './NewTask'
 import { signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import axios from 'axios'
@@ -21,10 +18,11 @@ import Pusher from 'pusher-js'
 export default function ProjectBoard() {
   const [session, loading] = useSession()
   const project = useSelector(state => state.project)
-  const [isReorderedCol, setIsReorderedCol] = useState(false)
-  // const [thunkArg, setThunkArg] = useState(null)
   const dispatch = useDispatch()
   const router = useRouter()
+  const [isColumnReordered, setIsColumnReordered] = useState(false)
+  const [isTaskReordered, setIsTaskReordered] = useState(false)
+
   const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
     cluster: 'us2', // based on my website
     authEndpoint: `/api/pusher/auth`, // make sure to change in production
@@ -36,24 +34,35 @@ export default function ProjectBoard() {
   }, [dispatch, session, router])
 
   useEffect(() => {
-    console.log(`🟢  useEffect for Chat.js running!`)
+    if (isColumnReordered) {
+      setIsColumnReordered(false)
+      axios.post('/api/pusher/reorder', { project })
+    }
 
+    if (isTaskReordered) {
+      setIsTaskReordered(false)
+      axios.post('/api/pusher/reorder', { project })
+    }
+  }, [isColumnReordered, isTaskReordered])
+
+  useEffect(() => {
     const channel = pusher.subscribe('presence-channel')
 
-    channel.bind('reorder-col', async project => {
-      console.log(`🟢  pusher:reorder-col succeeded `, project)
-      dispatch(reorderCol(project))
+    channel.bind('reorder', async project => {
+      console.log(`🟢  pusher:reorder succeeded `, project)
+      dispatch(reorderTaskCol(project))
     })
 
     return () => {
       pusher.unsubscribe('presence-channel')
     }
   }, [])
+
   // const [task, setTask] = useState('')
   // const [title, setTitle] = useState('')
   // const columnId = props.props.column.id
   // const index = props.props.column.tasks.length
-  console.log('project', project)
+
   const addColumn = e => {
     const index = project.columns.length
     const title = `Column-${index}`
@@ -80,10 +89,8 @@ export default function ProjectBoard() {
     // If you're dragging columns
     if (type === 'column') {
       const thunkArg = { result, project }
-
       await dispatch(fetchReorderColumn(thunkArg))
-      setIsReorderedCol(true)
-      // await axios.post('/api/pusher/reorder', { project })
+      setIsColumnReordered(true)
       return
     }
 
@@ -109,7 +116,8 @@ export default function ProjectBoard() {
       const sourceIdx = source.index
       const destIdx = destination.index
       const thunkArg = { tasks, sourceIdx, destIdx, columns, finishColId }
-      dispatch(fetchReorderTask(thunkArg))
+      await dispatch(fetchReorderTask(thunkArg))
+      await setIsTaskReordered(true)
       return
     }
 
@@ -132,6 +140,8 @@ export default function ProjectBoard() {
     dispatch(fetchTaskOrderDiffCol(thunkArg))
     return
   }
+
+  console.log('state/ global', project.columns)
 
   // if (!session) {
   //   return "You're not logged in!"
