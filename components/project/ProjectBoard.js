@@ -12,24 +12,37 @@ import {
 import { signIn, signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import Pusher from 'pusher-js'
 
 export default function ProjectBoard() {
   const [session, loading] = useSession()
-  //   // toggle new task
-  //   const [toggleTask, setToggleTask] = useState(false)
-  //   const toggleNewTask = () => setToggleTask(!toggleTask)
-  //  // end toggle new task
-
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
-
   const router = useRouter()
   useEffect(() => {
-    // if (!session) {
-    //   router.push('/')
-    // }
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch, session, router])
+
+  const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
+    cluster: 'us2', // based on my website
+    authEndpoint: `/api/pusher/auth`, // make sure to change in production
+    auth: { params: { username: 'helen' } }
+  })
+
+  useEffect(() => {
+    console.log(`🟢  useEffect for Chat.js running!`)
+
+    const channel = pusher.subscribe('presence-channel')
+
+    channel.bind('reorder-col', arg => {
+      console.log(`🟢  pusher:reorder-col succeeded `, arg)
+    })
+
+    // Make sure to unsubscribe once component unmounts
+    return () => {
+      pusher.unsubscribe('presence-channel')
+    }
+  }, [])
 
   const onDragEnd = async result => {
     const { destination, source, draggableId, type } = result
@@ -50,7 +63,7 @@ export default function ProjectBoard() {
     if (type === 'column') {
       const thunkArg = { result, project }
       await dispatch(fetchReorderColumn(thunkArg))
-      await axios.post('/api/pusher/reorder', { thunkArg })
+      await axios.post('/api/pusher/reorder', { project })
       return
     }
 

@@ -142,8 +142,12 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const { startTasks, finishTasks, startColId, finishColId } =
-        action.payload
+      const {
+        startTasks,
+        finishTasks,
+        startColId,
+        finishColId
+      } = action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
@@ -171,7 +175,9 @@ export const projectSlice = createSlice({
   }
 })
 
-export const { updateTaskOrderSameCol, updateTaskOrderDiffCol } =
-  projectSlice.actions
+export const {
+  updateTaskOrderSameCol,
+  updateTaskOrderDiffCol
+} = projectSlice.actions
 
 export default projectSlice.reducer
