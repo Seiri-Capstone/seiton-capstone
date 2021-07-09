@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Column from './Column'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import { tw } from 'twind'
 import {
   fetchProject,
   fetchReorderColumn,
@@ -124,7 +123,7 @@ export default function ProjectBoard() {
         >
           {provided => (
             <div
-              className={tw`mx-auto flex flex-col md:flex-row min-w-[300px] justify-center`}
+              className="mx-auto flex flex-col md:flex-row min-w-[300px] justify-center"
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
@@ -142,7 +141,7 @@ export default function ProjectBoard() {
       {/* {toggleTask && <NewTask />} */}
       <button
         type="submit"
-        className={tw`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow`}
+        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
         onClick={() => signOut()}
       >
         SIGN OUT

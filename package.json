@@ -10,6 +10,7 @@
     "seed": "prisma db seed --preview-feature"
   },
   "dependencies": {
+    "@fontsource/ibm-plex-serif": "^4.5.0",
     "@headlessui/react": "^1.3.0",
     "@prisma/client": "^2.26.0",
     "@reduxjs/toolkit": "^1.6.0",
