@@ -57,7 +57,7 @@ export default function Column(props) {
               <button
                 onClick={toggleNewTask}
                 value={props.value}
-                className="mr-4 px-2"
+                className="mr-4 px-2 focus:outline-none "
               >
                 <a>+</a>
               </button>
