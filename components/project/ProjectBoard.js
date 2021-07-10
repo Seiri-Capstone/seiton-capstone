@@ -106,8 +106,11 @@ export default function ProjectBoard() {
     // We are grabbing the last character from the draggable ID
     // i.e., "column-5" => 5
     // Note that this will not work for 2 digit strings
-    const sourceNum = Number(source.droppableId.slice(-1))
-    const destNum = Number(destination.droppableId.slice(-1))
+    // TODO: Find the index from the right of '-', and feed it
+    const sourceNumIdx = source.droppableId.lastIndexOf('-') + 1
+    const destNumIdx = destination.droppableId.lastIndexOf('-') + 1
+    const sourceNum = Number(source.droppableId.slice(sourceNumIdx))
+    const destNum = Number(destination.droppableId.slice(destNumIdx))
 
     const columns = project.columns
     // start and finish are columns of tasks
