@@ -59,9 +59,6 @@ export const fetchReorderColumn = createAsyncThunk(
       return { ...column, index: idx }
     })
 
-    // const pusherProject = { ...project, columns: reorderedCol }
-
-    // await axios.post('/api/pusher/reorder', { pusherProject })
     Promise.all(reorderedCol.map(column => axios.put('/api/column', column)))
     return reorderedCol
   }
@@ -137,7 +134,7 @@ export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    reorderCol(state, action) {
+    reorderTaskCol(state, action) {
       return action.payload.project
     }
   },
@@ -224,7 +221,7 @@ export const projectSlice = createSlice({
 export const {
   updateTaskOrderSameCol,
   updateTaskOrderDiffCol,
-  reorderCol
+  reorderTaskCol
 } = projectSlice.actions
 
 export default projectSlice.reducer
