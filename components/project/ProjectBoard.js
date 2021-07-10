@@ -13,7 +13,6 @@ import {
 import { signIn, signOut, useSession } from 'next-auth/client'
 
 import NewTask from './NewTask'
-import { signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Pusher from 'pusher-js'
