@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux'
 export default function Column(props) {
   const dispatch = useDispatch()
   const column = props.column
-
   const [columnName, setColumnName] = useState(column.title)
   const [isEditActive, setEditActive] = useState(false)
 

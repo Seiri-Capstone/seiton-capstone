@@ -9,7 +9,6 @@ import {
   fetchTaskOrderDiffCol,
   createColumn
 } from '../../store/projectSlice'
-import NewTask from './NewTask'
 import { signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 
