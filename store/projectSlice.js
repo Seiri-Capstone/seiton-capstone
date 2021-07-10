@@ -81,7 +81,6 @@ export const fetchReorderTask = createAsyncThunk(
      * Promise all seems to be awaited?
      * no flicker or re-rendering issues
      */
-
     Promise.all(reorderedTask.map(task => axios.put('/api/task', task)))
     return reorderedTask
   }
@@ -181,12 +180,8 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const {
-        startTasks,
-        finishTasks,
-        startColId,
-        finishColId
-      } = action.payload
+      const { startTasks, finishTasks, startColId, finishColId } =
+        action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
