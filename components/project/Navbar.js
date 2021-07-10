@@ -2,12 +2,18 @@ import React, { useState } from 'react'
 import { signOut } from 'next-auth/client'
 
 export default function Navbar() {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
 
   return (
     <div className="flex flex-col sm:flex-row w-64 h-screen relative">
       <div className="w-64 h-screen bg-gray-800 mt-8 sm:mt-0">
         <nav className="mt-10">
+          <button
+            className="text-gray-100"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            CLICK ME
+          </button>
           <a
             className="flex items-center py-2 px-8 bg-gray-700 text-gray-100 border-r-4 border-gray-100"
             href="#"
