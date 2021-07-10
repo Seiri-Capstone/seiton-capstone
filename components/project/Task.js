@@ -33,7 +33,7 @@ export default function Task({ task, index }) {
             ></div>
             <p className="text-sm font-bold text-gray-500">Comments</p>
             <ul>
-              {task.comments.length ? (
+              {task.comments?.length ? (
                 <Comments comments={task.comments} />
               ) : null}
             </ul>
