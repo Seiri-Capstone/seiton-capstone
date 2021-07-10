@@ -10,7 +10,6 @@ import {
   reorderCol,
   createColumn
 } from '../../store/projectSlice'
-import { signIn, signOut, useSession } from 'next-auth/client'
 
 import NewTask from './NewTask'
 import { signOut, useSession } from 'next-auth/client'

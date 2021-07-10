@@ -2,6 +2,15 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function main() {
+  const users = await prisma.user.createMany({
+    data: [
+      { name: 'helen' },
+      { name: 'swan' },
+      { name: 'sey' },
+      { name: 'leo' }
+    ]
+  })
+
   const org = await prisma.org.create({
     data: {
       name: 'seiton-team'
