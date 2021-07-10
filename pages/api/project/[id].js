@@ -22,7 +22,12 @@ export default async function handler(req, res) {
                 tasks: {
                   orderBy: { index: 'asc' },
                   include: {
-                    comments: true
+                    comments: {
+                      orderBy: { createdAt: 'asc' },
+                      include: {
+                        user: true
+                      }
+                    }
                   }
                 }
               }

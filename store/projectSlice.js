@@ -163,6 +163,10 @@ export const projectSlice = createSlice({
         column => column.id !== action.payload.id
       )
     },
+    [fetchProject.pending]: (state, action) => {
+      // https://redux-toolkit.js.org/api/createAsyncThunk
+      return action.payload
+    },
     [fetchProject.fulfilled]: (state, action) => {
       return action.payload
     },
