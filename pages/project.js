@@ -5,10 +5,12 @@ import Navbar from '../components/project/Navbar'
 
 const Project = () => {
   return (
-    <div className=" pt-[180px]">
-      <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mb-8">
-        My Project
-      </h1>
+    <div>
+      <div className="">
+        <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
+          My Project
+        </h1>
+      </div>
       <div className="flex">
         <Navbar />
         <ProjectBoard />
