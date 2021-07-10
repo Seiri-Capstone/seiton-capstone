@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import { signOut } from 'next-auth/client'
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <div className="flex flex-col sm:flex-row">
+    <div className="flex flex-col sm:flex-row w-64 h-screen relative">
       <div className="w-64 h-screen bg-gray-800 mt-8 sm:mt-0">
         <nav className="mt-10">
           <a
@@ -120,6 +121,12 @@ export default function Navbar() {
             </svg>
             <span className="mx-4 font-medium">User Profile</span>
           </a>
+          <button
+            onClick={() => signOut()}
+            className="flex items-center py-2 px-8 text-gray-600 hover:text-gray-500"
+          >
+            <span className="mx-4 font-medium">Sign Out</span>
+          </button>
         </div>
       </div>
     </div>
