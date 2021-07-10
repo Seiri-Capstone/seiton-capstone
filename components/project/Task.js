@@ -5,6 +5,7 @@ import marked from 'marked'
 import Modal from './DeleteTaskModal'
 import useModal from './CustomModalHook'
 import TaskDropdownMenu from './TaskDropdownMenu'
+import Comments from './Comments'
 
 export default function Task({ task, index }) {
   const { isShowing, toggle } = useModal()
@@ -30,6 +31,12 @@ export default function Task({ task, index }) {
                 __html: marked(task.body)
               }}
             ></div>
+            <p className="text-sm font-bold text-gray-500">Comments</p>
+            <ul>
+              {task.comments.length ? (
+                <Comments comments={task.comments} />
+              ) : null}
+            </ul>
           </div>
         )}
       </Draggable>
