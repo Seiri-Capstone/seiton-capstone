@@ -5,7 +5,13 @@ export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(true)
 
   return (
-    <div className="flex flex-col sm:flex-row w-64 h-screen relative">
+    <div
+      className={
+        isExpanded
+          ? 'flex flex-col sm:flex-row w-64 h-screen relative'
+          : 'flex flex-col sm:flex-row w-10 h-screen relative'
+      }
+    >
       <div className="w-64 h-screen bg-gray-800 mt-8 sm:mt-0">
         <nav className="mt-10">
           <button
@@ -26,7 +32,9 @@ export default function Navbar() {
             >
               <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
             </svg>
-            <span className="mx-4 font-medium">Dashboard</span>
+            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
+              Dashboard
+            </span>
           </a>
 
           <a
@@ -45,7 +53,9 @@ export default function Navbar() {
                 clipRule="evenodd"
               ></path>
             </svg>
-            <span className="mx-4 font-medium">Organization</span>
+            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
+              Organization
+            </span>
           </a>
 
           <a
@@ -61,7 +71,9 @@ export default function Navbar() {
               <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
             </svg>
 
-            <span className="mx-4 font-medium">Projects</span>
+            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
+              Projects
+            </span>
           </a>
 
           <a
@@ -77,7 +89,9 @@ export default function Navbar() {
               <path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 100 4v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2a2 2 0 100-4V6z"></path>
             </svg>
 
-            <span className="mx-4 font-medium">Tasks</span>
+            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
+              Tasks
+            </span>
           </a>
         </nav>
 
@@ -106,7 +120,9 @@ export default function Navbar() {
                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
               ></path>
             </svg>
-            <span className="mx-4 font-medium">Settings</span>
+            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
+              Settings
+            </span>
           </a>
 
           <a
@@ -125,7 +141,9 @@ export default function Navbar() {
                 clipRule="evenodd"
               ></path>
             </svg>
-            <span className="mx-4 font-medium">User Profile</span>
+            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
+              User Profile
+            </span>
           </a>
           <button
             onClick={() => signOut()}
