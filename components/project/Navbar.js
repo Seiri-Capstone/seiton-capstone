@@ -4,6 +4,9 @@ import { signOut } from 'next-auth/client'
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(true)
 
+  //reference
+  // https://ej2.syncfusion.com/react/demos/sidebar/docking-sidebar/index.html
+
   return (
     <div
       className={
