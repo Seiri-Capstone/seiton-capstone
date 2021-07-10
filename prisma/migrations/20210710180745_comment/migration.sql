@@ -85,6 +85,8 @@ CREATE TABLE "Comment" (
     "body" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
     "taskId" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY ("id")
 );

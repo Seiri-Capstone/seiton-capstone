@@ -54,7 +54,12 @@ async function main() {
         index: 0
       },
       { title: 'task4', body: 'write prisma schema', columnId: 4, index: 0 },
-      { title: 'task5', body: 'seed the database', columnId: 3, index: 0 }
+      {
+        title: 'task5',
+        body: '- [ ] seed the `prisma` **database**',
+        columnId: 3,
+        index: 0
+      }
     ]
   })
 }
