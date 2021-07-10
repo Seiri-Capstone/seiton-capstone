@@ -98,12 +98,14 @@ model Task {
 }
 
 model Comment {
-  id     Int    @id @default(autoincrement())
-  body   String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
-  tasks  Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId Int
+  id        Int      @id @default(autoincrement())
+  body      String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  tasks     Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId    Int
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
 }
 
 model Account {

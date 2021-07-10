@@ -30,6 +30,16 @@ export default function Task({ task, index }) {
                 __html: marked(task.body)
               }}
             ></div>
+            <p className="text-sm">Comments</p>
+            <ul>
+              {task.comments.length
+                ? task.comments.map(c => (
+                    <li className="text-sm" key={c.id}>
+                      {c.body}
+                    </li>
+                  ))
+                : null}
+            </ul>
           </div>
         )}
       </Draggable>

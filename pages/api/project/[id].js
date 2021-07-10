@@ -20,7 +20,10 @@ export default async function handler(req, res) {
               orderBy: { index: 'asc' },
               include: {
                 tasks: {
-                  orderBy: { index: 'asc' }
+                  orderBy: { index: 'asc' },
+                  include: {
+                    comments: true
+                  }
                 }
               }
             }
