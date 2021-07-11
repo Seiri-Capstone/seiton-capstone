@@ -1,19 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const initialState = []
+const initialState = {}
 
-export const fetchOrgs = createAsyncThunk('orgs/fetchOrgs', async () => {
-  const { data: orgs } = await axios.get('/api/org')
-  return orgs
-})
+export const fetchSingleOrg = createAsyncThunk(
+  'org/fetchSingleOrg',
+  async orgId => {
+    const { data: org } = await axios.get(`/api/org/${orgId}`)
+    return org
+  }
+)
 
 export const orgsSlice = createSlice({
-  name: 'orgs',
+  name: 'org',
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchOrgs.fulfilled]: (state, action) => {
+    [fetchSingleOrg.fulfilled]: (state, action) => {
       return action.payload
     }
   }
