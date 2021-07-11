@@ -12,6 +12,7 @@ export default function Org() {
             My Organizations
           </h1>
           <MyOrgs />
+          <div id="orgModal"></div>
         </div>
       </div>
     </div>

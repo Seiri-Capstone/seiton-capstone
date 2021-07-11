@@ -8,6 +8,14 @@ export const fetchOrgs = createAsyncThunk('orgs/fetchOrgs', async () => {
   return orgs
 })
 
+export const fetchCreateOrg = createAsyncThunk(
+  'orgs/fetchCreateOrg',
+  async org => {
+    const { data: createdOrg } = await axios.post('/api/org', org)
+    return createdOrg
+  }
+)
+
 export const orgsSlice = createSlice({
   name: 'orgs',
   initialState,
@@ -15,6 +23,9 @@ export const orgsSlice = createSlice({
   extraReducers: {
     [fetchOrgs.fulfilled]: (state, action) => {
       return action.payload
+    },
+    [fetchCreateOrg.fulfilled]: (state, action) => {
+      return [...state, action.payload]
     }
   }
 })
