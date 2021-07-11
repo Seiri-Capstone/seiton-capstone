@@ -19,26 +19,29 @@ const UserPage = () => {
         leaveTo="-ml-64"
       >
         <aside className="bg-white w-64 min-h-screen flex flex-col">
-          <div className="bg-white border-r border-b px-4 h-10 flex items-center">
+          <div className="bg-white border-r border-b px-4 h-12 flex items-center">
             <span className="text-blue py-2">Hello UserName</span>
           </div>
           <div className="border-r flex-grow">
             <nav>
               <ul>
-                <li className="p-3">
+                <li className="p-3 flex flex-grow items-center justify-between px-5 hover:bg-gray-200 hover:text-gray-700">
                   <Link href="/project">My Projects</Link>
+                  <span>2</span>
                 </li>
-                <li className="p-3">
+                <li className="p-3 flex flex-grow items-center justify-between px-5 hover:bg-gray-200 hover:text-gray-700">
                   <Link href="/project">Organizations</Link>
+                  <span>1</span>
                 </li>
-                <li className="p-3">
+                <li className="p-3 flex flex-grow items-center justify-between px-5 hover:bg-gray-200 hover:text-gray-700">
                   <Link href="/project">Chat</Link>
+                  <span>23</span>
                 </li>
-                <li className="p-3">
+                <li className="p-3 px-5 hover:bg-gray-200 hover:text-gray-700">
                   <Link href="/project">Comments</Link>
                 </li>
-                <li className="p-3">
-                  <Link href="/project">Settings</Link>
+                <li className="p-3 px-5 hover:bg-gray-200 hover:text-gray-700">
+                  <Link href="/editProfile">Update Profile</Link>
                 </li>
               </ul>
             </nav>
@@ -46,7 +49,7 @@ const UserPage = () => {
         </aside>
       </Transition>
       <main className="flex-grow flex flex-col min-h-screen">
-        <header className="bg-white border-b h-10 flex items-center justify-center">
+        <header className="bg-white border-b h-12 flex items-center justify-center">
           {isClosed ? (
             <button
               tabIndex="1"
