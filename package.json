@@ -20,22 +20,23 @@
     "next": "11.0.1",
     "next-auth": "^3.27.2",
     "next-themes": "^0.0.15",
-    "npm": "^7.19.1",
     "pg": "^8.6.0",
+    "pusher": "^5.0.0",
+    "pusher-js": "^7.0.3",
     "react": "17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "17.0.2",
     "react-redux": "^7.2.4",
     "react-responsive": "^8.2.0",
-    "react-transition-group": "^4.4.2",
-    "twind": "^0.16.16",
-    "windicss": "^3.1.4"
+    "react-transition-group": "^4.4.2"
   },
   "devDependencies": {
+    "@tailwindcss/jit": "^0.1.18",
+    "autoprefixer": "^10.2.6",
     "eslint": "7.29.0",
     "eslint-config-next": "11.0.1",
+    "postcss": "^8.3.5",
     "prisma": "^2.26.0",
-    "swr": "^0.5.6",
-    "windicss-webpack-plugin": "^1.2.5"
+    "tailwindcss": "^2.2.4"
   }
 }

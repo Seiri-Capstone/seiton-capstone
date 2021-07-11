@@ -60,7 +60,6 @@ export const fetchReorderColumn = createAsyncThunk(
     })
 
     Promise.all(reorderedCol.map(column => axios.put('/api/column', column)))
-
     return reorderedCol
   }
 )
@@ -134,7 +133,9 @@ export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    // updateColumn: (state, action) => (state.columns = action.payload.columns)
+    reorderTaskCol(state, action) {
+      return action.payload.project
+    }
   },
   extraReducers: {
     [createTask.fulfilled]: (state, action) => {
@@ -161,6 +162,10 @@ export const projectSlice = createSlice({
       state.columns = state.columns.filter(
         column => column.id !== action.payload.id
       )
+    },
+    [fetchProject.pending]: (state, action) => {
+      // https://redux-toolkit.js.org/api/createAsyncThunk
+      return action.payload
     },
     [fetchProject.fulfilled]: (state, action) => {
       return action.payload
@@ -212,7 +217,10 @@ export const projectSlice = createSlice({
   }
 })
 
-export const { updateTaskOrderSameCol, updateTaskOrderDiffCol } =
-  projectSlice.actions
+export const {
+  updateTaskOrderSameCol,
+  updateTaskOrderDiffCol,
+  reorderTaskCol
+} = projectSlice.actions
 
 export default projectSlice.reducer

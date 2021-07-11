@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { tw, apply } from 'twind'
+
 import Task from './Task'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import Link from 'next/link'
@@ -39,14 +39,14 @@ export default function Column(props) {
           <div className="flex flex-row justify-between items-center">
             <h3 className="text-2xl" {...provided.dragHandleProps}>
               {isEditActive ? (
-                <textarea
+                <input
                   ref={input => input && input.focus()}
                   className="my-4 text-lg leading-relaxed"
                   name="body"
                   value={columnName}
                   onChange={e => setColumnName(e.target.value)}
                   onKeyDown={handleKeyDown}
-                ></textarea>
+                ></input>
               ) : (
                 column.title
               )}

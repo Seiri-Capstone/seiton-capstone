@@ -7,30 +7,69 @@ import {
   fetchReorderColumn,
   fetchReorderTask,
   fetchTaskOrderDiffCol,
+  reorderTaskCol,
   createColumn
 } from '../../store/projectSlice'
-import { signOut, useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/client'
+import NewTask from './NewTask'
 import { useRouter } from 'next/router'
+import axios from 'axios'
+import Pusher from 'pusher-js'
 
 export default function ProjectBoard() {
   const [session, loading] = useSession()
-
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
-
   const router = useRouter()
+  const [isColumnReordered, setIsColumnReordered] = useState(false)
+  const [isTaskReordered, setIsTaskReordered] = useState(false)
+  const [isTaskDiffColReordered, setIsTaskDiffColReordered] = useState(false)
+
+  // const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
+  //   cluster: 'us2', // based on my website
+  //   authEndpoint: `/api/pusher/auth`, // make sure to change in production
+  //   auth: { params: { username: 'helen' } }
+  // })
+
   useEffect(() => {
-    // if (!session) {
-    //   router.push('/')
-    // }
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch, session, router])
+
+  // useEffect(() => {
+  //   if (isColumnReordered) {
+  //     setIsColumnReordered(false)
+  //     axios.post('/api/pusher/reorder', { project })
+  //   }
+
+  //   if (isTaskReordered) {
+  //     setIsTaskReordered(false)
+  //     axios.post('/api/pusher/reorder', { project })
+  //   }
+
+  //   if (isTaskDiffColReordered) {
+  //     setIsTaskDiffColReordered(false)
+  //     axios.post('/api/pusher/reorder', { project })
+  //   }
+  // }, [isColumnReordered, isTaskReordered, isTaskDiffColReordered])
+
+  // useEffect(() => {
+  //   const channel = pusher.subscribe('presence-channel')
+
+  //   channel.bind('reorder', async project => {
+  //     console.log(`🟢  pusher:reorder succeeded `, project)
+  //     dispatch(reorderTaskCol(project))
+  //   })
+
+  //   return () => {
+  //     pusher.unsubscribe('presence-channel')
+  //   }
+  // }, [])
 
   // const [task, setTask] = useState('')
   // const [title, setTitle] = useState('')
   // const columnId = props.props.column.id
   // const index = props.props.column.tasks.length
-  console.log('project', project)
+
   const addColumn = e => {
     const index = project.columns.length
     const title = `Column-${index}`
@@ -41,12 +80,11 @@ export default function ProjectBoard() {
 
   const onDragEnd = async result => {
     const { destination, source, draggableId, type } = result
-    //If there is no destination
+
     if (!destination) {
       return
     }
 
-    //If source and destination is the same
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -54,40 +92,44 @@ export default function ProjectBoard() {
       return
     }
 
-    // If you're dragging columns
+    // COLUMNS
+
     if (type === 'column') {
       const thunkArg = { result, project }
       await dispatch(fetchReorderColumn(thunkArg))
+      setIsColumnReordered(true)
       return
     }
 
-    // Anything below this happens if you're dragging tasks
-    const sourceNum = Number(source.droppableId[source.droppableId.length - 1])
-    const destNum = Number(
-      destination.droppableId[destination.droppableId.length - 1]
-    )
+    // 🗓️ TASKS
 
-    // this is really brute-forced and probably can be done in a better way
-    // sourceNum & destNum is retrieving the column.id from droppableId
-    // droppableId needs to be column-${column.id} or task-${task.id} in order to differentiate between column and task, if theyre both just numbers (that are the same), logic gets messed up
-    // for start and finish, need to -1 from source/dest num so it matches up to the array index
+    // We are grabbing the last character from the draggable ID
+    // i.e., "column-5" => 5
+    // Note that this will not work for 2 digit strings
+    // TODO: Find the index from the right of '-', and feed it
+    const sourceNumIdx = source.droppableId.lastIndexOf('-') + 1
+    const destNumIdx = destination.droppableId.lastIndexOf('-') + 1
+    const sourceNum = Number(source.droppableId.slice(sourceNumIdx))
+    const destNum = Number(destination.droppableId.slice(destNumIdx))
 
-    const start = project.columns.filter(col => col.id === sourceNum)[0]
-    const finish = project.columns.filter(col => col.id === destNum)[0]
-    const finishColId = finish.index
     const columns = project.columns
+    // start and finish are columns of tasks
+    const start = columns.find(col => col.id === sourceNum)
+    const finish = columns.find(col => col.id === destNum)
+    const finishColId = finish.index
 
-    // // If dropped inside the same column
+    // SAME COLUMN
     if (start === finish) {
-      const tasks = [...start.tasks]
+      const tasks = [...start.tasks] // Must copy, otherwise breaks
       const sourceIdx = source.index
       const destIdx = destination.index
       const thunkArg = { tasks, sourceIdx, destIdx, columns, finishColId }
-      dispatch(fetchReorderTask(thunkArg))
+      await dispatch(fetchReorderTask(thunkArg))
+      await setIsTaskReordered(true)
       return
     }
 
-    // // If dropped in a different column
+    // DIFFERENT COLUMN
     const startTasks = [...start.tasks]
     const finishTasks = [...finish.tasks]
     const sourceIdx = source.index
@@ -103,12 +145,11 @@ export default function ProjectBoard() {
       columns
     }
 
-    dispatch(fetchTaskOrderDiffCol(thunkArg))
+    await dispatch(fetchTaskOrderDiffCol(thunkArg))
+    await setIsTaskDiffColReordered(true)
     return
   }
-  // if (!session) {
-  //   return "You're not logged in!"
-  // } else {
+
   return (
     <React.Fragment>
       <div className="flex justify-end mr-12">
@@ -138,13 +179,6 @@ export default function ProjectBoard() {
         </Droppable>
       </DragDropContext>
       {/* {toggleTask && <NewTask />} */}
-      <button
-        type="submit"
-        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-        onClick={() => signOut()}
-      >
-        SIGN OUT
-      </button>
     </React.Fragment>
   )
 }
