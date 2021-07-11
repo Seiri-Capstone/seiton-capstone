@@ -1,12 +1,23 @@
 import React, { useState } from 'react'
-import useModal from './CustomModalHook'
+// import useModal from './CustomModalHook'
 import EditTaskModal from './EditTaskModal'
 import DeleteTaskModal from './DeleteTaskModal'
+import Transition from './SideBarTransition'
 
 export default function TaskDropdownMenu({ task }) {
   const [isActive, setIsActive] = useState(false)
-  const { isShowing, toggle } = useModal()
+  // const { isShowing, toggle } = useModal()
+  const [isClosed, setClosed] = useState(false)
   const [show, setShow] = useState(false)
+  const [isShowing, setIsShowing] = useState(false)
+
+  function toggle() {
+    setClosed(!isClosed)
+    setIsShowing(!isShowing)
+  }
+  function toggleEdit() {
+    setClosed(!isClosed)
+  }
 
   return (
     <React.Fragment>
@@ -27,18 +38,42 @@ export default function TaskDropdownMenu({ task }) {
             ></path>
           </svg>
         </button>
+        <Transition
+          appear={true}
+          show={isClosed}
+          enter="transition-opacity duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-75"
+          leave="transition-opacity duration-300"
+          leaveFrom="opacity-75"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black opacity-0" />
+        </Transition>
 
         <ul className={isActive ? 'block' : 'hidden'}>
           <li>
-            <button onClick={() => setShow(true)}>Edit</button>
+            <button
+              onClick={() => {
+                setShow(true)
+                toggleEdit()
+              }}
+            >
+              Edit
+            </button>
           </li>
           <li>
             <button onClick={toggle}>Delete</button>
           </li>
         </ul>
       </div>
-      <EditTaskModal task={task} show={show} onClose={() => setShow(false)} />
-      <DeleteTaskModal isShowing={isShowing} hide={toggle} taskId={task.id} />
+      <EditTaskModal
+        task={task}
+        show={show}
+        toggleEdit={toggleEdit}
+        onClose={() => setShow(false)}
+      />
+      <DeleteTaskModal isShowing={isShowing} toggle={toggle} taskId={task.id} />
     </React.Fragment>
   )
 }

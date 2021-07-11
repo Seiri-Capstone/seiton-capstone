@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { signOut } from 'next-auth/client'
+import Link from 'next/link'
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(true)
@@ -144,9 +145,9 @@ export default function Navbar() {
                 clipRule="evenodd"
               ></path>
             </svg>
-            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
-              User Profile
-            </span>
+            <Link href="/profile">
+              <a>My Profile</a>
+            </Link>
           </a>
           <button
             onClick={() => signOut()}

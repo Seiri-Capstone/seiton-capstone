@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import marked from 'marked'
 import { fetchEditTask } from '../../store/projectSlice'
 
-export default function EditTaskModal({ task, show, onClose }) {
+export default function EditTaskModal({ task, show, toggleEdit, onClose }) {
   const [taskBody, setTaskBody] = useState(task.body)
   const [isEditActive, setEditActive] = useState(false)
 
@@ -58,7 +58,10 @@ export default function EditTaskModal({ task, show, onClose }) {
               <button
                 className="text-red-500  font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={onClose}
+                onClick={() => {
+                  onClose()
+                  toggleEdit()
+                }}
               >
                 Close
               </button>
