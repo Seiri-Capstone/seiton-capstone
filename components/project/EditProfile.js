@@ -2,7 +2,7 @@ import React from 'react'
 
 const Profile = () => {
   return (
-    <section className="">
+    <section className="bg-gray-200 w-80 h-120 rounded-lg m-4 p-4 flex justify-center">
       <h1 className="">My Profile</h1>
       <form className="" onSubmit={console.log('hi')}>
         <div className="">
