@@ -67,7 +67,7 @@ const options = {
   callbacks: {
     redirect: async (url, _) => {
       if (url === '/') {
-        return Promise.resolve('/project')
+        return Promise.resolve('/projects/1')
       }
       return Promise.resolve('/')
     }
