@@ -11,7 +11,7 @@ export default function MyOrgs() {
   console.log('id', id)
 
   useEffect(() => {
-    dispatch(fetchSingleOrg(1))
+    dispatch(fetchSingleOrg(id))
   }, [])
 
   console.log('single org projects', org.projects)
