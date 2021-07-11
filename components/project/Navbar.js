@@ -144,9 +144,9 @@ export default function Navbar() {
                 clipRule="evenodd"
               ></path>
             </svg>
-            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
-              User Profile
-            </span>
+            <Link href="/profile">
+              <a>My Profile</a>
+            </Link>
           </a>
           <button
             onClick={() => signOut()}

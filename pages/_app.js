@@ -3,7 +3,6 @@ import store from '../store'
 import '../styles/global.css'
 import { Provider as NextAuthProvider } from 'next-auth/client'
 import { ThemeProvider } from 'next-themes'
-import 'windi.css'
 import '@fontsource/ibm-plex-serif'
 import '@fontsource/ibm-plex-serif/500.css'
 
@@ -20,4 +19,3 @@ const App = ({ Component, pageProps }) => {
 }
 
 export default App
-// export default withTwindApp(twindConfig, App)

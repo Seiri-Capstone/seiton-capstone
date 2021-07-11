@@ -5,9 +5,8 @@ import { deleteTask } from '../../store/projectSlice'
 
 // Reusable modal, copy to new component and modify to your needs
 // working example on how to use it, look at Task model, only 4 lines of code
-function DeleteTaskModal({ isShowing, hide, taskId }) {
+function DeleteTaskModal({ isShowing, toggle, taskId }) {
   const dispatch = useDispatch()
-
   //delete task handler
   const submitHandle = event => {
     dispatch(deleteTask(event.target.value))
@@ -15,7 +14,7 @@ function DeleteTaskModal({ isShowing, hide, taskId }) {
 
   return isShowing
     ? ReactDOM.createPortal(
-        <div className=" justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+        <div className="z-20 justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
           <div className="relative w-100 h-40 my-6 mx-auto ">
             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
               <button
@@ -23,7 +22,7 @@ function DeleteTaskModal({ isShowing, hide, taskId }) {
                 className=" flex justify-end mr-3 focus:outline-none"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={hide}
+                onClick={toggle}
               >
                 <span
                   className=" flex justify-end outline-none  border-solid"
@@ -48,7 +47,7 @@ function DeleteTaskModal({ isShowing, hide, taskId }) {
                   <button
                     className="mr-2 border px-2 rounded text-black-800 hover:text-green-500 border-black-500 focus:outline-none"
                     type="button"
-                    onClick={hide}
+                    onClick={toggle}
                   >
                     Cancel
                   </button>

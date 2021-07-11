@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { tw, apply } from 'twind'
+
 import Task from './Task'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import Link from 'next/link'
@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux'
 export default function Column(props) {
   const dispatch = useDispatch()
   const column = props.column
-
   const [columnName, setColumnName] = useState(column.title)
   const [isEditActive, setEditActive] = useState(false)
 
