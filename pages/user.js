@@ -1,7 +1,7 @@
 import React from 'react'
 import UserPage from '../components/project/UserPage'
-const profile = () => {
+const user = () => {
   return <UserPage />
 }
 
-export default profile
+export default user
