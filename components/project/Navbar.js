@@ -144,7 +144,7 @@ export default function Navbar() {
                 clipRule="evenodd"
               ></path>
             </svg>
-            <Link href="/profile">
+            <Link href="/user">
               <a>My Profile</a>
             </Link>
           </a>
