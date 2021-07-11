@@ -57,7 +57,7 @@ export default function Navbar() {
               ></path>
             </svg>
             <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
-              Organization
+              Organizations
             </span>
           </a>
 

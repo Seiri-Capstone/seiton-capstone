@@ -1,0 +1,14 @@
+/orgs --> user specific org
+
+/orgs/[id] --> single org view listing users (admin functionality) & projects only viewable to session user
+
+/projects --> my projects (spread across orgs) for session user
+
+/projects/[id] --> project board
+
+/tasks --> my tasks (spread across orgs/projects) for session user
+
+/user --> user profile (ability to edit your account information)
+
+
+
