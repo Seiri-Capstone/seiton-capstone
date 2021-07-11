@@ -6,11 +6,16 @@ import Modal from './DeleteTaskModal'
 import useModal from './CustomModalHook'
 import TaskDropdownMenu from './TaskDropdownMenu'
 import Comments from './Comments'
+import { useSession } from 'next-auth/client'
+import { useDispatch } from 'react-redux'
 
 export default function Task({ task, index }) {
   const { isShowing, toggle } = useModal()
   const [show, setShow] = useState(false)
+  const [showComments, setShowComments] = useState(false)
   const taskId = task.id
+  const [session] = useSession()
+  const dispatch = useDispatch()
 
   return (
     <React.Fragment>
@@ -31,9 +36,25 @@ export default function Task({ task, index }) {
                 __html: marked(task.body)
               }}
             ></div>
-            <p className="text-sm font-bold text-gray-500">Comments</p>
+            <p className="text-sm font-bold text-gray-500">
+              Comments{' '}
+              <span
+                className="text-xs text-blue-300 px-2 border border-blue-300 rounded"
+                onClick={() => setShowComments(!showComments)}
+              >
+                show
+              </span>
+              <span
+                className="text-xs text-blue-300 px-2 border border-blue-300 rounded"
+                onClick={() => {
+                  console.log('dispatched!')
+                }}
+              >
+                add
+              </span>
+            </p>
             <ul>
-              {task.comments.length ? (
+              {task.comments?.length && showComments ? (
                 <Comments comments={task.comments} />
               ) : null}
             </ul>
