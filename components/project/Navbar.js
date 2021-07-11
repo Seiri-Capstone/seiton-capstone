@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { signOut } from 'next-auth/client'
+import Link from 'next/link'
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(true)
@@ -40,10 +41,7 @@ export default function Navbar() {
             </span>
           </a>
 
-          <a
-            className="flex items-center mt-5 py-2 px-8 text-gray-400 border-r-4 border-gray-800 hover:bg-gray-700 hover:text-gray-100 hover:border-gray-100"
-            href="#"
-          >
+          <a className="flex items-center mt-5 py-2 px-8 text-gray-400 border-r-4 border-gray-800 hover:bg-gray-700 hover:text-gray-100 hover:border-gray-100">
             <svg
               className="w-6 h-6"
               fill="currentColor"
