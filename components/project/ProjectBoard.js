@@ -30,6 +30,7 @@ export default function ProjectBoard() {
   //   authEndpoint: `/api/pusher/auth`, // make sure to change in production
   //   auth: { params: { username: 'helen' } }
   // })
+  console.log('project in projectboard', project)
   useEffect(() => {
     dispatch(fetchProject(1)) //hard coded for now
   }, [dispatch, session, router])

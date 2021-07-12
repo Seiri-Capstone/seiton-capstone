@@ -17,15 +17,17 @@ export default function MyProjects() {
     <div>
       <h1>List of my Projects</h1>
       {projects.map(project => (
-        <Link href={`/projects/${project.projectId}`} key={project.projectId}>
-          <a>
-            <div>
-              Project Name: {project.project.name}
-              <br />
-              Organization:{project.project.org.name}
-            </div>
-          </a>
-        </Link>
+        <div key={project.projectId}>
+          <Link href={`/projects/${project.projectId}`}>
+            <a>Project Name: {project.project.name}</a>
+          </Link>
+          {'<-- click to go to this project'}
+          <br />
+          <Link href={`/orgs/${project.project.orgId}`}>
+            <a>Organization:{project.project.org.name}</a>
+          </Link>
+          {'<-- click to go to this org'}
+        </div>
       ))}
     </div>
   )
