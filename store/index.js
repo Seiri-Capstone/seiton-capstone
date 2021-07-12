@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 // import { projectApi } from './apiSlice'
 import projectReducer from './projectSlice'
+import projectsReducer from './projectsSlice'
 import orgsReducer from './orgsSlice'
 import orgReducer from './orgSlice'
 
@@ -9,7 +10,8 @@ const store = configureStore({
   reducer: {
     project: projectReducer,
     orgs: orgsReducer,
-    org: orgReducer
+    org: orgReducer,
+    projects: projectsReducer
     // [projectApi.reducerPath]: projectApi.reducer
   }
   // middleware: getDefaultMiddleware =>

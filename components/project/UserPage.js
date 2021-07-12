@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/client'
 import EditProfile from './EditProfile'
@@ -10,6 +10,11 @@ const UserPage = () => {
   const [isShowing, setIsShowing] = useState(false)
   const [session] = useSession()
   const dispatch = useDispatch()
+
+  // useEffect(() => {
+  //   console.log(session)
+  //   console.log(session.user.user)
+  // }, [session])
 
   function toggleUserUpdate() {
     // setClosed(!isClosed)
@@ -36,9 +41,7 @@ const UserPage = () => {
             <div className="bg-white border-r border-b px-4 h-12 flex items-center">
               <span className="text-blue py-2">
                 {`Hello`}
-                {/* // ${
-              //   session ? session.user.name : session.user.email
-              // } */}
+                {(session && session.user.name) || session.user.email}
               </span>
             </div>
             <div className="border-r flex-grow">
