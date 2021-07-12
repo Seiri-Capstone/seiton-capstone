@@ -13,15 +13,15 @@ export default function MyOrgs() {
     dispatch(fetchOrgs())
   }, [dispatch])
 
-  const addOrg = () => {}
+  console.log('state', orgs)
 
   return (
     <div>
       <h1>List of my orgs</h1>
       {orgs.map(org => (
-        <Link href={`/orgs/${org.orgId}`} key={org.orgId}>
+        <Link href={`/orgs/${org.id}`} key={org.id}>
           <a>
-            <div>{org.org.name}</div>
+            <div>{org.name}</div>
           </a>
         </Link>
       ))}

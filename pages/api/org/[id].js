@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       message: 'You must be signed in to view this page.'
     })
   } else {
-    // 📡 GET /api/org/
+    // 📡 GET /api/org/:id
     if (req.method === 'GET') {
       try {
         const { id } = req.query
@@ -45,28 +45,6 @@ export default async function handler(req, res) {
       } catch (error) {
         console.error(error) // Which one is idiomatic?
         throw new Error('Error getting org!')
-      }
-    }
-    // 📡 POST /api/org/
-    if (req.method === 'POST') {
-      try {
-        const { org } = req.body
-        const newOrg = await prisma.org.create({ data: org })
-
-        // const user = await prisma.user.update({
-        //   where: { email: session.user.email },
-        //   data: {
-        //     orgs: {
-        //       connect: {
-        //         org
-        //       }
-        //     }
-        //   }
-        // })
-
-        res.status(200).json(newOrg)
-      } catch (error) {
-        console.log('error in org post request', error)
       }
     }
   }

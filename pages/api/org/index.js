@@ -12,23 +12,81 @@ export default async function handler(req, res) {
     // 📡 GET /api/org/
     if (req.method === 'GET') {
       try {
-        //get user by session
+        //get user by session and eager load org info
         const user = await prisma.user.findUnique({
-          where: { email: session.user.email }
-        })
-
-        //get organizations that user is associated with
-        const result = await prisma.userOrg.findMany({
-          where: { userId: user.id },
+          where: { email: session.user.email },
           include: {
-            org: true
+            orgs: {
+              include: {
+                org: true
+              }
+            }
           }
         })
 
-        res.status(200).json(result)
+        const orgs = user.orgs.map(org => {
+          return org.org
+        })
+
+        //get organizations that user is associated with
+        // const result = await prisma.userOrg.findMany({
+        //   where: { userId: user.id },
+        //   include: {
+        //     org: true
+        //   }
+        // })
+
+        res.status(200).json(orgs)
       } catch (error) {
         console.error(error) // Which one is idiomatic?
         throw new Error('Error getting org!')
+      }
+    }
+
+    // 📡 POST /api/org/
+    if (req.method === 'POST') {
+      try {
+        // const { org } = req.body
+        const org = { name: 'MEOW' }
+
+        // console.log('org', org)
+
+        const newOrg = await prisma.org.create({ data: org })
+
+        // const user = await prisma.user.update({
+        //   where: { email: session.user.email },
+        //   data: {
+        //     orgs: {
+        //       create: {
+        //         org: {
+        //           create: org
+        //         }
+        //       }
+        //     }
+        //   }
+        // })
+
+        const user = await prisma.user.update({
+          where: { email: session.user.email },
+          data: {
+            orgs: {
+              connect: { id: newOrg.id, name: newOrg.name }
+            }
+          }
+        })
+
+        // const result = await prisma.userOrg.findUnique({
+        //   where: { userId: user.id, orgId: newOrg.id },
+        //   include: {
+        //     org: true
+        //   }
+        // })
+
+        console.log(user.orgs)
+
+        res.status(200).json(newOrg)
+      } catch (error) {
+        console.log('error in org post request', error)
       }
     }
   }

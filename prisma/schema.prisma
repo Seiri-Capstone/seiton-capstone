@@ -72,7 +72,7 @@ model UserOrg {
   userId    Int
   org       Org     @relation(fields: [orgId], references: [id])
   orgId     Int
-  isCreator Boolean @default(true)
+  isCreator Boolean @default(false)
 
   @@id([userId, orgId])
 }
