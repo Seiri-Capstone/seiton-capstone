@@ -26,8 +26,10 @@ export default function Org() {
 
   return (
     <React.Fragment>
+      <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
+        {org.name}
+      </h1>
       <div>
-        <h1>Organization: {org.name}</h1>
         <h1>Projects</h1>
         {org.projects.map(project => (
           <Link href={`/projects/${project.id}`} key={project.id}>
