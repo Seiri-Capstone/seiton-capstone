@@ -70,6 +70,10 @@ const options = {
         return Promise.resolve('/projects/1')
       }
       return Promise.resolve('/')
+    },
+    session: async (session, user) => {
+      session.userId = user.id
+      return Promise.resolve(session)
     }
   },
   session: {
