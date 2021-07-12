@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/client'
 import EditProfile from './EditProfile'
@@ -11,6 +11,11 @@ const UserPage = () => {
   const [session] = useSession()
   const dispatch = useDispatch()
 
+  // useEffect(() => {
+  //   console.log(session)
+  //   console.log(session.user.user)
+  // }, [session])
+
   function toggleUserUpdate() {
     // setClosed(!isClosed)
     setIsShowing(!isShowing)
@@ -20,7 +25,6 @@ const UserPage = () => {
     event.preventDefault()
   }
 
-  console.log('session', session)
   return (
     <React.Fragment>
       <div className="flex bg-gray-100">
@@ -34,11 +38,8 @@ const UserPage = () => {
         >
           <aside className="bg-gray-800 w-64 min-h-screen flex flex-col">
             <div className="px-4 h-12 flex items-center">
-              <span className="text-blue py-2">
-                {/* {`Hello`} */}
-                {/* // ${
-              //   session ? session.user.name : session.user.email
-              // } */}
+              <span className="text-blue-200 py-2">
+                Hello {session?.user.name}
               </span>
             </div>
             <div className="border-r flex-grow">
@@ -118,8 +119,9 @@ const UserPage = () => {
           </header>
           <div className="m-10">
             <h2 className=" flex flex-column text-5xl">User information</h2>
-            <h2 className="mt-5 flex flex-column text-3xl">{`Hello`}</h2>
-            {/* ${session ? session.user.name : session.user.email} */}
+            <h2 className="mt-5 flex flex-column text-3xl">
+              Hello {session ? session.user.name : 'friend'}!
+            </h2>
             <button
               className="mt-5 border px-2  rounded text-black-800 hover:text-green-400 border-black hover:border-green-400 focus:outline-none"
               onClick={() => setIsShowing(!isShowing)}

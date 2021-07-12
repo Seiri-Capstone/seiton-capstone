@@ -30,9 +30,11 @@ export default function ProjectBoard() {
   //   authEndpoint: `/api/pusher/auth`, // make sure to change in production
   //   auth: { params: { username: 'helen' } }
   // })
+  console.log('project in projectboard', project)
+  const { id } = router.query
   useEffect(() => {
-    dispatch(fetchProject(1)) //hard coded for now
-  }, [dispatch, session, router])
+    dispatch(fetchProject(id))
+  }, [dispatch, session, router, id])
 
   // useEffect(() => {
   //   if (isColumnReordered) {

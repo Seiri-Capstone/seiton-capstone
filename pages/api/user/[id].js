@@ -13,9 +13,11 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const user = await prisma.user.findUnique({
         where: {
-          email: req.body.email
+          // email: req.body.email
+          email: session.user.email
         }
       })
+      console.log('result in api/user get', result)
       res.json(result)
     } else if (req.method === 'POST') {
       const { name, email } = req.body
