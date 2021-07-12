@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { fetchSingleOrg, createProject } from '../../store/orgSlice'
+import Link from 'next/link'
 
 export default function Org() {
   const org = useSelector(state => state.org) || {}
@@ -29,7 +30,11 @@ export default function Org() {
         <h1>Organization: {org.name}</h1>
         <h1>Projects</h1>
         {org.projects.map(project => (
-          <h1 key={project.id}>{project.name}</h1>
+          <Link href={`/projects/${project.id}`} key={project.id}>
+            <a>
+              <h1>{project.name}</h1>
+            </a>
+          </Link>
         ))}
       </div>
       <div>
