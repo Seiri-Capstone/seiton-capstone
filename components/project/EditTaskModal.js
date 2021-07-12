@@ -45,6 +45,7 @@ export default function EditTaskModal({ task, show, toggleEdit, onClose }) {
                 <div className="my-6 mx-auto">
                   <h3 className="text-3xl font-semibold">{task.title}</h3>
                   <div
+                    className="prose prose-sm"
                     dangerouslySetInnerHTML={{
                       __html: marked(taskBody)
                     }}
