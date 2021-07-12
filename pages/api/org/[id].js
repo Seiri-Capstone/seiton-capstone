@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       message: 'You must be signed in to view this page.'
     })
   } else {
-    // 📡 GET /api/org/
+    // 📡 GET /api/org/:id
     if (req.method === 'GET') {
       try {
         const { id } = req.query

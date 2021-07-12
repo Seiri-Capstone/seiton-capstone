@@ -12,23 +12,71 @@ export default async function handler(req, res) {
     // 📡 GET /api/org/
     if (req.method === 'GET') {
       try {
+        //get user by session and eager load org info
+        const user = await prisma.user.findUnique({
+          where: { email: session.user.email },
+          include: {
+            orgs: {
+              include: {
+                org: true
+              }
+            }
+          }
+        })
+
+        const orgs = user.orgs.map(org => {
+          return org.org
+        })
+
+        //get organizations that user is associated with
+        // const result = await prisma.userOrg.findMany({
+        //   where: { userId: user.id },
+        //   include: {
+        //     org: true
+        //   }
+        // })
+
+        res.status(200).json(orgs)
+      } catch (error) {
+        console.error(error) // Which one is idiomatic?
+        throw new Error('Error getting org!')
+      }
+    }
+
+    // 📡 POST /api/org/
+    if (req.method === 'POST') {
+      try {
+        const org = req.body
+
         //get user by session
         const user = await prisma.user.findUnique({
           where: { email: session.user.email }
         })
 
-        //get organizations that user is associated with
-        const result = await prisma.userOrg.findMany({
-          where: { userId: user.id },
-          include: {
-            org: true
+        //create org
+        const newOrg = await prisma.org.create({ data: org })
+
+        //connect user and org
+        const result = await prisma.userOrg.create({
+          data: {
+            user: {
+              connect: {
+                id: user.id
+              }
+            },
+            org: {
+              connect: {
+                id: newOrg.id
+              }
+            }
           }
         })
 
-        res.status(200).json(result)
+        //wanted to avoid multiple commands, but needed newOrg Id
+
+        res.status(200).json(newOrg)
       } catch (error) {
-        console.error(error) // Which one is idiomatic?
-        throw new Error('Error getting org!')
+        console.log('error in org post request', error)
       }
     } else if (req.method === 'POST') {
       try {

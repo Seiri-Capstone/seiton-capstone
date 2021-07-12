@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function main() {
+  await prisma.org.create({ data: { name: 'test-org' } })
   await prisma.org.create({
     data: {
       name: 'seiton-team',
@@ -23,7 +24,8 @@ async function main() {
                       },
                       {
                         title: 'task2',
-                        body: 'practice using react hooks by refactoring class components',
+                        body:
+                          'practice using react hooks by refactoring class components',
                         index: 1
                       }
                     ]
