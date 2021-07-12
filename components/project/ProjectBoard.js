@@ -153,6 +153,9 @@ export default function ProjectBoard() {
 
   return (
     <React.Fragment>
+      <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
+        {project.name}
+      </h1>
       <div className="flex justify-end mr-12">
         <button onClick={addColumn}>+ Add New Column</button>
       </div>
