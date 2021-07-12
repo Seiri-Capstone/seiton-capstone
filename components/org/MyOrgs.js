@@ -9,18 +9,18 @@ export default function MyOrgs() {
 
   const [name, setName] = useState('')
 
+  useEffect(() => {
+    dispatch(fetchOrgs())
+  }, [dispatch])
+
   const addOrg = e => {
     e.preventDefault()
     dispatch(createOrg({ name: name }))
   }
 
-  useEffect(() => {
-    dispatch(fetchOrgs())
-  }, [dispatch])
-
   return (
     <div>
-      <h1>List of my orgs</h1>
+      <h1>List of my organizations</h1>
       {orgs.map(org => (
         <Link href={`/orgs/${org.orgId}`} key={org.orgId}>
           <a>
@@ -29,7 +29,7 @@ export default function MyOrgs() {
         </Link>
       ))}
       <br />
-      {/* add new org */}
+      {/* add new org, currently a form but we should make into a modal  */}
       <div>
         <form className="p-4 my-3 max-w-3xl mx-auto space-y-6 rounded-lg">
           <label>
@@ -44,7 +44,7 @@ export default function MyOrgs() {
             className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
             onClick={addOrg}
           >
-            Add New Org
+            Add New Organization
           </button>
         </form>
       </div>

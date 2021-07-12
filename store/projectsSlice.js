@@ -7,7 +7,7 @@ const initialState = []
 export const fetchProjects = createAsyncThunk(
   'projects/fetchProjects',
   async () => {
-    const { data: projects } = await axios.get('/api/projects')
+    const { data: projects } = await axios.get('/api/project')
     return projects
   }
 )
