@@ -8,24 +8,27 @@ import { deleteColumn, updateColumnName } from '../../store/projectSlice'
 import { useDispatch } from 'react-redux'
 
 export default function Column(props) {
+  const { setCol, delCol, addTask, column } = props
   const dispatch = useDispatch()
-  const column = props.column
+
   const [columnName, setColumnName] = useState(column.title)
   const [isEditActive, setEditActive] = useState(false)
 
   const [toggleTask, setToggleTask] = useState(false)
   const toggleNewTask = () => setToggleTask(!toggleTask)
 
-  const handleKeyDown = e => {
+  const handleKeyDown = async e => {
     if (e.key === 'Enter') {
       setEditActive(false)
       //need to force into an array to pass down new state change?
-      dispatch(updateColumnName([column, columnName]))
+      await dispatch(updateColumnName([column, columnName]))
+      await setCol(true)
     }
   }
 
-  const removeColumn = e => {
-    dispatch(deleteColumn(column.id))
+  const removeColumn = async e => {
+    await dispatch(deleteColumn(column.id))
+    await delCol(true)
   }
 
   return (
@@ -67,7 +70,13 @@ export default function Column(props) {
             </div>
           </div>
 
-          {toggleTask && <NewTask props={props} toggleTask={toggleNewTask} />}
+          {toggleTask && (
+            <NewTask
+              addTaskSocket={addTask}
+              props={props}
+              toggleTask={toggleNewTask}
+            />
+          )}
           <Droppable droppableId={`column-${column.id}`} type="task">
             {provided => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
