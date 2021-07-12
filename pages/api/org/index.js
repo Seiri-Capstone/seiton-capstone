@@ -78,6 +78,36 @@ export default async function handler(req, res) {
       } catch (error) {
         console.log('error in org post request', error)
       }
+    } else if (req.method === 'POST') {
+      try {
+        //get user by session
+        const user = await prisma.user.findUnique({
+          where: { email: session.user.email }
+        })
+        //create new org
+        const { name } = req.body
+        const newOrg = await prisma.org.create({
+          data: {
+            name
+          }
+        })
+        //create new association between org and current user
+        const newUserOrg = await prisma.userOrg.create({
+          data: { userId: user.id, orgId: newOrg.id }
+        })
+        //find all orgs belonging to user to send back to thunk
+        //is there another way to do this?
+        const result = await prisma.userOrg.findMany({
+          where: { userId: user.id },
+          include: {
+            org: true
+          }
+        })
+        res.status(200).json(result)
+      } catch (error) {
+        console.error(error)
+        throw new Error('Error creating org!')
+      }
     }
   }
 }

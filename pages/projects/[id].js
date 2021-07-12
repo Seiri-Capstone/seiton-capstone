@@ -9,9 +9,6 @@ const Project = () => {
       <div className="flex">
         <Navbar />
         <div className="flex-col">
-          <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
-            My Project
-          </h1>
           <ProjectBoard />
         </div>
       </div>

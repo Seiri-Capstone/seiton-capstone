@@ -11,12 +11,24 @@ export const fetchSingleOrg = createAsyncThunk(
   }
 )
 
+export const createProject = createAsyncThunk(
+  'org/createProject',
+  async body => {
+    const { data: createdProject } = await axios.post('/api/project', body)
+    console.log('createdProject in thunk', createdProject)
+    return createdProject
+  }
+)
+
 export const orgsSlice = createSlice({
   name: 'org',
   initialState,
   reducers: {},
   extraReducers: {
     [fetchSingleOrg.fulfilled]: (state, action) => {
+      return action.payload
+    },
+    [createProject.fulfilled]: (state, action) => {
       return action.payload
     }
   }

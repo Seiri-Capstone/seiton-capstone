@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 /* Can define base styles here for quick-n-dirty */
+/* h1 {
+  @apply text-2xl text-gray-700 dark:text-red-200;
+}, */
 h1 {
-  @apply font-bold text-2xl text-gray-700 dark:text-red-200;
+  @apply text-sm;
 }

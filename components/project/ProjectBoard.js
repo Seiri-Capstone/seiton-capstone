@@ -30,10 +30,11 @@ export default function ProjectBoard() {
   //   authEndpoint: `/api/pusher/auth`, // make sure to change in production
   //   auth: { params: { username: 'helen' } }
   // })
-
+  console.log('project in projectboard', project)
+  const { id } = router.query
   useEffect(() => {
-    dispatch(fetchProject(1)) //hard coded for now
-  }, [dispatch, session, router])
+    dispatch(fetchProject(id))
+  }, [dispatch, session, router, id])
 
   // useEffect(() => {
   //   if (isColumnReordered) {
@@ -152,6 +153,9 @@ export default function ProjectBoard() {
 
   return (
     <React.Fragment>
+      <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
+        {project.name}
+      </h1>
       <div className="flex justify-end mr-12">
         <button onClick={addColumn}>+ Add New Column</button>
       </div>

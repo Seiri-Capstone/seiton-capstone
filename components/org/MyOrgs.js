@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchOrgs } from '../../store/orgsSlice'
+import { fetchOrgs, createOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
 import CreateOrgModal from './CreateOrgModal'
 
@@ -8,6 +8,8 @@ export default function MyOrgs() {
   const orgs = useSelector(state => state.orgs)
   const dispatch = useDispatch()
   const [show, setShow] = useState(false)
+
+  const [name, setName] = useState('')
 
   useEffect(() => {
     dispatch(fetchOrgs())
@@ -17,7 +19,7 @@ export default function MyOrgs() {
 
   return (
     <div>
-      <h1>List of my orgs</h1>
+      <h1>List of my organizations</h1>
       {orgs.map(org => (
         <Link href={`/orgs/${org.id}`} key={org.id}>
           <a>
