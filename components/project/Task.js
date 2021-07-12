@@ -30,11 +30,13 @@ export default function Task({ task, index }) {
               <h3>{task.title}</h3>
               <TaskDropdownMenu show={show} task={task} />
             </div>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: marked(task.body)
-              }}
-            ></div>
+            <div className="prose">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: marked(task.body)
+                }}
+              ></div>
+            </div>
             <p className="text-sm font-bold text-gray-500">
               Comments{' '}
               <span
