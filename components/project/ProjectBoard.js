@@ -56,6 +56,13 @@ export default function ProjectBoard({ pusher }) {
     isColAdded,
     isTaskAdded
   ])
+  // const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
+  //   cluster: 'us2', // based on my website
+  //   authEndpoint: `/api/pusher/auth`, // make sure to change in production
+  //   auth: { params: { username: 'helen' } }
+  // })
+
+  const { id } = router.query
 
   useEffect(() => {
     console.log(`🟢  should run once: useEffect [] `)
