@@ -6,13 +6,14 @@ import { fetchEditTask } from '../../store/projectSlice'
 
 export default function EditTaskModal({ task, show, toggleEdit, onClose }) {
   const [taskBody, setTaskBody] = useState(task.body)
+  const [taskTitle, setTaskTitle] = useState(task.title)
   const [isEditActive, setEditActive] = useState(false)
 
   const dispatch = useDispatch()
 
   const handleSave = () => {
     setEditActive(false)
-    dispatch(fetchEditTask({ ...task, body: taskBody }))
+    dispatch(fetchEditTask({ ...task, title: taskTitle, body: taskBody }))
   }
 
   if (!show) return null
@@ -23,20 +24,26 @@ export default function EditTaskModal({ task, show, toggleEdit, onClose }) {
         <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
           {/*header*/}
           <div className="flex-col items-start p-5 border-b border-solid rounded-t">
-            <h3 className="text-3xl font-semibold">{task.title}</h3>
-
             {/*body*/}
             <div className="relative p-6 flex-auto">
               {isEditActive ? (
-                <textarea
-                  ref={input => input && input.focus()}
-                  className="my-4 text-lg leading-relaxed"
-                  name="body"
-                  value={taskBody}
-                  onChange={e => setTaskBody(e.target.value)}
-                ></textarea>
+                <div>
+                  <input
+                    className="text-3xl font-semibold"
+                    onChange={e => setTaskTitle(e.target.value)}
+                    value={taskTitle}
+                  />
+                  <textarea
+                    ref={input => input && input.focus()}
+                    className="my-4 text-lg leading-relaxed"
+                    name="body"
+                    value={taskBody}
+                    onChange={e => setTaskBody(e.target.value)}
+                  ></textarea>
+                </div>
               ) : (
                 <div className="my-6 mx-auto">
+                  <h3 className="text-3xl font-semibold">{task.title}</h3>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: marked(taskBody)
