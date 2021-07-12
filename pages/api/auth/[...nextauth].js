@@ -73,6 +73,7 @@ const options = {
     },
     session: async (session, user) => {
       session.userId = user.id
+      session.username = user.username
       return Promise.resolve(session)
     }
   },

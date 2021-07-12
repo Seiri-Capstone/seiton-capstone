@@ -8,12 +8,18 @@ export default function Org() {
   const org = useSelector(state => state.org) || {}
   const dispatch = useDispatch()
   const router = useRouter()
-  const { id } = router.query
+  const { query = {} } = router || {}
+  const { id = 0 } = query || {}
   const [name, setName] = useState('')
 
+  /* https://stackoverflow.com/questions/62716657/how-can-i-ensure-that-the-next-js-router-query-is-not-undefined */
   useEffect(() => {
-    dispatch(fetchSingleOrg(id))
-  }, [dispatch])
+    if (id) {
+      ;(async () => {
+        dispatch(fetchSingleOrg(id))
+      })()
+    }
+  }, [dispatch, id])
 
   const addProject = e => {
     e.preventDefault()
