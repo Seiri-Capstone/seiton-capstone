@@ -13,6 +13,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       try {
         const { id } = req.query
+        console.log(`🟢  GETAPI `)
         //get user by session
         const user = await prisma.user.findUnique({
           where: { email: session.user.email }
