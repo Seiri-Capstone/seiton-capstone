@@ -46,43 +46,33 @@ export default async function handler(req, res) {
     // 📡 POST /api/org/
     if (req.method === 'POST') {
       try {
-        // const { org } = req.body
-        const org = { name: 'MEOW' }
+        const org = req.body
 
-        // console.log('org', org)
+        //get user by session
+        const user = await prisma.user.findUnique({
+          where: { email: session.user.email }
+        })
 
+        //create org
         const newOrg = await prisma.org.create({ data: org })
 
-        // const user = await prisma.user.update({
-        //   where: { email: session.user.email },
-        //   data: {
-        //     orgs: {
-        //       create: {
-        //         org: {
-        //           create: org
-        //         }
-        //       }
-        //     }
-        //   }
-        // })
-
-        const user = await prisma.user.update({
-          where: { email: session.user.email },
+        //connect user and org
+        const result = await prisma.userOrg.create({
           data: {
-            orgs: {
-              connect: { id: newOrg.id, name: newOrg.name }
+            user: {
+              connect: {
+                id: user.id
+              }
+            },
+            org: {
+              connect: {
+                id: newOrg.id
+              }
             }
           }
         })
 
-        // const result = await prisma.userOrg.findUnique({
-        //   where: { userId: user.id, orgId: newOrg.id },
-        //   include: {
-        //     org: true
-        //   }
-        // })
-
-        console.log(user.orgs)
+        //wanted to avoid multiple commands, but needed newOrg Id
 
         res.status(200).json(newOrg)
       } catch (error) {
