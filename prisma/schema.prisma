@@ -12,19 +12,38 @@ generator client {
 }
 
 model User {
-  id             Int           @id @default(autoincrement())
-  name           String?
-  email          String?       @unique
-  email_verified DateTime?
-  image          String?
-  createdAt      DateTime      @default(now()) @map(name: "created_at")
-  updatedAt      DateTime?     @updatedAt @map(name: "updated_at")
-  orgs           UserOrg[]
-  tasks          Task[]
-  projects       UserProject[]
-  comments       Comment[]
+  id              Int           @id @default(autoincrement())
+  name            String?
+  email           String?       @unique
+  email_verified  DateTime?
+  image           String?
+  createdAt       DateTime      @default(now()) @map(name: "created_at")
+  updatedAt       DateTime?     @updatedAt @map(name: "updated_at")
+  orgs            UserOrg[]
+  tasks           Task[]
+  projects        UserProject[]
+  comments        Comment[]
+  sentInvites     Invitation[]  @relation("SentInvites")
+  receivedInvites Invitation[]  @relation("ReceivedInvites")
 
   @@map(name: "users")
+}
+
+model Invitation {
+  id             Int     @id @default(autoincrement())
+  sentFrom       User    @relation("SentInvites", fields: [sentUserId], references: [id])
+  sentUserId     Int
+  receivedBy     User    @relation(name: "ReceivedInvites", fields: [receivedUserId], references: [id])
+  receivedUserId Int
+  project        Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId      Int
+  status         Status  @default(PENDING)
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  DECLINED
 }
 
 model VerificationRequest {
@@ -46,6 +65,7 @@ model Project {
   orgId   Int
   columns Column[]
 
+  Invitation Invitation[]
 }
 
 model UserProject {
