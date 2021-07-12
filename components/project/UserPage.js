@@ -1,20 +1,26 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/client'
 import EditProfile from './EditProfile'
 import Transition from './SideBarTransition'
+import { useSelector, useDispatch } from 'react-redux'
 
 const UserPage = () => {
   const [isClosed, setClosed] = useState(false)
   const [isShowing, setIsShowing] = useState(false)
+  const [session] = useSession()
+  const dispatch = useDispatch()
 
   function toggleUserUpdate() {
-    setClosed(!isClosed)
+    // setClosed(!isClosed)
     setIsShowing(!isShowing)
   }
 
-  // const isStatic = useMediaQuery({
-  //   query: '(min-width: 640px)'
-  // })
+  const handleUpdate = event => {
+    event.preventDefault()
+  }
+
+  console.log('session', session)
   return (
     <React.Fragment>
       <div className="flex bg-gray-100">
@@ -28,17 +34,22 @@ const UserPage = () => {
         >
           <aside className="bg-white w-64 min-h-screen flex flex-col">
             <div className="bg-white border-r border-b px-4 h-12 flex items-center">
-              <span className="text-blue py-2">Hello UserName</span>
+              <span className="text-blue py-2">
+                {`Hello`}
+                {/* // ${
+              //   session ? session.user.name : session.user.email
+              // } */}
+              </span>
             </div>
             <div className="border-r flex-grow">
               <nav>
                 <ul>
                   <li className="p-3 flex flex-grow items-center justify-between px-5 hover:bg-gray-200 hover:text-gray-700">
-                    <Link href="/project/1">My Projects</Link>
+                    <Link href="/projects/1">Create Organization</Link>
                     <span>2</span>
                   </li>
                   <li className="p-3 flex flex-grow items-center justify-between px-5 hover:bg-gray-200 hover:text-gray-700">
-                    <Link href="/project">Organizations</Link>
+                    <Link href="/project">Create Project</Link>
                     <span>1</span>
                   </li>
                   <li className="p-3 flex flex-grow items-center justify-between px-5 hover:bg-gray-200 hover:text-gray-700">
@@ -48,10 +59,9 @@ const UserPage = () => {
                   <li className="p-3 px-5 hover:bg-gray-200 hover:text-gray-700">
                     <Link href="/project">Comments</Link>
                   </li>
-                  <li className="p-3 px-5 hover:bg-gray-200 hover:text-gray-700">
-                    {/* <Link href="/editProfile">Update Profile</Link> */}
-                    <button onClick={toggleUserUpdate}>Update Profile</button>
-                  </li>
+                  {/* <li className="p-3 px-5 hover:bg-gray-200 hover:text-gray-700"> */}
+                  {/* <Link href="/editProfile">Update Profile</Link> */}
+                  {/* </li> */}
                 </ul>
               </nav>
             </div>
@@ -106,15 +116,25 @@ const UserPage = () => {
               </button>
             </div>
           </header>
-          <div className="flex flex-column">{/* <ProjectBoard /> */}</div>
+          <div className="m-10">
+            <h2 className=" flex flex-column text-5xl">Users information</h2>
+            <h2 className="mt-5 flex flex-column text-3xl">{`Hello`}</h2>
+            {/* ${session ? session.user.name : session.user.email} */}
+            <button
+              className="mt-5 border px-2  rounded text-black-800 hover:text-green-400 border-black hover:border-green-400 focus:outline-none"
+              onClick={() => setIsShowing(!isShowing)}
+            >
+              Update Profile
+            </button>
+            <EditProfile
+              isShowing={isShowing}
+              toggleUserUpdate={toggleUserUpdate}
+              session={session}
+            />
+          </div>
         </main>
       </div>
       <div id="usermodal"></div>
-      <EditProfile
-        isShowing={isShowing}
-        isClosed={isClosed}
-        toggleUserUpdate={toggleUserUpdate}
-      />
     </React.Fragment>
   )
 }
