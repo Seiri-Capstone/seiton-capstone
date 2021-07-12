@@ -20,7 +20,11 @@ export default async function handler(req, res) {
         const result = await prisma.userProject.findMany({
           where: { userId: user.id },
           include: {
-            project: true
+            project: {
+              include: {
+                org: true
+              }
+            }
           }
         })
         res.status(200).json(result)

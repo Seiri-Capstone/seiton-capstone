@@ -19,7 +19,11 @@ export default function MyProjects() {
       {projects.map(project => (
         <Link href={`/projects/${project.projectId}`} key={project.projectId}>
           <a>
-            <div>{project.project.name}</div>
+            <div>
+              Project Name: {project.project.name}
+              <br />
+              Organization:{project.project.org.name}
+            </div>
           </a>
         </Link>
       ))}
