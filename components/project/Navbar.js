@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { signOut } from 'next-auth/client'
 import Link from 'next/link'
+import ThemeSwitch from '../ThemeSwitch'
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(true)
@@ -17,6 +18,7 @@ export default function Navbar() {
       }
     >
       <div className="w-64 h-screen bg-gray-800 mt-8 sm:mt-0">
+        <ThemeSwitch />
         <nav className="mt-10">
           <button
             className="text-gray-100"
