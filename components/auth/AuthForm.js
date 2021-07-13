@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import { signIn, signOut, useSession } from 'next-auth/client'
 // import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -46,9 +45,9 @@ export default function AuthForm() {
       <button
         type="submit"
         className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-        onClick={() => signIn()}
+        onClick={() => signIn('auth0')}
       >
-        Sign In or Sign Up
+        Sign In With Auth0
       </button>
       {/* </div> */}
       {/*error && error.response && <div> {error.response.data} </div>*/}
