@@ -48,20 +48,20 @@ const options = {
       domain: process.env.AUTH0_DOMAIN
     })
   ],
-  // callbacks: {
-  //   redirect: async (url, _) => {
-  //     if (url === '/') {
-  //       return Promise.resolve('/orgs')
-  //     }
-  //     return Promise.resolve('/')
-  //   },
-  //   session: async (session, user) => {
-  //     session.userId = user.id
-  //     session.username = user.username
-  //     console.log('⭕ SESSION CALLBACK!', session, 'user!!!', user)
-  //     return Promise.resolve(session)
-  //   }
-  // },
+  callbacks: {
+    redirect: async (url, _) => {
+      if (url === '/') {
+        return Promise.resolve('/orgs')
+      }
+      return Promise.resolve('/')
+    },
+    session: async (session, user) => {
+      session.userId = user.id
+      session.username = user.username
+      console.log('⭕ SESSION CALLBACK!', session, 'user!!!', user)
+      return Promise.resolve(session)
+    }
+  },
   session: {
     jwt: true,
     maxAge: 30 * 24 * 60 * 60 // 30 days

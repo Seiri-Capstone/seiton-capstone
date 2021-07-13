@@ -2,9 +2,10 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  sslmode  = require
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  sslmode   = require
+  sslaccept = accept_invalid_certs
 }
 
 generator client {
