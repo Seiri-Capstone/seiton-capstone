@@ -13,8 +13,8 @@ export const fetchInvitations = createAsyncThunk(
 
 export const fetchCreateInvite = createAsyncThunk(
   'invitations/fetchCreateInvite',
-  async invitation => {
-    const { data: newInvites } = await axios.post('/api/invitation', invitation)
+  async thunkArg => {
+    const { data: newInvites } = await axios.post('/api/invitation', thunkArg)
     return newInvites
   }
 )

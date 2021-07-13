@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ReactDOM from 'react-dom'
+import { useSession } from 'next-auth/client'
 import { fetchProjects } from '../../store/projectsSlice'
 import { fetchSingleOrg } from '../../store/orgSlice'
 import { fetchCreateInvite } from '../../store/invitationsSlice'
@@ -10,7 +11,12 @@ export default function SendInvite({ show, onClose }) {
   const selectedOrg = useSelector(state => state.org) || {}
   const [selectedProject, setSelectedProject] = useState({})
   const [receivingUser, setReceivingUser] = useState({})
+  const [session, loading] = useSession()
   const users = selectedOrg.users || []
+  const usersDropdown = users.filter(
+    user => user.user.name !== session?.user.name
+  )
+  console.log(usersDropdown)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -35,6 +41,7 @@ export default function SendInvite({ show, onClose }) {
 
   // console.log('selected', selectedProject)
   // console.log('user', receivingUser)
+  console.log('session', session?.user.name)
 
   if (!show) return null
   return ReactDOM.createPortal(
@@ -70,7 +77,7 @@ export default function SendInvite({ show, onClose }) {
                   <option value="select project..." selected>
                     select user
                   </option>
-                  {users.map((user, idx) => (
+                  {usersDropdown.map((user, idx) => (
                     <option key={user.userId} value={idx}>
                       {user.user.name}
                     </option>
