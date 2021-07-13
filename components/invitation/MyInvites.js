@@ -31,7 +31,7 @@ export default function MyInvites() {
   useEffect(() => {
     dispatch(fetchInvitations())
     setLoading(false)
-  }, [dispatch])
+  }, [dispatch, invitations])
 
   const handleResponse = (invite, value) => {
     const thunkArg = { invite, value }
