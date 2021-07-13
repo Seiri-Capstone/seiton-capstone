@@ -61,7 +61,7 @@ export default function Column(props) {
               <div className="text-xl ml-1 self-end">
                 ({column.tasks.length})
               </div>
-              {/* Pencil, cannot import with hero icon under draggable 🤷‍♂️ */}
+              {/* ✏️ Pencil, cannot import with hero icon under draggable 🤷‍♂️ */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="ml-1 h-4 w-4 self-center"
@@ -83,6 +83,7 @@ export default function Column(props) {
               </button>
 
               <button onClick={removeColumn}>
+                {/* TODO: Are you sure you want to remove column? */}
                 <a>x</a>
               </button>
             </div>

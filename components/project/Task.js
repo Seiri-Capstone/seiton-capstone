@@ -7,7 +7,6 @@ import TaskDropdownMenu from './TaskDropdownMenu'
 import Comments from './Comments'
 import { useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
-// import { Pencil } from '@heroicons/react/solid'
 
 export default function Task({ task, index }) {
   // const { isShowing, toggle } = useModal()
@@ -16,6 +15,18 @@ export default function Task({ task, index }) {
   const taskId = task.id
   const [session] = useSession()
   const dispatch = useDispatch()
+
+  // EditTaskModal
+  const [isClosed, setClosed] = useState(false)
+  const [showEditTask, setShowEditTask] = useState(false)
+
+  const toggleEdit = () => setClosed(!isClosed)
+
+  const onKey = e => {
+    if (e.key === 'Escape') {
+      setShowEditTask(false)
+    }
+  }
 
   return (
     <React.Fragment>
@@ -29,11 +40,21 @@ export default function Task({ task, index }) {
           >
             <div className="flex flex-row justify-between items-center">
               <h3 className="pl-1">{task.title}</h3>
-              <TaskDropdownMenu show={show} task={task} />
+              {/* <TaskDropdownMenu show={show} task={task} /> */}
+              <EditTaskModal
+                task={task}
+                show={showEditTask}
+                toggleEdit={toggleEdit}
+                onClose={() => setShowEditTask(false)}
+                onKey={onKey}
+              />
             </div>
             <div className="prose">
               <div
                 className="border-t pl-1"
+                onClick={() => {
+                  setShowEditTask(true)
+                }}
                 dangerouslySetInnerHTML={{
                   __html: marked(task.body)
                 }}
