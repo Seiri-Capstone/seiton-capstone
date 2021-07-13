@@ -40,8 +40,7 @@ const options = {
     }),
     Providers.Google({
       clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-
+      clientSecret: process.env.GOOGLE_SECRET
     }),
     Providers.Auth0({
       clientId: process.env.AUTH0_ID,
@@ -56,13 +55,13 @@ const options = {
   //     }
   //     return Promise.resolve('/')
   //   },
-    session: async (session, user) => {
-      session.userId = user.id
-      session.username = user.username
-      console.log('⭕ SESSION CALLBACK!', session, 'user!!!', user)
-      return Promise.resolve(session)
-    }
-  },
+  //   session: async (session, user) => {
+  //     session.userId = user.id
+  //     session.username = user.username
+  //     console.log('⭕ SESSION CALLBACK!', session, 'user!!!', user)
+  //     return Promise.resolve(session)
+  //   }
+  // },
   session: {
     jwt: true,
     maxAge: 30 * 24 * 60 * 60 // 30 days
