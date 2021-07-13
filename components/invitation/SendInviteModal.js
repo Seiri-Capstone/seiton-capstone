@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import ReactDOM from 'react-dom'
 import { fetchProjects } from '../../store/projectsSlice'
 import { fetchSingleOrg } from '../../store/orgSlice'
+import { fetchCreateInvite } from '../../store/invitationsSlice'
 
 export default function SendInvite({ show, onClose }) {
   const projects = useSelector(state => state.projects)
@@ -22,12 +23,18 @@ export default function SendInvite({ show, onClose }) {
     }
   }, [selectedProject.project])
 
-  const handleSave = () => {
+  const handleSend = () => {
+    dispatch(
+      fetchCreateInvite({
+        receivedBy: receivingUser,
+        project: selectedProject
+      })
+    )
     onClose()
   }
 
-  console.log('selected', selectedProject)
-  console.log('user', receivingUser)
+  // console.log('selected', selectedProject)
+  // console.log('user', receivingUser)
 
   if (!show) return null
   return ReactDOM.createPortal(
@@ -90,7 +97,7 @@ export default function SendInvite({ show, onClose }) {
               <button
                 className="text-blue-500  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={handleSave}
+                onClick={handleSend}
               >
                 Send
               </button>

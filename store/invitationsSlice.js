@@ -11,12 +11,23 @@ export const fetchInvitations = createAsyncThunk(
   }
 )
 
+export const fetchCreateInvite = createAsyncThunk(
+  'invitations/fetchCreateInvite',
+  async invitation => {
+    const { data: newInvites } = await axios.post('/api/invitation', invitation)
+    return newInvites
+  }
+)
+
 export const invitationsSlice = createSlice({
   name: 'invitations',
   initialState,
   reducers: {},
   extraReducers: {
     [fetchInvitations.fulfilled]: (state, action) => {
+      return action.payload
+    },
+    [fetchCreateInvite.fulfilled]: (state, action) => {
       return action.payload
     }
   }
