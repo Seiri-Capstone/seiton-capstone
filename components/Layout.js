@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/client'
 
 const ThemeChanger = () => {
   const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const { _, setTheme } = useTheme()
   const [session, loading] = useSession()
 
   useEffect(() => setMounted(true), [])
@@ -14,10 +14,18 @@ const ThemeChanger = () => {
   return (
     <div className="flex justify-end">
       <div>Logged in as: {loading ? '' : session.user.name}</div>
-      <button className="mx-4" onClick={() => setTheme('light')}>
-        Light Mode
+      <button
+        className="mx-4 border px-2 border-gray-500"
+        onClick={() => setTheme('light')}
+      >
+        Light
       </button>
-      <button onClick={() => setTheme('dark')}>Dark Mode</button>
+      <button
+        className="border px-2 border-gray-500"
+        onClick={() => setTheme('dark')}
+      >
+        Dark
+      </button>
     </div>
   )
 }
