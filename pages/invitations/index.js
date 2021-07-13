@@ -14,6 +14,7 @@ export default function Invitation() {
           <MyInvites />
         </div>
       </div>
+      <div id="inviteModal"></div>
     </div>
   )
 }

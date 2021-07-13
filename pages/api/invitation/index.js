@@ -40,15 +40,17 @@ export default async function handler(req, res) {
             }
           }
         })
-
-        // res.status(200).json(user)
-
         res.status(200).json({
           sentInvites: user.sentInvites,
           receivedInvites: user.receivedInvites
         })
       } catch (error) {
         console.error(error) // Which one is idiomatic?
+      }
+    } else if (req.method === 'POST') {
+      try {
+      } catch (error) {
+        console.error('error in the post invitation api call', error)
       }
     }
   }

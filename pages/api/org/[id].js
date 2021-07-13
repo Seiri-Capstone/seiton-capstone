@@ -24,19 +24,28 @@ export default async function handler(req, res) {
           include: {
             projects: {
               include: {
-                users: true
+                users: {
+                  where: {
+                    userId: user.id
+                  }
+                }
               }
             },
             users: {
               include: {
-                user: true
+                user: {
+                  select: {
+                    name: true,
+                    email: true
+                  }
+                }
               }
             }
           }
         })
 
-        const filteredProjects = result.projects.filter((project, idx) => {
-          return project.users[idx] && project.users[idx].userId === user.id
+        const filteredProjects = result.projects.filter(project => {
+          return project.users.length > 0
         })
 
         const userResults = { ...result, projects: filteredProjects }
