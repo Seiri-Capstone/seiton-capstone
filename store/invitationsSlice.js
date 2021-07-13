@@ -33,6 +33,4 @@ export const invitationsSlice = createSlice({
   }
 })
 
-// export  {  } = orgsSlice.actions
-
 export default invitationsSlice.reducer
