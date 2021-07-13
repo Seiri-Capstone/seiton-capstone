@@ -29,13 +29,13 @@ export default function EditTaskModal({ task, show, toggleEdit, onClose }) {
               {isEditActive ? (
                 <div>
                   <input
-                    className="text-3xl font-semibold"
+                    className="text-xl py-1 px-2 font-semibold text-gray-800 border border-gray-500"
                     onChange={e => setTaskTitle(e.target.value)}
                     value={taskTitle}
                   />
                   <textarea
                     ref={input => input && input.focus()}
-                    className="my-4 text-lg leading-relaxed"
+                    className="my-4 text-lg leading-relaxed italic"
                     name="body"
                     value={taskBody}
                     onChange={e => setTaskBody(e.target.value)}

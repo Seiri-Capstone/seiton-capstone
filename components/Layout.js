@@ -35,7 +35,6 @@ const Layout = ({ children }) => {
     <div>
       <ThemeChanger />
       {children}
-      <div>Footer</div>
     </div>
   )
 }
