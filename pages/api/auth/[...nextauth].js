@@ -70,11 +70,11 @@ const options = {
     secret: process.env.JWT_SECRET, //use a random secret token here
     encryption: true
   },
-  database: process.env.DATABASE_URL
+  database: process.env.DATABASE_URL,
   // ssl: {
   //   rejectUnauthorized: false
   // }
-  // adapter: Adapters.Prisma.Adapter({ prisma })
+  adapter: Adapters.Prisma.Adapter({ prisma })
 }
 
 export default (req, res) => NextAuth(req, res, options)
