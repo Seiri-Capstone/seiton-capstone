@@ -40,7 +40,8 @@ const options = {
     }),
     Providers.Google({
       clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET
+      clientSecret: process.env.GOOGLE_SECRET,
+
     }),
     Providers.Auth0({
       clientId: process.env.AUTH0_ID,
@@ -48,13 +49,13 @@ const options = {
       domain: process.env.AUTH0_DOMAIN
     })
   ],
-  callbacks: {
-    redirect: async (url, _) => {
-      if (url === '/') {
-        return Promise.resolve('/orgs')
-      }
-      return Promise.resolve('/')
-    },
+  // callbacks: {
+  //   redirect: async (url, _) => {
+  //     if (url === '/') {
+  //       return Promise.resolve('/orgs')
+  //     }
+  //     return Promise.resolve('/')
+  //   },
     session: async (session, user) => {
       session.userId = user.id
       session.username = user.username
