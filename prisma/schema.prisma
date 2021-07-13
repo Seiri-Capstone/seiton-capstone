@@ -14,8 +14,10 @@ generator client {
 model User {
   id             Int           @id @default(autoincrement())
   name           String?
+  username       String?       @unique
   email          String?       @unique
   email_verified DateTime?
+  password       String?
   image          String?
   createdAt      DateTime      @default(now()) @map(name: "created_at")
   updatedAt      DateTime?     @updatedAt @map(name: "updated_at")
