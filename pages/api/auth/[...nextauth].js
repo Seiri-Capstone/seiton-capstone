@@ -67,7 +67,7 @@ const options = {
     maxAge: 30 * 24 * 60 * 60 // 30 days
   },
   jwt: {
-    secret: process.env.JTW_SECRET, //use a random secret token here
+    secret: process.env.JWT_SECRET, //use a random secret token here
     encryption: true
   },
   database: process.env.DATABASE_URL
