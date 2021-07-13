@@ -24,6 +24,11 @@ export const createTask = createAsyncThunk('project/createTask', async body => {
   const { data: createdTask } = await axios.post('/api/task', body)
   return createdTask
 })
+// PUT tasks TODO(sey)
+export const assignTask = createAsyncThunk('project/assignTask', async id => {
+  const { data: assignedTask } = await axios.put(`/api/task/${id}`)
+  return assignedTask
+})
 // POST columns
 export const createColumn = createAsyncThunk(
   'project/createColumn',
@@ -143,6 +148,9 @@ export const projectSlice = createSlice({
       const updatedColId = state.columns.filter(col => col.id === columnId)[0]
         .index
       state.columns[updatedColId].tasks.push(action.payload)
+    },
+    [assignTask.fulfilled]: (state, action) => {
+      return state // TODO(sey)
     },
     [createColumn.fulfilled]: (state, action) => {
       action.payload['tasks'] = []
