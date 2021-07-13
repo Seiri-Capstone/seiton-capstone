@@ -12,12 +12,12 @@ export default function SendInvite({ show, onClose }) {
   const [selectedProject, setSelectedProject] = useState({})
   const [receivingUser, setReceivingUser] = useState({})
   const [session, loading] = useSession()
+  const dispatch = useDispatch()
   const users = selectedOrg.users || []
+  //grab users minus session user for dropdown
   const usersDropdown = users.filter(
     user => user.user.name !== session?.user.name
   )
-  console.log(usersDropdown)
-  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchProjects())
@@ -38,10 +38,6 @@ export default function SendInvite({ show, onClose }) {
     )
     onClose()
   }
-
-  // console.log('selected', selectedProject)
-  // console.log('user', receivingUser)
-  console.log('session', session?.user.name)
 
   if (!show) return null
   return ReactDOM.createPortal(
@@ -73,7 +69,11 @@ export default function SendInvite({ show, onClose }) {
             {/*select users dropdown - will only be able to invite users to a project if they are part of the project organization*/}
             <div className="relative p-6 flex-auto">
               {selectedOrg ? (
-                <select onChange={e => setReceivingUser(users[e.target.value])}>
+                <select
+                  onChange={e =>
+                    setReceivingUser(usersDropdown[e.target.value])
+                  }
+                >
                   <option value="select project..." selected>
                     select user
                   </option>
