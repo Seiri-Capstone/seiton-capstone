@@ -70,10 +70,10 @@ const options = {
     secret: process.env.SECRET, //use a random secret token here
     encryption: true
   },
-  database: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  database: process.env.DATABASE_URL
+  // ssl: {
+  //   rejectUnauthorized: false
+  // }
   // adapter: Adapters.Prisma.Adapter({ prisma })
 }
 
