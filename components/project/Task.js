@@ -40,6 +40,12 @@ export default function Task({ task, index }) {
           >
             <div className="flex flex-row justify-between items-center">
               <h3 className="pl-1">{task.title}</h3>
+              <button
+                className="text-xs text-gray-400 dark:text-gray-200"
+                onClick={() => dispatch(assignTask(task.id))}
+              >
+                Assign {`task-${task.id}`}
+              </button>
               {/* <TaskDropdownMenu show={show} task={task} /> */}
               <EditTaskModal
                 task={task}

@@ -18,6 +18,12 @@ export default async function handler(req, res) {
       } catch (error) {
         console.error(error)
       }
+    } else if (req.method === 'PUT') {
+      try {
+        console.log('❗❗❗ Request Query:', req.query)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
