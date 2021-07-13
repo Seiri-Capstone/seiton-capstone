@@ -47,22 +47,6 @@ const options = {
       clientSecret: process.env.AUTH0_SECRET,
       domain: process.env.AUTH0_DOMAIN
     })
-    // Providers.Email({
-    //   server: {
-    //     port: 465,
-    //     // change to port 465 after deployment
-    //     host: 'smtp.gmail.com',
-    //     secure: true,
-    //     auth: {
-    //       user: process.env.EMAIL_USERNAME,
-    //       pass: process.env.EMAIL_PASSWORD
-    //     },
-    //     tls: {
-    //       rejectUnauthorized: false
-    //     }
-    //   },
-    //   from: process.env.EMAIL_FROM
-    // })
   ],
   callbacks: {
     redirect: async (url, _) => {
@@ -86,7 +70,10 @@ const options = {
     secret: process.env.SECRET, //use a random secret token here
     encryption: true
   },
-  database: process.env.DATABASE_URL
+  database: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
   // adapter: Adapters.Prisma.Adapter({ prisma })
 }
 
