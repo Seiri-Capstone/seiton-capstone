@@ -5,16 +5,13 @@ import { Provider as NextAuthProvider } from 'next-auth/client'
 import { ThemeProvider } from 'next-themes'
 import '@fontsource/ibm-plex-serif'
 import '@fontsource/ibm-plex-serif/500.css'
-import Layout from '../components/Layout'
 
 const App = ({ Component, pageProps }) => {
   return (
     <ThemeProvider attribute="class">
       <ReduxProvider store={store}>
         <NextAuthProvider session={pageProps.session}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
         </NextAuthProvider>
       </ReduxProvider>
     </ThemeProvider>

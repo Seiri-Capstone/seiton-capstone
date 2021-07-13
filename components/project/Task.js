@@ -7,6 +7,7 @@ import TaskDropdownMenu from './TaskDropdownMenu'
 import Comments from './Comments'
 import { useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
+// import { Pencil } from '@heroicons/react/solid'
 
 export default function Task({ task, index }) {
   // const { isShowing, toggle } = useModal()
@@ -27,17 +28,18 @@ export default function Task({ task, index }) {
             ref={provided.innerRef}
           >
             <div className="flex flex-row justify-between items-center">
-              <h3>{task.title}</h3>
+              <h3 className="pl-1">{task.title}</h3>
               <TaskDropdownMenu show={show} task={task} />
             </div>
             <div className="prose">
               <div
+                className="border-t pl-1"
                 dangerouslySetInnerHTML={{
                   __html: marked(task.body)
                 }}
               ></div>
             </div>
-            <p className="text-sm font-bold text-gray-500">
+            {/* <p className="text-sm font-bold text-gray-500">
               Comments{' '}
               <span
                 className="text-xs text-blue-300 px-2 border border-blue-300 rounded"
@@ -58,7 +60,7 @@ export default function Task({ task, index }) {
               {task.comments?.length && showComments ? (
                 <Comments comments={task.comments} />
               ) : null}
-            </ul>
+            </ul> */}
           </div>
         )}
       </Draggable>

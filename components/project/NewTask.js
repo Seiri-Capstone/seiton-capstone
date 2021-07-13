@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { createTask } from '../../store/projectSlice'
 
 export default function NewTask(props) {
-  const { addTaskSocket } = props // name collision
+  const { addTaskSocket } = props
   const [task, setTask] = useState('')
   const [title, setTitle] = useState('')
   const columnId = props.props.column.id
