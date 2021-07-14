@@ -32,7 +32,10 @@ function DeleteTaskModal({ isShowing, toggle, taskId }) {
                 </span>
               </button>
               <div className="flex-col items-start p-5 border-b border-solid rounded-t">
-                <h6 className="text-md font-semibold text-center">
+                <h6
+                  onClick={() => console.log('onClick h6')} // TODO(sey)
+                  className="text-md font-semibold text-center"
+                >
                   Are you sure you want to delete a task?
                 </h6>
                 <div className="flex items-center justify-center p-6 border-t border-solid  rounded-b">
