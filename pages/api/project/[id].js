@@ -12,9 +12,9 @@ export default async function handler(req, res) {
     // 📡 GET /api/project/1
     if (req.method === 'GET') {
       try {
-        const { id } = req.query
+        const id = Number(req.query.id)
         const result = await prisma.project.findUnique({
-          where: { id: Number(id) },
+          where: { id: id },
           include: {
             columns: {
               orderBy: { index: 'asc' },
@@ -61,24 +61,19 @@ export default async function handler(req, res) {
     if (req.method === 'DELETE') {
       try {
         const id = Number(req.query.id)
-        const deleteProject = await prisma.project.delete({
-          where: {
-            id: id
-          }
-        })
-
-        const deleteUserProject = await prisma.userProject.deleteMany({
+        const deletedUserProject = await prisma.userProject.deleteMany({
           where: {
             projectId: id
           }
         })
 
-        const transaction = await prisma.$transaction([
-          deleteProject,
-          deleteUserProject
-        ])
+        const deletedProject = await prisma.project.delete({
+          where: {
+            id: id
+          }
+        })
 
-        res.status(200).json(deleteProject)
+        res.status(200).json(deletedUserProject)
       } catch (error) {
         console.log('error in the delete project id api call!', error)
       }
