@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { fetchSingleOrg, createProject } from '../../store/orgSlice'
+import { fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
 
 export default function Org() {
@@ -24,6 +25,11 @@ export default function Org() {
   const addProject = e => {
     e.preventDefault()
     dispatch(createProject({ name: name, orgId: id }))
+  }
+
+  const deleteOrg = () => {
+    dispatch(fetchDeletedOrg(id))
+    router.push('/orgs')
   }
 
   console.log('single org', org)
@@ -70,6 +76,14 @@ export default function Org() {
             Add New Project
           </button>
         </form>
+      </div>
+      <div className="flex justify-end mt-2 mr-12">
+        <button
+          className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
+          onClick={deleteOrg}
+        >
+          Delete Organization
+        </button>
       </div>
     </React.Fragment>
   )

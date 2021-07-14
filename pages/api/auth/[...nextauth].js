@@ -74,7 +74,7 @@ const options = {
     session: async (session, user) => {
       session.userId = user.id
       session.username = user.username
-      console.log('⭕ SESSION CALLBACK!', session, 'user!!!', user)
+      // console.log('⭕ SESSION CALLBACK!', session, 'user!!!', user)
       return Promise.resolve(session)
     }
   },

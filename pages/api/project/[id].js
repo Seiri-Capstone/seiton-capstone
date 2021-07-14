@@ -12,9 +12,9 @@ export default async function handler(req, res) {
     // 📡 GET /api/project/1
     if (req.method === 'GET') {
       try {
-        const { id } = req.query
+        const id = Number(req.query.id)
         const result = await prisma.project.findUnique({
-          where: { id: Number(id) },
+          where: { id: id },
           include: {
             columns: {
               orderBy: { index: 'asc' },
@@ -56,14 +56,36 @@ export default async function handler(req, res) {
     if (req.method === 'PUT') {
       try {
         const { name, orgId } = req.body
+        const { id } = req.query
         const result = await prisma.project.update({
-          where: { id: 1 },
+          where: { id: id },
           data: { name, orgId }
         })
 
         res.status(200).json(result)
       } catch (error) {
         console.log('error in the project id api call!', error)
+      }
+    }
+
+    if (req.method === 'DELETE') {
+      try {
+        const id = Number(req.query.id)
+        const deletedUserProject = await prisma.userProject.deleteMany({
+          where: {
+            projectId: id
+          }
+        })
+
+        const deletedProject = await prisma.project.delete({
+          where: {
+            id: id
+          }
+        })
+
+        res.status(200).json(deletedUserProject)
+      } catch (error) {
+        console.log('error in the delete project id api call!', error)
       }
     }
   }

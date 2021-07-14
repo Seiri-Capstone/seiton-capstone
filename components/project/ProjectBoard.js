@@ -10,6 +10,7 @@ import {
   reorderTaskCol,
   createColumn
 } from '../../store/projectSlice'
+import { fetchDeletedProject } from '../../store/projectsSlice'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import NewTask from './NewTask'
 import { useRouter } from 'next/router'
@@ -31,6 +32,7 @@ export default function ProjectBoard({ pusher }) {
   const [mounted, setMounted] = useState(false)
 
   console.log('project in projectboard', project)
+
   const { id } = router.query
   // useEffect(() => {
   //   dispatch(fetchProject(id))
@@ -66,7 +68,7 @@ export default function ProjectBoard({ pusher }) {
 
   useEffect(() => {
     console.log(`🟢  should run once: useEffect [] `)
-    dispatch(fetchProject(1)) //hard coded for now
+    dispatch(fetchProject(id)) //hard coded for now
     const channel = pusher.subscribe('presence-channel')
     channel.bind('reorder', async project => {
       dispatch(reorderTaskCol(project))
@@ -109,6 +111,11 @@ export default function ProjectBoard({ pusher }) {
   // const [title, setTitle] = useState('')
   // const columnId = props.props.column.id
   // const index = props.props.column.tasks.length
+
+  const deleteProject = () => {
+    dispatch(fetchDeletedProject(id))
+    router.push('/projects')
+  }
 
   const addColumn = async e => {
     const index = project.columns.length
@@ -198,6 +205,15 @@ export default function ProjectBoard({ pusher }) {
       </h1>
       <div className="flex justify-end mt-2 mr-12">
         <button onClick={addColumn}>+ Add New Column</button>
+      </div>
+
+      <div className="flex justify-end mt-2 mr-12">
+        <button
+          className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
+          onClick={deleteProject}
+        >
+          Delete Project
+        </button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
