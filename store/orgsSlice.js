@@ -21,7 +21,7 @@ export const fetchDeletedOrg = createAsyncThunk(
   async orgId => {
     console.log('in the delete thunk')
     const { data: org } = await axios.delete(`/api/org/${orgId}`)
-    return project
+    return org
   }
 )
 
