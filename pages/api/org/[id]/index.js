@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import prisma from '../../../prisma/prisma'
+import prisma from '../../../../prisma/prisma'
 import { getSession } from 'next-auth/client'
 
 export default async function handler(req, res) {

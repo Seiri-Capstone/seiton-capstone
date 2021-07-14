@@ -15,12 +15,22 @@ export const createProject = createAsyncThunk(
   'org/createProject',
   async body => {
     const { data: createdProject } = await axios.post('/api/project', body)
-    console.log('createdProject in thunk', createdProject)
     return createdProject
   }
 )
 
-export const orgsSlice = createSlice({
+export const fetchRemoveUserOrg = createAsyncThunk(
+  'org/fetchRemoveUserOrg',
+  async body => {
+    const { data: removedUser } = await axios.delete(
+      `api/org/${body.orgId}/users`,
+      body
+    )
+    return removedUser
+  }
+)
+
+export const orgSlice = createSlice({
   name: 'org',
   initialState,
   reducers: {},
@@ -30,10 +40,11 @@ export const orgsSlice = createSlice({
     },
     [createProject.fulfilled]: (state, action) => {
       return action.payload
+    },
+    [fetchRemoveUserOrg.fulfilled]: (state, action) => {
+      state.users.filter(user => user.userId !== action.payload.userId)
     }
   }
 })
 
-// export  {  } = orgsSlice.actions
-
-export default orgsSlice.reducer
+export default orgSlice.reducer
