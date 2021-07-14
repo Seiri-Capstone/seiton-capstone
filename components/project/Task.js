@@ -16,6 +16,18 @@ export default function Task({ task, index }) {
   const [session] = useSession()
   const dispatch = useDispatch()
 
+  // EditTaskModal
+  const [isClosed, setClosed] = useState(false)
+  const [showEditTask, setShowEditTask] = useState(false)
+
+  const toggleEdit = () => setClosed(!isClosed)
+
+  const onKey = e => {
+    if (e.key === 'Escape') {
+      setShowEditTask(false)
+    }
+  }
+
   return (
     <React.Fragment>
       <Draggable draggableId={`task-${task.id}`} index={index}>
@@ -27,17 +39,28 @@ export default function Task({ task, index }) {
             ref={provided.innerRef}
           >
             <div className="flex flex-row justify-between items-center">
-              <h3>{task.title}</h3>
-              <TaskDropdownMenu show={show} task={task} />
+              <h3 className="pl-1">{task.title}</h3>
+              {/* <TaskDropdownMenu show={show} task={task} /> */}
+              <EditTaskModal
+                task={task}
+                show={showEditTask}
+                toggleEdit={toggleEdit}
+                onClose={() => setShowEditTask(false)}
+                onKey={onKey}
+              />
             </div>
             <div className="prose">
               <div
+                className="border-t pl-1"
+                onClick={() => {
+                  setShowEditTask(true)
+                }}
                 dangerouslySetInnerHTML={{
                   __html: marked(task.body)
                 }}
               ></div>
             </div>
-            <p className="text-sm font-bold text-gray-500">
+            {/* <p className="text-sm font-bold text-gray-500">
               Comments{' '}
               <span
                 className="text-xs text-blue-300 px-2 border border-blue-300 rounded"
@@ -58,7 +81,7 @@ export default function Task({ task, index }) {
               {task.comments?.length && showComments ? (
                 <Comments comments={task.comments} />
               ) : null}
-            </ul>
+            </ul> */}
           </div>
         )}
       </Draggable>
