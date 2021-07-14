@@ -18,7 +18,11 @@ export default async function handler(req, res) {
           include: {
             orgs: {
               include: {
-                org: true
+                org: {
+                  include: {
+                    projects: true
+                  }
+                }
               }
             }
           }
@@ -27,14 +31,6 @@ export default async function handler(req, res) {
         const orgs = user.orgs.map(org => {
           return org.org
         })
-
-        //get organizations that user is associated with
-        // const result = await prisma.userOrg.findMany({
-        //   where: { userId: user.id },
-        //   include: {
-        //     org: true
-        //   }
-        // })
 
         res.status(200).json(orgs)
       } catch (error) {

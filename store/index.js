@@ -5,13 +5,17 @@ import projectReducer from './projectSlice'
 import projectsReducer from './projectsSlice'
 import orgsReducer from './orgsSlice'
 import orgReducer from './orgSlice'
+import invitationsReducer from './invitationsSlice'
+import invitationReducer from './invitationSlice'
 
 const store = configureStore({
   reducer: {
-    project: projectReducer,
     orgs: orgsReducer,
     org: orgReducer,
-    projects: projectsReducer
+    projects: projectsReducer,
+    project: projectReducer,
+    invitations: invitationsReducer,
+    invitation: invitationReducer
     // [projectApi.reducerPath]: projectApi.reducer
   }
   // middleware: getDefaultMiddleware =>
