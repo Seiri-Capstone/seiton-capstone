@@ -46,14 +46,41 @@ export default async function handler(req, res) {
     if (req.method === 'PUT') {
       try {
         const { name, orgId } = req.body
+        const { id } = req.query
         const result = await prisma.project.update({
-          where: { id: 1 },
+          where: { id: id },
           data: { name, orgId }
         })
 
         res.status(200).json(result)
       } catch (error) {
         console.log('error in the project id api call!', error)
+      }
+    }
+
+    if (req.method === 'DELETE') {
+      try {
+        const id = Number(req.query.id)
+        const deleteProject = await prisma.project.delete({
+          where: {
+            id: id
+          }
+        })
+
+        const deleteUserProject = await prisma.userProject.deleteMany({
+          where: {
+            projectId: id
+          }
+        })
+
+        const transaction = await prisma.$transaction([
+          deleteProject,
+          deleteUserProject
+        ])
+
+        res.status(200).json(deleteProject)
+      } catch (error) {
+        console.log('error in the delete project id api call!', error)
       }
     }
   }

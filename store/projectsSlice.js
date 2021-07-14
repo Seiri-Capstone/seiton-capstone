@@ -12,6 +12,16 @@ export const fetchProjects = createAsyncThunk(
   }
 )
 
+//DELETE PROJECT
+export const fetchDeletedProject = createAsyncThunk(
+  'projects/fetchDeletedProject',
+  async projectId => {
+    console.log('in the delete thunk')
+    const { data: project } = await axios.delete(`/api/project/${projectId}`)
+    return project
+  }
+)
+
 export const projectsSlice = createSlice({
   name: 'projects',
   initialState,
@@ -19,6 +29,9 @@ export const projectsSlice = createSlice({
   extraReducers: {
     [fetchProjects.fulfilled]: (state, action) => {
       return action.payload
+    },
+    [fetchDeletedProject.fulfilled]: (state, action) => {
+      return state.filter(project => project.id !== action.payload.id)
     }
   }
 })
