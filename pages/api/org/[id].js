@@ -47,5 +47,27 @@ export default async function handler(req, res) {
         throw new Error('Error getting org!')
       }
     }
+
+    if (req.method === 'DELETE') {
+      try {
+        const id = Number(req.query.id)
+        const deletedUserOrg = await prisma.userOrg.deleteMany({
+          where: {
+            orgId: id
+          }
+        })
+
+        const deletedOrg = await prisma.org.delete({
+          where: {
+            id: id
+          }
+        })
+
+        res.status(200).json(deletedUserOrg)
+      } catch (error) {
+        console.log('error in the delete org id api call!', error)
+      }
+    }
+  }
   }
 }

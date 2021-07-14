@@ -16,6 +16,15 @@ export const fetchCreateOrg = createAsyncThunk(
   }
 )
 
+export const fetchDeletedOrg = createAsyncThunk(
+  'orgs/fetchDeletedOrg',
+  async orgId => {
+    console.log('in the delete thunk')
+    const { data: org } = await axios.delete(`/api/org/${orgId}`)
+    return project
+  }
+)
+
 export const orgsSlice = createSlice({
   name: 'orgs',
   initialState,
@@ -26,6 +35,9 @@ export const orgsSlice = createSlice({
     },
     [fetchCreateOrg.fulfilled]: (state, action) => {
       return [...state, action.payload]
+    },
+    [fetchDeletedOrg.fulfilled]: (state, action) => {
+      return state.filter(org => org.id !== action.payload.id)
     }
   }
 })
