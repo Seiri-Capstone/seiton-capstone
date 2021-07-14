@@ -25,7 +25,7 @@ model User {
   comments        Comment[]
   sentInvites     Invitation[]  @relation("SentInvites")
   receivedInvites Invitation[]  @relation("ReceivedInvites")
-
+  
   @@map(name: "users")
 }
 

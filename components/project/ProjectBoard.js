@@ -16,7 +16,7 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import Pusher from 'pusher-js'
 
-export default function ProjectBoard() {
+export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
@@ -24,17 +24,56 @@ export default function ProjectBoard() {
   const [isColumnReordered, setIsColumnReordered] = useState(false)
   const [isTaskReordered, setIsTaskReordered] = useState(false)
   const [isTaskDiffColReordered, setIsTaskDiffColReordered] = useState(false)
+  const [isColNameEdited, setIsColNameEdited] = useState(false)
+  const [isColDeleted, setIsColDeleted] = useState(false)
+  const [isColAdded, setIsColAdded] = useState(false)
+  const [isTaskAdded, setisTaskAdded] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
+  console.log('project in projectboard', project)
+  const { id } = router.query
+  // useEffect(() => {
+  //   dispatch(fetchProject(id))
+  // }, [dispatch, session, router, id])
+
+  useEffect(() => {
+    console.log(`🟢  should run once mounted!`)
+    if (mounted) {
+      if (isColumnReordered) setIsColumnReordered(false)
+      if (isTaskReordered) setIsTaskReordered(false)
+      if (isTaskDiffColReordered) setIsTaskDiffColReordered(false)
+      if (isColNameEdited) setIsColNameEdited(false)
+      if (isColDeleted) setIsColDeleted(false)
+      if (isTaskAdded) setisTaskAdded(false)
+      axios.post('/api/pusher/reorder', { project }) // make this run once component mounts
+    }
+  }, [
+    isColumnReordered,
+    isTaskReordered,
+    isTaskDiffColReordered,
+    isColNameEdited,
+    isColDeleted,
+    isColAdded,
+    isTaskAdded
+  ])
   // const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
   //   cluster: 'us2', // based on my website
   //   authEndpoint: `/api/pusher/auth`, // make sure to change in production
   //   auth: { params: { username: 'helen' } }
   // })
-  console.log('project in projectboard', project)
-  const { id } = router.query
+
+  // const { id } = router.query
+
   useEffect(() => {
-    dispatch(fetchProject(id))
-  }, [dispatch, session, router, id])
+    console.log(`🟢  should run once: useEffect [] `)
+    dispatch(fetchProject(1)) //hard coded for now
+    const channel = pusher.subscribe('presence-channel')
+    channel.bind('reorder', async project => {
+      dispatch(reorderTaskCol(project))
+    })
+    setMounted(true) // if this runs <=
+    return () => pusher.unsubscribe('presence-channel')
+  }, [])
 
   // useEffect(() => {
   //   if (isColumnReordered) {
@@ -71,12 +110,13 @@ export default function ProjectBoard() {
   // const columnId = props.props.column.id
   // const index = props.props.column.tasks.length
 
-  const addColumn = e => {
+  const addColumn = async e => {
     const index = project.columns.length
     const title = `Column-${index}`
     const projectId = project.id
     const body = { title, projectId, index }
-    dispatch(createColumn(body))
+    await dispatch(createColumn(body))
+    await setIsColAdded(true)
   }
 
   const onDragEnd = async result => {
@@ -156,7 +196,7 @@ export default function ProjectBoard() {
       <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
         {project.name}
       </h1>
-      <div className="flex justify-end mr-12">
+      <div className="flex justify-end mt-2 mr-12">
         <button onClick={addColumn}>+ Add New Column</button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -174,7 +214,14 @@ export default function ProjectBoard() {
               {project.columns &&
                 project.columns.map((column, index) => (
                   <div key={column.id}>
-                    <Column key={column.id} column={column} index={index} />
+                    <Column
+                      setCol={setIsColNameEdited}
+                      delCol={setIsColDeleted}
+                      addTask={setisTaskAdded}
+                      key={column.id}
+                      column={column}
+                      index={index}
+                    />
                   </div>
                 ))}
               {provided.placeholder}

@@ -3,18 +3,20 @@ import { useSelector, useDispatch } from 'react-redux'
 import { createTask } from '../../store/projectSlice'
 
 export default function NewTask(props) {
+  const { addTaskSocket } = props
   const [task, setTask] = useState('')
   const [title, setTitle] = useState('')
   const columnId = props.props.column.id
   const index = props.props.column.tasks.length
   const dispatch = useDispatch()
 
-  const addTask = e => {
+  const addTask = async e => {
     e.preventDefault()
     if (task.length <= 1) return alert("Task isn't long enough")
     const body = { title, task, columnId, index }
-    dispatch(createTask(body))
+    await dispatch(createTask(body))
     props.toggleTask()
+    await addTaskSocket(true)
   }
 
   return (

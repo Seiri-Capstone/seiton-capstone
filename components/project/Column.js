@@ -6,26 +6,32 @@ import Link from 'next/link'
 import NewTask from './NewTask'
 import { deleteColumn, updateColumnName } from '../../store/projectSlice'
 import { useDispatch } from 'react-redux'
+// import { Pencil } from '@heroicons/react/solid'
 
 export default function Column(props) {
+  const { setCol, delCol, addTask, column } = props
   const dispatch = useDispatch()
-  const column = props.column
+
   const [columnName, setColumnName] = useState(column.title)
   const [isEditActive, setEditActive] = useState(false)
 
   const [toggleTask, setToggleTask] = useState(false)
   const toggleNewTask = () => setToggleTask(!toggleTask)
 
-  const handleKeyDown = e => {
+  const handleKeyDown = async e => {
     if (e.key === 'Enter') {
       setEditActive(false)
       //need to force into an array to pass down new state change?
-      dispatch(updateColumnName([column, columnName]))
+      await dispatch(updateColumnName([column, columnName]))
+      await setCol(true)
+    } else if (e.key === 'Escape') {
+      setEditActive(false)
     }
   }
 
-  const removeColumn = e => {
-    dispatch(deleteColumn(column.id))
+  const removeColumn = async e => {
+    await dispatch(deleteColumn(column.id))
+    await delCol(true)
   }
 
   return (
@@ -37,21 +43,36 @@ export default function Column(props) {
           {...provided.draggableProps}
         >
           <div className="flex flex-row justify-between items-center">
-            <h3 className="text-2xl" {...provided.dragHandleProps}>
-              {isEditActive ? (
-                <input
-                  ref={input => input && input.focus()}
-                  className="my-4 text-lg leading-relaxed"
-                  name="body"
-                  value={columnName}
-                  onChange={e => setColumnName(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                ></input>
-              ) : (
-                column.title
-              )}
-              ({column.tasks.length})
-            </h3>
+            <div className="flex flex-row">
+              <h3 className="text-2xl" {...provided.dragHandleProps}>
+                {isEditActive ? (
+                  <input
+                    ref={input => input && input.focus()}
+                    className="my-4 text-lg leading-relaxed"
+                    name="body"
+                    value={columnName}
+                    onChange={e => setColumnName(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                  ></input>
+                ) : (
+                  column.title
+                )}
+              </h3>
+              <div className="text-xl ml-1 self-end">
+                ({column.tasks.length})
+              </div>
+              {/* ✏️ Pencil, cannot import with hero icon under draggable 🤷‍♂️ */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="ml-1 h-4 w-4 self-center"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                onClick={() => setEditActive(true)}
+              >
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+              </svg>
+            </div>
+
             <div className="flex justify-end">
               <button
                 onClick={toggleNewTask}
@@ -62,12 +83,18 @@ export default function Column(props) {
               </button>
 
               <button onClick={removeColumn}>
+                {/* TODO: Are you sure you want to remove column? */}
                 <a>x</a>
               </button>
             </div>
           </div>
-
-          {toggleTask && <NewTask props={props} toggleTask={toggleNewTask} />}
+          {toggleTask && (
+            <NewTask
+              addTaskSocket={addTask}
+              props={props}
+              toggleTask={toggleNewTask}
+            />
+          )}
           <Droppable droppableId={`column-${column.id}`} type="task">
             {provided => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -81,8 +108,6 @@ export default function Column(props) {
               </div>
             )}
           </Droppable>
-
-          <button onClick={() => setEditActive(true)}>Edit Column Name</button>
         </div>
       )}
     </Draggable>
