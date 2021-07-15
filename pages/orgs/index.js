@@ -1,20 +1,20 @@
 import React from 'react'
 import MyOrgs from '../../components/org/MyOrgs'
 import Navbar from '../../components/project/Navbar'
+import Logo from '../../components/Logo'
 
 export default function Org() {
   return (
-    <div>
-      <div className="flex">
-        <Navbar />
-        <div className="flex-col">
-          <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
-            My Organizations
-          </h1>
-          <MyOrgs />
-          <div id="orgModal"></div>
+    <>
+      <div>
+        <div className="flex">
+          <Navbar />
+          <div className="flex-col ml-24 mt-12 w-8/12">
+            <MyOrgs />
+            <div id="orgModal"></div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

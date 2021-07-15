@@ -7,10 +7,7 @@ export default function Project() {
     <div>
       <div className="flex">
         <Navbar />
-        <div className="flex-col">
-          <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
-            My Projects
-          </h1>
+        <div className="flex-col ml-24 mt-12 w-8/12">
           <MyProjects />
         </div>
       </div>
