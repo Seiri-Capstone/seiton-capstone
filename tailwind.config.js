@@ -1,4 +1,4 @@
-const { fontSize, fontWeight } = require('tailwindcss/defaultTheme')
+const { fontSize, fontWeight, colors } = require('tailwindcss/defaultTheme')
 
 module.exports = {
   mode: 'jit',
@@ -6,10 +6,19 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        gray: colors.trueGray,
+        indigo: {
+          light: '#b3bcf5',
+          // theme('colors.indigo.DEFAULT')
+          DEFAULT: '#5c6ac4',
+          'indigo-dark': '#202e78'
+        }
+      },
       typography: theme => ({
         DEFAULT: {
           css: {
-            fontSize: '.75rem',
+            // fontSize: '.5 rem',
             color: theme('colors.gray.700'),
             h1: {
               letterSpacing: theme('letterSpacing.tight'),

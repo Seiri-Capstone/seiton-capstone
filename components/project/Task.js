@@ -13,6 +13,13 @@ export default function Task({ task, index }) {
   // const { isShowing, toggle } = useModal()
   const [show, setShow] = useState(false)
   const [showComments, setShowComments] = useState(false)
+  const [taskColors, setTaskColors] = useState([
+    'red',
+    'blue',
+    'green',
+    'purple'
+  ])
+  const [i, setI] = useState(0)
   const taskId = task.id
   const { user } = task
   const [session] = useSession()
@@ -30,19 +37,21 @@ export default function Task({ task, index }) {
     }
   }
 
+  const color = taskColors[i % taskColors.length]
+
   return (
     <React.Fragment>
       <Draggable draggableId={`task-${task.id}`} index={index}>
         {provided => (
           <div
-            className="flex flex-col bg-white rounded-lg my-4 p-1 hover:bg-gray-100"
+            className={`flex flex-col bg-gray-100 rounded-lg my-4 p-1`}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
             <div className="flex flex-row justify-between items-center">
               <h3 className="pl-1">{task.title}</h3>
-
+              State: {JSON.stringify(taskColors[i])}
               <TaskDropdownMenu show={show} task={task} />
               <EditTaskModal
                 task={task}
@@ -64,6 +73,22 @@ export default function Task({ task, index }) {
               ></div>
             </div>
             {/* user is an [] */}
+
+            <button
+              className={`text-sm border text-${color}-500`}
+              onClick={() => {
+                const j = i === taskColors.length - 1 ? 0 : i + 1
+                setI(j)
+              }}
+            >
+              Tags
+            </button>
+            <button
+              className="text-sm border"
+              onClick={() => console.log('comment button')}
+            >
+              Comments
+            </button>
             {user?.map(u => (
               <div key={u.id}>{u.name}</div>
             ))}
