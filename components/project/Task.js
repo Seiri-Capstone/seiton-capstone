@@ -7,6 +7,7 @@ import TaskDropdownMenu from './TaskDropdownMenu'
 import Comments from './Comments'
 import { useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
+import { assignTask } from '../../store/projectSlice'
 
 export default function Task({ task, index }) {
   // const { isShowing, toggle } = useModal()
@@ -40,7 +41,8 @@ export default function Task({ task, index }) {
           >
             <div className="flex flex-row justify-between items-center">
               <h3 className="pl-1">{task.title}</h3>
-              {/* <TaskDropdownMenu show={show} task={task} /> */}
+
+              <TaskDropdownMenu show={show} task={task} />
               <EditTaskModal
                 task={task}
                 show={showEditTask}
