@@ -23,7 +23,7 @@ export default function CreateOrgModal({ show, onClose }) {
             {/*body*/}
             <div className="relative p-6 flex-auto">
               <input
-                className="my-4 text-lg leading-relaxed"
+                className="my-4 text-lg leading-relaxed border-2 border-blue"
                 name="name"
                 value={orgName}
                 onChange={e => setOrgName(e.target.value)}

@@ -16,7 +16,6 @@ export default function MyOrgs() {
   }, [dispatch])
 
   const bgColors = ['bg-blue-500', 'bg-indigo-500', 'bg-purple-500']
-  const bgColors2 = ['bg-blue-100', 'bg-indigo-100', 'bg-purple-100']
   const borderColors = [
     'border-blue-500',
     'border-indigo-500',
