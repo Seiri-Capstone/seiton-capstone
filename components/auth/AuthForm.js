@@ -32,13 +32,13 @@ export default function AuthForm() {
 
           <br />
           <br />
-          <button
+          {/* <button
             type="submit"
             className="largeButton mr-4"
             onClick={() => signIn('github')}
           >
             Github Sign in
-          </button>
+          </button> */}
           {/* github button needs to be taken out for production build */}
           <button
             type="submit"
