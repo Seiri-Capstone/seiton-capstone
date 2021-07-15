@@ -14,7 +14,7 @@ const store = configureStore({
     orgs: orgsReducer,
     org: orgReducer,
     projects: projectsReducer,
-    user: userReducer
+    user: userReducer,
     project: projectReducer,
     invitations: invitationsReducer,
     invitation: invitationReducer
