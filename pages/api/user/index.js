@@ -9,25 +9,34 @@ export default async function handler(req, res) {
     })
     return
   } else {
-    // PUT /api/user/ update user name
-    if (req.method === 'PUT') {
+    //GET user
+    if (req.method === 'GET') {
       try {
-        const { id, name } = req.body
-        const result = await prisma.task.update({
-          where: { id },
+        const user = await prisma.user.findUnique({
+          where: {
+            id: parseInt(session.user.sub)
+          }
+        })
+        res.status(200).json(user)
+      } catch (error) {
+        console.error(error)
+      }
+      // PUT /api/user/ update user name and email
+    } else if (req.method === 'PUT') {
+      try {
+        const result = await prisma.user.update({
+          where: { id: req.body.id },
           data: {
-            name
+            name: req.body.name,
+            email: req.body.email
           }
         })
         res.status(200).json(result)
       } catch (error) {
-        throw new Error('error in the user api call')
+        console.error(error)
       }
     } else {
       console.error(error)
-      throw new Error(
-        `The HTTP ${req.method} is not supported at this route: /api/user`
-      )
     }
   }
 }

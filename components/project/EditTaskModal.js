@@ -10,7 +10,6 @@ export default function EditTaskModal({ task, show, toggleEdit, onClose }) {
   const [isEditActive, setEditActive] = useState(false)
 
   const dispatch = useDispatch()
-
   const handleSave = () => {
     setEditActive(false)
     dispatch(fetchEditTask({ ...task, title: taskTitle, body: taskBody }))
