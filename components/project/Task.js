@@ -64,7 +64,7 @@ export default function Task({ task, index }) {
               ></div>
             </div>
             {/* user is an [] */}
-            {user.map(u => (
+            {user?.map(u => (
               <div key={u.id}>{u.name}</div>
             ))}
             {/* <p className="text-sm font-bold text-gray-500">
