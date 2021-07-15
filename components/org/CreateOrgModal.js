@@ -9,6 +9,7 @@ export default function CreateOrgModal({ show, onClose }) {
 
   const handleSave = () => {
     dispatch(fetchCreateOrg({ name: orgName }))
+    setOrgName('')
     onClose()
   }
 
