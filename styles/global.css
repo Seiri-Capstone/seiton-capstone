@@ -10,7 +10,7 @@
 #logo {
   font-family: 'Tenor Sans';
   text-transform: uppercase;
-  font-size: 3.5em;
+  font-size: 2.5em;
   font-weight: 900;
   letter-spacing: 1px;
 }
@@ -18,7 +18,7 @@
 #smallLogo {
   font-family: 'Tenor Sans';
   text-transform: uppercase;
-  font-size: 2.5em;
+  font-size: 1.5em;
   font-weight: 900;
   letter-spacing: 1px;
 }
@@ -28,11 +28,11 @@
 }
 
 h1 {
-  @apply text-6xl text-left font-bold tracking-wide leading-relaxed;
+  @apply text-4xl text-left font-bold tracking-wide leading-relaxed;
 }
 
 h4 {
-  @apply text-2xl tracking-wide leading-normal;
+  @apply text-xl tracking-wide leading-normal;
 }
 
 .largeButton {
@@ -40,5 +40,5 @@ h4 {
 }
 
 button {
-  @apply text-2xl tracking-wide;
+  @apply text-xl tracking-wide;
 }
