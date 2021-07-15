@@ -19,10 +19,10 @@ export default function AuthForm() {
         Seiton
       </div>
       <div className="ml-12 absolute top-20 right-20 z-0">
-        <Image src={img} alt="illustration" width={900} height={700} />
+        <Image src={img} alt="illustration" width={600} height={600} />
       </div>
       <div className="container mx-auto relative z-20">
-        <div className="pt-96">
+        <div className="pt-64">
           <h1>Organize your workflow.</h1>
           <h4 className="max-w-2xl">
             Inspired by the 5S of Japanese workplace organization methodology,
