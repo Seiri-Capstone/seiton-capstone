@@ -2,22 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { fetchSingleOrg, createProject } from '../../store/orgSlice'
+import { fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
 
 export default function Org() {
   const org = useSelector(state => state.org) || {}
   const dispatch = useDispatch()
   const router = useRouter()
-  const { id } = router.query
+  const { query = {} } = router || {}
+  const { id = 0 } = query || {}
   const [name, setName] = useState('')
 
+  /* https://stackoverflow.com/questions/62716657/how-can-i-ensure-that-the-next-js-router-query-is-not-undefined */
   useEffect(() => {
-    dispatch(fetchSingleOrg(id))
-  }, [dispatch])
+    if (id) {
+      ;(async () => {
+        dispatch(fetchSingleOrg(id))
+      })()
+    }
+  }, [dispatch, id])
 
   const addProject = e => {
     e.preventDefault()
     dispatch(createProject({ name: name, orgId: id }))
+  }
+
+  const deleteOrg = () => {
+    dispatch(fetchDeletedOrg(id))
+    router.push('/orgs')
   }
 
   console.log('single org', org)
@@ -64,6 +76,14 @@ export default function Org() {
             Add New Project
           </button>
         </form>
+      </div>
+      <div className="flex justify-end mt-2 mr-12">
+        <button
+          className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
+          onClick={deleteOrg}
+        >
+          Delete Organization
+        </button>
       </div>
     </React.Fragment>
   )

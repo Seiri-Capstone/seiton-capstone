@@ -51,9 +51,10 @@ export default function TaskDropdownMenu({ task }) {
           <div className="fixed inset-0 bg-black opacity-0" />
         </Transition>
 
-        <ul className={isActive ? 'block' : 'hidden'}>
+        <ul className={isActive ? 'absolute right-2' : 'hidden'}>
           <li>
             <button
+              className="text-sm hover:text-green-500"
               onClick={() => {
                 setShow(true)
                 toggleEdit()
@@ -63,7 +64,9 @@ export default function TaskDropdownMenu({ task }) {
             </button>
           </li>
           <li>
-            <button onClick={toggle}>Delete</button>
+            <button className="text-sm hover:text-red-500" onClick={toggle}>
+              Delete
+            </button>
           </li>
         </ul>
       </div>

@@ -12,31 +12,40 @@ export default async function handler(req, res) {
     // 📡 GET /api/org/:id
     if (req.method === 'GET') {
       try {
-        const { id } = req.query
-
+        const id = Number(req.query.id)
+        console.log(`🟢  GETAPI `)
         //get user by session
         const user = await prisma.user.findUnique({
           where: { email: session.user.email }
         })
 
         const result = await prisma.org.findUnique({
-          where: { id: Number(id) },
+          where: { id: id },
           include: {
             projects: {
               include: {
-                users: true
+                users: {
+                  where: {
+                    userId: user.id
+                  }
+                }
               }
             },
             users: {
               include: {
-                user: true
+                user: {
+                  select: {
+                    name: true,
+                    email: true
+                  }
+                }
               }
             }
           }
         })
 
-        const filteredProjects = result.projects.filter((project, idx) => {
-          return project.users[idx] && project.users[idx].userId === user.id
+        const filteredProjects = result.projects.filter(project => {
+          return project.users.length > 0
         })
 
         const userResults = { ...result, projects: filteredProjects }
@@ -45,6 +54,28 @@ export default async function handler(req, res) {
       } catch (error) {
         console.error(error) // Which one is idiomatic?
         throw new Error('Error getting org!')
+      }
+    }
+
+    if (req.method === 'DELETE') {
+      try {
+        const id = Number(req.query.id)
+
+        const deletedUserOrg = await prisma.userOrg.deleteMany({
+          where: {
+            orgId: id
+          }
+        })
+
+        const deletedOrg = await prisma.org.delete({
+          where: {
+            id: id
+          }
+        })
+
+        res.status(200).json(deletedOrg)
+      } catch (error) {
+        console.log('error in the delete org id api call!', error)
       }
     }
   }
