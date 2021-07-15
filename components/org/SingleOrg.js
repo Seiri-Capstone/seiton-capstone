@@ -41,7 +41,6 @@ export default function Org() {
     dispatch(fetchRemoveUserOrg(body))
   }
 
-  console.log('single org', org.users)
   //workaround to solve the empty query on initial render
   if (org.projects === undefined) return null
 

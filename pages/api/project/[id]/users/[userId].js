@@ -11,18 +11,19 @@ export default async function handler(req, res) {
   } else {
     if (req.method === 'DELETE') {
       try {
+        console.log("we're in the db query for remove user project")
         const id = Number(req.query.id)
         const userId = Number(req.query.userId)
 
-        const user = await prisma.userOrg.findMany({
-          where: { userId: userId, orgId: id }
+        const user = await prisma.userProject.findMany({
+          where: { userId: userId, projectId: id }
         })
 
-        if (user[0].isCreator) {
-          console.log("you're an org creator")
-          const deletedUserOrg = await prisma.userOrg.deleteMany({
+        if (user[0].isAdmin) {
+          console.log("you're a project admin")
+          const deletedUserProject = await prisma.userProject.deleteMany({
             where: {
-              orgId: id,
+              projectId: id,
               userId: userId
             }
           })
@@ -32,7 +33,7 @@ export default async function handler(req, res) {
           res.status(403).json("you aren't authorized to make this request")
         }
       } catch (error) {
-        console.log('error in the delete org id api call!', error)
+        console.log('error in the remove user from project id api call!', error)
       }
     }
   }

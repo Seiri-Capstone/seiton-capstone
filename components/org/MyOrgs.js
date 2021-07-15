@@ -13,12 +13,6 @@ export default function MyOrgs() {
     dispatch(fetchOrgs())
   }, [dispatch])
 
-  console.log('state', orgs)
-
-  const deleteOrg = () => {
-    dispatch(fetchDeletedOrg(id))
-  }
-
   return (
     <div>
       <h1>List of my organizations</h1>

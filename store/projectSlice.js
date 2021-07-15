@@ -129,6 +129,18 @@ export const updateColumnName = createAsyncThunk(
   }
 )
 
+//DELETE remove user from project
+export const fetchRemoveUserProject = createAsyncThunk(
+  'project/fetchRemoveUserProject',
+  async body => {
+    // const id = Number(body.projectId)
+    const { data: removedUser } = await axios.delete(
+      `/api/project/${body.projectId}/users/${body.userId}`
+    )
+    return removedUser
+  }
+)
+
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
@@ -184,8 +196,12 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const { startTasks, finishTasks, startColId, finishColId } =
-        action.payload
+      const {
+        startTasks,
+        finishTasks,
+        startColId,
+        finishColId
+      } = action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
@@ -213,6 +229,12 @@ export const projectSlice = createSlice({
           state.columns[i] = action.payload
         }
       })
+    },
+    [fetchRemoveUserProject.fulfilled]: (state, action) => {
+      console.log('reducer', action.payload)
+      state.users = state.users.filter(
+        user => user.userId !== action.payload[0].userId
+      )
     }
   }
 })

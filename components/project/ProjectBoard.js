@@ -16,6 +16,8 @@ import NewTask from './NewTask'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Pusher from 'pusher-js'
+import Members from './Members'
+import Link from 'next/link'
 
 export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
@@ -30,13 +32,10 @@ export default function ProjectBoard({ pusher }) {
   const [isColAdded, setIsColAdded] = useState(false)
   const [isTaskAdded, setisTaskAdded] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const { query = {} } = router || {}
+  const { id = 0 } = query || {}
 
   console.log('project in projectboard', project)
-
-  const { id } = router.query
-  // useEffect(() => {
-  //   dispatch(fetchProject(id))
-  // }, [dispatch, session, router, id])
 
   useEffect(() => {
     console.log(`🟢  should run once mounted!`)
@@ -67,8 +66,11 @@ export default function ProjectBoard({ pusher }) {
   // const { id } = router.query
 
   useEffect(() => {
-    console.log(`🟢  should run once: useEffect [] `)
-    dispatch(fetchProject(id)) //hard coded for now
+    if (id) {
+      ;(async () => {
+        dispatch(fetchProject(id))
+      })()
+    }
     const channel = pusher.subscribe('presence-channel')
     channel.bind('reorder', async project => {
       dispatch(reorderTaskCol(project))
@@ -215,6 +217,11 @@ export default function ProjectBoard({ pusher }) {
           Delete Project
         </button>
       </div>
+
+      <div className="flex justify-end mt-2 mr-12">
+        <Link href={`/projects/${id}/members`}>Project Members</Link>
+      </div>
+
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
           droppableId="all-columns"
