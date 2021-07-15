@@ -10,27 +10,20 @@ export default function Navbar() {
   // https://ej2.syncfusion.com/react/demos/sidebar/docking-sidebar/index.html
 
   return (
-    <>
-      <div
-        className={
-          isExpanded
-            ? 'flex flex-col sm:flex-row w-64 h-screen relative'
-            : 'flex flex-col sm:flex-row w-10 h-screen relative'
-        }
-      >
-        <div className="w-64 h-screen bg-gray-800 mt-8 sm:mt-0">
-          <ThemeSwitch />
-          <nav className="mt-10">
-            <button
-              className="text-gray-100"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              CLICK ME
-            </button>
-            <a
-              className="flex items-center py-2 px-8 bg-gray-700 text-gray-100 border-r-4 border-gray-100"
-              href="#"
-            >
+
+    <div
+      className={
+        isExpanded
+          ? 'flex flex-col sm:flex-row w-64 h-screen relative'
+          : 'flex flex-col sm:flex-row w-10 h-screen relative'
+      }
+    >
+      <div className="w-64 h-screen bg-gray-800 mt-8 sm:mt-0">
+        <ThemeSwitch />
+        <nav className="mt-10">
+          <Link href="/orgs">
+            <a className="flex items-center mt-5 py-2 px-8 text-gray-400 border-r-4 border-gray-800 hover:bg-gray-700 hover:text-gray-100 hover:border-gray-100">
+
               <svg
                 className="w-6 h-6"
                 fill="currentColor"
@@ -157,34 +150,97 @@ export default function Navbar() {
               </span>
             </a>
 
-            <a
-              className="flex items-center py-2 px-8 text-gray-600 hover:text-gray-500"
-              href="#"
+          </Link>
+        </nav>
+        <div className="absolute bottom-0 my-10">
+          <a
+            className="flex items-center py-2 px-8 text-gray-600 hover:text-gray-500"
+            href="#"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <Link href="/user">
-                <a>My Profile</a>
-              </Link>
-            </a>
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+            <Link href="/user">
+              <a>{isExpanded && 'My Profile'}</a>
+            </Link>
+          </a>
+          <a className="flex items-center py-2 px-9 text-gray-600 hover:text-gray-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
             <button
               onClick={() => signOut()}
-              className="flex items-center py-2 px-8 text-gray-600 hover:text-gray-500"
+              className="flex items-center py-2  text-gray-600 hover:text-gray-500"
             >
-              <span className="mx-4 font-medium">Sign Out</span>
+              <span className="mx-4 font-medium">
+                {isExpanded && 'Sign Out'}
+              </span>
             </button>
-          </div>
+          </a>
         </div>
+      </div>
+      <div className="mt-10">
+        {isExpanded ? (
+          <button
+            tabIndex="1"
+            aria-label="Open menu"
+            title="Open menu"
+            className="w-6  focus:outline-none hover:text-gray-500"
+            onClick={() => setIsExpanded(false)}
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            >
+              <path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+            </svg>
+          </button>
+        ) : (
+          <button
+            tabIndex="1"
+            className="h-6 w-6 focus:outline-none hover:text-gray-500"
+            aria-label="Close menu"
+            title="Close menu"
+            onClick={() => setIsExpanded(true)}
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        )}
+
       </div>
     </>
   )

@@ -76,7 +76,7 @@ export default function ProjectBoard({ pusher }) {
     })
     setMounted(true) // if this runs <=
     return () => pusher.unsubscribe('presence-channel')
-  }, [])
+  }, [dispatch, id])
 
   // useEffect(() => {
   //   if (isColumnReordered) {
