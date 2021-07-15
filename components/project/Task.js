@@ -14,6 +14,7 @@ export default function Task({ task, index }) {
   const [show, setShow] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const taskId = task.id
+  const { user } = task
   const [session] = useSession()
   const dispatch = useDispatch()
 
@@ -62,6 +63,10 @@ export default function Task({ task, index }) {
                 }}
               ></div>
             </div>
+            {/* user is an [] */}
+            {user.map(u => (
+              <div key={u.id}>{u.name}</div>
+            ))}
             {/* <p className="text-sm font-bold text-gray-500">
               Comments{' '}
               <span

@@ -21,10 +21,15 @@ export const fetchProject = createAsyncThunk(
 // PUT tasks // TODO(sey)
 export const assignTask = createAsyncThunk(
   'project/assignTask',
-  async ({ taskId, userId }) => {
-    console.log(`🟢  taskId, userId `, taskId, userId)
-    const { data } = await axios.put(`/api/task/${taskId}`, { taskId, userId }) // the id is taken from
-    return data
+  async ({ colId, taskId, users }) => {
+    const userIds = users.map(u => u.id)
+    // should be a map
+    const { data: task } = await axios.put(`/api/task/${taskId}`, {
+      taskId,
+      userIds
+    }) // the id is taken from
+    // what is data being returned here?
+    return task
     // updated task, with its ID. need the colId passed inhow do we find out
   }
 )
@@ -155,12 +160,10 @@ export const projectSlice = createSlice({
     },
     // TODO(sey)
     [assignTask.fulfilled]: (state, action) => {
-      // do something with the action.payload right now...
-      // action.payload = the task
-      // grab column, grab task, update
-      // in the slice, make sure we assign the users associated with the tasks
-      // assign it in such a way so that...
-      return state.columns[0].tasks[0]
+      // update it with the user...
+      const task = action.payload
+      state.columns[task.columnId][task.id].user = [{}]
+      return state
     },
     [createColumn.fulfilled]: (state, action) => {
       action.payload['tasks'] = []

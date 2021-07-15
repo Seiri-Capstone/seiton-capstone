@@ -20,43 +20,61 @@ export default async function handler(req, res) {
       }
       // PUT/TASK/:id
     } else if (req.method === 'PUT') {
-      // TODO(sey)
+      /**
+       * For delete, simply submit an empty array from the Multi select down
+       */
       try {
-        const { taskId, userId } = req.body
+        const { taskId, userIds } = req.body
 
-        // console.log(
-        //   `🟢  taskId, userId `,
-        //   taskId,
-        //   userId,
-        //   typeof +taskId,
-        //   typeof +userId
-        // )
-        // got back id as a integer (hopefully), now assign it to the user?
+        const ids = userIds.map(userId => ({ id: userId }))
         const updatedTask = await prisma.task.update({
           where: {
             id: +taskId
           },
           data: {
-            users: {
-              connect: {
-                id: +userId
-              }
+            user: {
+              connect: ids // array of user ids [{ id: 1, }, { id: 2}]
             }
           }
         })
         // do something here, make sure you get back the updatedTask as well as the id
+        console.log(
+          `🟢  successful retreival of updatedTasks in the api/task/:id `
+        )
+        console.log(`🟢  updatedTask `, updatedTask)
+        // {
+        // 	id: 1,
+        // 	title: 'task1',
+        // 	body: 'watch videos on next.js',
+        // 	columnId: 1,
+        // 	index: 1
+        // }
         return updatedTask
       } catch (error) {
         console.log('Error in the /api/task/:id put')
         console.log(error)
       }
-    } else if (req.method === 'DELETE') {
-      try {
-        //
-      } catch (error) {
-        console.log(`🟢  in the api task/delete/:id! `)
-        console.log(error)
-      }
     }
+    // ❗May not be needed
+    // else if (req.method === 'DELETE') {
+    //   try {
+    //     const { taskId, userIds } = req.body
+    //     const deletedTasks = await prisma.task.update({
+    //       where: {
+    //         id: +taskId
+    //       },
+    //       data: {
+    //         users: {
+    //           connect: [{ id: +userId }]
+    //         }
+    //       }
+    //     })
+    //     // do something here, make sure you get back the updatedTask as well as the id
+    //     return deletedTasks
+    //   } catch (error) {
+    //     console.log(`🟢  in the api task/delete/:id! `)
+    //     console.log(error)
+    //   }
+    // }
   }
 }

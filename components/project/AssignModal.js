@@ -35,13 +35,8 @@ const AssignModal = ({ colId, id, toggle, show }) => {
 
   const onSubmit = e => {
     e.preventDefault()
-    // for all events, loop over the usersToAssign, and use multiple dispatch =>
-
-    // hard code user Id for now...
-    usersToAssign.forEach(u => {
-      // possible to pass in the column id?
-      dispatch(assignTask({ taskId: id, userId: u.id }))
-    })
+    console.log(`🟢  colId, taskId, usersToAssign `, colId, id, usersToAssign)
+    dispatch(assignTask({ colId, taskId: id, users: usersToAssign }))
   }
 
   return show
