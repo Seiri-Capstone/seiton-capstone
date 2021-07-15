@@ -64,8 +64,6 @@ export default function ProjectBoard({ pusher }) {
   //   auth: { params: { username: 'helen' } }
   // })
 
-  // const { id } = router.query
-
   useEffect(() => {
     console.log(`🟢  should run once: useEffect [] `)
     dispatch(fetchProject(id)) //hard coded for now
