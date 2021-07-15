@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
-import { fetchSingleOrg, createProject } from '../../store/orgSlice'
+import {
+  fetchSingleOrg,
+  createProject,
+  fetchRemoveUserOrg
+} from '../../store/orgSlice'
 import { fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
 
@@ -32,7 +36,11 @@ export default function Org() {
     router.push('/orgs')
   }
 
-  console.log('single org', org)
+  const removeUser = userId => {
+    const body = { userId: userId, orgId: id }
+    dispatch(fetchRemoveUserOrg(body))
+  }
+
   //workaround to solve the empty query on initial render
   if (org.projects === undefined) return null
 
@@ -54,7 +62,16 @@ export default function Org() {
       <div>
         <h1>Organization Members</h1>
         {org.users.map(user => (
-          <h1 key={user.userId}>{user.user.name}</h1>
+          <div key={user.userId} className="flex mt-2 mr-12">
+            <h1 key={user.userId}>{user.user.name}</h1>
+
+            <button
+              className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white border border-red-500 hover:border-transparent rounded-full"
+              onClick={() => removeUser(user.userId)}
+            >
+              X
+            </button>
+          </div>
         ))}
       </div>
       <br />
