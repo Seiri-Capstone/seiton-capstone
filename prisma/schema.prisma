@@ -9,19 +9,32 @@ datasource db {
 }
 
 model User {
-  id             Int           @id @default(autoincrement())
-  name           String?
-  email          String?       @unique
-  email_verified DateTime?
-  image          String?
-  createdAt      DateTime      @default(now()) @map("created_at")
-  updatedAt      DateTime?     @updatedAt @map("updated_at")
-  comments       Comment[]
-  orgs           UserOrg[]
-  projects       UserProject[]
-  tasks          Task[]
+  id              Int           @id @default(autoincrement())
+  name            String?
+  email           String?       @unique
+  email_verified  DateTime?
+  image           String?
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime?     @updatedAt @map("updated_at")
+  comments        Comment[]
+  receivedInvites Invitation[]  @relation("ReceivedInvites")
+  sentInvites     Invitation[]  @relation("SentInvites")
+  orgs            UserOrg[]
+  projects        UserProject[]
+  tasks           Task[]
 
   @@map("users")
+}
+
+model Invitation {
+  id             Int     @id @default(autoincrement())
+  sentUserId     Int
+  receivedUserId Int
+  projectId      Int
+  status         Status  @default(PENDING)
+  project        Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  receivedBy     User    @relation("ReceivedInvites", fields: [receivedUserId], references: [id], onDelete: Cascade)
+  sentFrom       User    @relation("SentInvites", fields: [sentUserId], references: [id], onDelete: Cascade)
 }
 
 model VerificationRequest {
@@ -36,12 +49,13 @@ model VerificationRequest {
 }
 
 model Project {
-  id      Int           @id @default(autoincrement())
-  name    String
-  orgId   Int
-  org     Org           @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  columns Column[]
-  users   UserProject[]
+  id         Int           @id @default(autoincrement())
+  name       String
+  orgId      Int
+  org        Org           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  columns    Column[]
+  Invitation Invitation[]
+  users      UserProject[]
 }
 
 model UserProject {
@@ -64,7 +78,7 @@ model Org {
 model UserOrg {
   userId    Int
   orgId     Int
-  isCreator Boolean @default(true)
+  isCreator Boolean @default(false)
   org       Org     @relation(fields: [orgId], references: [id])
   user      User    @relation(fields: [userId], references: [id])
 
@@ -131,4 +145,10 @@ model Session {
   updatedAt    DateTime @default(now()) @map("updated_at")
 
   @@map("sessions")
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  DECLINED
 }

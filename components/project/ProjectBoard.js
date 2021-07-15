@@ -10,11 +10,14 @@ import {
   reorderTaskCol,
   createColumn
 } from '../../store/projectSlice'
+import { fetchDeletedProject } from '../../store/projectsSlice'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import NewTask from './NewTask'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Pusher from 'pusher-js'
+import Members from './Members'
+import Link from 'next/link'
 
 export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
@@ -30,12 +33,10 @@ export default function ProjectBoard({ pusher }) {
   const [isColAdded, setIsColAdded] = useState(false)
   const [isTaskAdded, setisTaskAdded] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const { query = {} } = router || {}
+  const { id = 0 } = query || {}
 
   console.log('project in projectboard', project)
-  const { id } = router.query
-  // useEffect(() => {
-  //   dispatch(fetchProject(id))
-  // }, [dispatch, session, router, id])
 
   useEffect(() => {
     console.log(`🟢  should run once mounted!`)
@@ -63,11 +64,12 @@ export default function ProjectBoard({ pusher }) {
   //   auth: { params: { username: 'helen' } }
   // })
 
-  // const { id } = router.query
-
   useEffect(() => {
-    console.log(`🟢  should run once: useEffect [] `)
-    dispatch(fetchProject(1)) //hard coded for now
+    if (id) {
+      ;(async () => {
+        dispatch(fetchProject(id))
+      })()
+    }
     const channel = pusher.subscribe('presence-channel')
     channel.bind('reorder', async project => {
       dispatch(reorderTaskCol(project))
@@ -110,6 +112,11 @@ export default function ProjectBoard({ pusher }) {
   // const [title, setTitle] = useState('')
   // const columnId = props.props.column.id
   // const index = props.props.column.tasks.length
+
+  const deleteProject = () => {
+    dispatch(fetchDeletedProject(id))
+    router.push('/projects')
+  }
 
   const addColumn = async e => {
     const index = project.columns.length
@@ -200,6 +207,20 @@ export default function ProjectBoard({ pusher }) {
       <div className="flex justify-end mt-2 mr-12">
         <button onClick={addColumn}>+ Add New Column</button>
       </div>
+
+      <div className="flex justify-end mt-2 mr-12">
+        <button
+          className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
+          onClick={deleteProject}
+        >
+          Delete Project
+        </button>
+      </div>
+
+      <div className="flex justify-end mt-2 mr-12">
+        <Link href={`/projects/${id}/members`}>Project Members</Link>
+      </div>
+
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
           droppableId="all-columns"

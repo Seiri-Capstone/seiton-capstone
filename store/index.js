@@ -5,6 +5,7 @@ import projectReducer from './projectSlice'
 import projectsReducer from './projectsSlice'
 import orgsReducer from './orgsSlice'
 import orgReducer from './orgSlice'
+import userReducer from './userSlice'
 import invitationsReducer from './invitationsSlice'
 import invitationReducer from './invitationSlice'
 
@@ -13,6 +14,7 @@ const store = configureStore({
     orgs: orgsReducer,
     org: orgReducer,
     projects: projectsReducer,
+    user: userReducer,
     project: projectReducer,
     invitations: invitationsReducer,
     invitation: invitationReducer

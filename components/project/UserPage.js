@@ -1,33 +1,50 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useSession } from 'next-auth/client'
-import EditProfile from './EditProfile'
 import Transition from './SideBarTransition'
 import { useSelector, useDispatch } from 'react-redux'
+import { fetchUser } from '../../store/userSlice'
+import { fetchEditUser } from '../../store/userSlice'
 
 const UserPage = () => {
+  const dispatch = useDispatch()
+  //toggling true-false states
   const [isClosed, setClosed] = useState(false)
   const [isShowing, setIsShowing] = useState(false)
-  const [session] = useSession()
-  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   console.log(session)
-  //   console.log(session.user.user)
-  // }, [session])
+  //grabbing user from the state
+  const user = useSelector(state => state.user)
+  //getting user from the DB/componentDidMount
+  useEffect(() => {
+    dispatch(fetchUser())
+  }, [dispatch])
 
-  function toggleUserUpdate() {
-    // setClosed(!isClosed)
+  function toggleUserUpdate(event) {
     setIsShowing(!isShowing)
+    // event.preventDefault()
   }
 
-  const handleUpdate = event => {
+  //Set State
+  const [firstName, setFirstName] = useState('')
+  const [emailState, setEmailState] = useState('')
+
+  // this is used for re-rendering so input fields will get prepopulated with text
+  useEffect(() => {
+    setFirstName(user.name)
+    setEmailState(user.email)
+  }, [user])
+
+  //submit to change name and email
+  const handleSubmit = event => {
     event.preventDefault()
+    const userToUpdate = { id: user.id, name: firstName, email: emailState }
+    dispatch(fetchEditUser(userToUpdate))
+    toggleUserUpdate()
   }
 
   return (
     <React.Fragment>
       <div className="flex bg-gray-100">
+        {/* transition for the sidebar to move */}
         <Transition
           show={!isClosed}
           enter="transition-all duration-500"
@@ -39,7 +56,7 @@ const UserPage = () => {
           <aside className="bg-gray-800 w-64 min-h-screen flex flex-col">
             <div className="px-4 h-12 flex items-center">
               <span className="text-blue-200 py-2">
-                Hello {session?.user.name}
+                Hello {user?.name || 'friend'}
               </span>
             </div>
             <div className="border-r flex-grow">
@@ -60,9 +77,6 @@ const UserPage = () => {
                   <li className="p-3 px-5 text-gray-400 hover:bg-gray-500 hover:text-white">
                     <Link href="/project">Comments</Link>
                   </li>
-                  {/* <li className="p-3 px-5 hover:bg-gray-200 hover:text-gray-700"> */}
-                  {/* <Link href="/editProfile">Update Profile</Link> */}
-                  {/* </li> */}
                 </ul>
               </nav>
             </div>
@@ -120,23 +134,61 @@ const UserPage = () => {
           <div className="m-10">
             <h2 className=" flex flex-column text-5xl">User information</h2>
             <h2 className="mt-5 flex flex-column text-3xl">
-              Hello {session ? session.user.name : 'friend'}!
+              Hello {user.name || 'friend'}
             </h2>
             <button
               className="mt-5 border px-2  rounded text-black-800 hover:text-green-400 border-black hover:border-green-400 focus:outline-none"
-              onClick={() => setIsShowing(!isShowing)}
+              onClick={toggleUserUpdate}
             >
               Update Profile
             </button>
-            <EditProfile
-              isShowing={isShowing}
-              toggleUserUpdate={toggleUserUpdate}
-              session={session}
-            />
           </div>
+          {/* form to edit user info */}
+          {isShowing ? (
+            <div className="mt-5 flex justify-center items-center">
+              <form
+                onSubmit={handleSubmit}
+                className="bg-gray-200 w-110 rounded-lg m-4 p-4 flex"
+              >
+                <div className="flex flex-col space-y-4 space-x-3">
+                  <h1 className="text-center">My Profile</h1>
+                  <div className="flex flex-col space-y-5 justify-center">
+                    <div className="flex flex-row space-x-1">
+                      <label className="mt-2">First Name</label>
+                      <input
+                        value={firstName || ''}
+                        className="rounded-lg"
+                        type="text"
+                        name="firstName"
+                        onChange={e => setFirstName(e.target.value)}
+                        placeholder="Type Your Name"
+                      />
+                    </div>
+                    <div className="flex flex-row space-x-11">
+                      <label className="text-center mt-2">Email</label>
+                      <input
+                        name="emailState"
+                        value={emailState || ''}
+                        className="rounded-lg"
+                        type="text"
+                        onChange={e => setEmailState(e.target.value)}
+                        placeholder="Type Your Email"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="mr-2 border px-2 m-3 rounded text-black-800 hover:text-green-400 border-black hover:border-green-400 focus:outline-none"
+                    >
+                      Update My Info
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          ) : null}
         </main>
       </div>
-      <div id="usermodal"></div>
+      {/* <div id="usermodal"></div> */}
     </React.Fragment>
   )
 }

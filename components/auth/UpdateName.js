@@ -9,14 +9,14 @@ export default function AuthForm() {
   return (
     <div className="flex justify-center content-center">
       <h2>Set your name:</h2>
-      <textarea
+      <input
         ref={input => input && input.focus()}
         className="my-4 text-lg leading-relaxed"
         name="body"
         value={columnName}
         onChange={e => setColumnName(e.target.value)}
         onKeyDown={handleKeyDown}
-      ></textarea>
+      ></input>
     </div>
   )
 }

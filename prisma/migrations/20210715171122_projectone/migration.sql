@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Status" AS ENUM ('PENDING', 'ACCEPTED', 'DECLINED');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
@@ -7,6 +10,17 @@ CREATE TABLE "users" (
     "image" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Invitation" (
+    "id" SERIAL NOT NULL,
+    "sentUserId" INTEGER NOT NULL,
+    "receivedUserId" INTEGER NOT NULL,
+    "projectId" INTEGER NOT NULL,
+    "status" "Status" NOT NULL DEFAULT E'PENDING',
 
     PRIMARY KEY ("id")
 );
@@ -53,7 +67,7 @@ CREATE TABLE "Org" (
 CREATE TABLE "UserOrg" (
     "userId" INTEGER NOT NULL,
     "orgId" INTEGER NOT NULL,
-    "isCreator" BOOLEAN NOT NULL DEFAULT true,
+    "isCreator" BOOLEAN NOT NULL DEFAULT false,
 
     PRIMARY KEY ("userId","orgId")
 );
@@ -153,6 +167,15 @@ CREATE UNIQUE INDEX "_TaskToUser_AB_unique" ON "_TaskToUser"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_TaskToUser_B_index" ON "_TaskToUser"("B");
+
+-- AddForeignKey
+ALTER TABLE "Invitation" ADD FOREIGN KEY ("sentUserId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Invitation" ADD FOREIGN KEY ("receivedUserId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Invitation" ADD FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD FOREIGN KEY ("orgId") REFERENCES "Org"("id") ON DELETE CASCADE ON UPDATE CASCADE;

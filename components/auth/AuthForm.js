@@ -1,83 +1,54 @@
 import React, { useState } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Image from 'next/image'
+import img from '../../public/illustration.svg'
 
 export default function AuthForm() {
   const [session] = useSession()
-  // const router = useRouter()
+  const router = useRouter()
 
-  // const [email, setEmail] = useState('')
-  // const [password, setPassword] = useState('')
+  if (session) {
+    router.push('/orgs')
+  }
 
-  // if (!session) {
   return (
-    <div className="container mx-auto px-10 mt-72">
-      <h1>Organize your workflow.</h1>
-      <p className="text-2xl">
-        Inspired by the 5S of Japanese workplace organization methodology,
-        <br />
-        Seiton will help you and your team to arrange your workflow efficiently.
-      </p>
-      <br />
-      {/* <form method="POST" action="/api/login" className="mt-8 max-w-md">
-          <div>
-            <label htmlFor="username" className="text-gray-700">
-              Email
-            </label>
-            <input
-              name="email"
-              type="text"
-              className="mt-1 block w-full rounded-md"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="text-gray-700">
-              Password
-            </label>
-            <input
-              name="password"
-              type="password"
-              className="mt-1 block w-full rounded-md"
-            />
-          </div>
-          <div> */}
-      <button
-        type="submit"
-        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-        onClick={() => signIn('auth0')}
-      >
-        Sign In With Auth0
-      </button>
-      {/* </div> */}
-      {/*error && error.response && <div> {error.response.data} </div>*/}
-      {/* </form> */}
-      <button
-        type="submit"
-        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-        onClick={() => signIn('github')}
-      >
-        LOG IN WITH GITHUB
-      </button>
-      <button
-        type="submit"
-        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-        onClick={() => signIn('google')}
-      >
-        LOG IN WITH GOOGLE
-      </button>
-    </div>
+    <>
+      <div id="logo" className="pl-8 pt-4 p-4 bg-white ">
+        Seiton
+      </div>
+      <div className="ml-12 absolute top-20 right-20 z-0">
+        <Image src={img} alt="illustration" width={900} height={700} />
+      </div>
+      <div className="container mx-auto relative z-20">
+        <div className="pt-96">
+          <h1>Organize your workflow.</h1>
+          <h4 className="max-w-2xl">
+            Inspired by the 5S of Japanese workplace organization methodology,
+            Seiton will help you and your team to arrange your workflow
+            efficiently.
+          </h4>
+
+          <br />
+          <br />
+          <button
+            type="submit"
+            className="largeButton mr-4"
+            onClick={() => signIn('github')}
+          >
+            Github Sign in
+          </button>
+          {/* github button needs to be taken out for production build */}
+          <button
+            type="submit"
+            className="largeButton"
+            onClick={() => signIn('google')}
+          >
+            Google Sign In
+          </button>
+        </div>
+      </div>
+    </>
   )
-  // } else {
-  //redirect to dashboard
-  // router.push('/project')
-  // return <p className="text-center">Redirecting...</p>
-  // <button
-  //   type="submit"
-  //   className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-  //   onClick={() => signOut()}
-  // >
-  //   SIGN OUT
-  // </button>
-  // }
 }
