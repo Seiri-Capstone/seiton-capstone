@@ -20,29 +20,6 @@ export default function Navbar() {
       <div className="w-64 h-screen bg-gray-800 mt-8 sm:mt-0">
         <ThemeSwitch />
         <nav className="mt-10">
-          <button
-            className="text-gray-100"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            CLICK ME
-          </button>
-          <a
-            className="flex items-center py-2 px-8 bg-gray-700 text-gray-100 border-r-4 border-gray-100"
-            href="#"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
-            </svg>
-            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
-              Dashboard
-            </span>
-          </a>
-
           <Link href="/orgs">
             <a className="flex items-center mt-5 py-2 px-8 text-gray-400 border-r-4 border-gray-800 hover:bg-gray-700 hover:text-gray-100 hover:border-gray-100">
               <svg
@@ -125,37 +102,7 @@ export default function Navbar() {
             </a>
           </Link>
         </nav>
-
         <div className="absolute bottom-0 my-10">
-          <a
-            className="flex items-center py-2 px-8 text-gray-600 hover:text-gray-500"
-            href="#"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-              ></path>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              ></path>
-            </svg>
-            <span className={isExpanded ? 'mx-4 font-medium' : 'hidden'}>
-              Settings
-            </span>
-          </a>
-
           <a
             className="flex items-center py-2 px-8 text-gray-600 hover:text-gray-500"
             href="#"
@@ -173,16 +120,76 @@ export default function Navbar() {
               ></path>
             </svg>
             <Link href="/user">
-              <a>My Profile</a>
+              <a>{isExpanded && 'My Profile'}</a>
             </Link>
           </a>
-          <button
-            onClick={() => signOut()}
-            className="flex items-center py-2 px-8 text-gray-600 hover:text-gray-500"
-          >
-            <span className="mx-4 font-medium">Sign Out</span>
-          </button>
+          <a className="flex items-center py-2 px-9 text-gray-600 hover:text-gray-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            <button
+              onClick={() => signOut()}
+              className="flex items-center py-2  text-gray-600 hover:text-gray-500"
+            >
+              <span className="mx-4 font-medium">
+                {isExpanded && 'Sign Out'}
+              </span>
+            </button>
+          </a>
         </div>
+      </div>
+      <div className="mt-10">
+        {isExpanded ? (
+          <button
+            tabIndex="1"
+            aria-label="Open menu"
+            title="Open menu"
+            className="w-6  focus:outline-none hover:text-gray-500"
+            onClick={() => setIsExpanded(false)}
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            >
+              <path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+            </svg>
+          </button>
+        ) : (
+          <button
+            tabIndex="1"
+            className="h-6 w-6 focus:outline-none hover:text-gray-500"
+            aria-label="Close menu"
+            title="Close menu"
+            onClick={() => setIsExpanded(true)}
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        )}
       </div>
     </div>
   )
