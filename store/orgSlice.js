@@ -22,9 +22,9 @@ export const createProject = createAsyncThunk(
 export const fetchRemoveUserOrg = createAsyncThunk(
   'org/fetchRemoveUserOrg',
   async body => {
+    const id = Number(body.orgId)
     const { data: removedUser } = await axios.delete(
-      `api/org/${body.orgId}/users`,
-      body
+      `/api/org/${id}/users/${body.userId}`
     )
     return removedUser
   }
@@ -42,7 +42,9 @@ export const orgSlice = createSlice({
       return action.payload
     },
     [fetchRemoveUserOrg.fulfilled]: (state, action) => {
-      state.users.filter(user => user.userId !== action.payload.userId)
+      state.users = state.users.filter(
+        user => user.userId !== action.payload[0].userId
+      )
     }
   }
 })
