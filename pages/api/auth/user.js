@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       const user = await prisma.user.findUnique({ data: req.body.user })
       res.status(200).json(user)
     } catch (error) {
-      console.error('error in post user method!')
+      console.error(error)
     }
   }
 }

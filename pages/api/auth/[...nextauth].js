@@ -49,6 +49,13 @@ const options = {
     })
   ],
   callbacks: {
+    async session(session, user) {
+      session.user = user
+      return session
+    },
+    async jwt(token, user, account, profile, isNewUser) {
+      return token
+    },
     redirect: async (url, _) => {
       if (url === '/') {
         return Promise.resolve('/orgs')
