@@ -1,16 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  sslmode   = require
-  sslaccept = accept_invalid_certs
-}
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialActions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -19,65 +14,56 @@ model User {
   email           String?       @unique
   email_verified  DateTime?
   image           String?
-  createdAt       DateTime      @default(now()) @map(name: "created_at")
-  updatedAt       DateTime?     @updatedAt @map(name: "updated_at")
-  orgs            UserOrg[]
-  tasks           Task[]
-  projects        UserProject[]
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime?     @updatedAt @map("updated_at")
   comments        Comment[]
-  sentInvites     Invitation[]  @relation("SentInvites")
   receivedInvites Invitation[]  @relation("ReceivedInvites")
-  
-  @@map(name: "users")
+  sentInvites     Invitation[]  @relation("SentInvites")
+  orgs            UserOrg[]
+  projects        UserProject[]
+  tasks           Task[]
+
+  @@map("users")
 }
 
 model Invitation {
   id             Int     @id @default(autoincrement())
-  sentFrom       User    @relation("SentInvites", fields: [sentUserId], references: [id], onDelete: Cascade)
   sentUserId     Int
-  receivedBy     User    @relation(name: "ReceivedInvites", fields: [receivedUserId], references: [id], onDelete: Cascade)
   receivedUserId Int
-  project        Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId      Int
   status         Status  @default(PENDING)
-}
-
-enum Status {
-  PENDING
-  ACCEPTED
-  DECLINED
+  project        Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  receivedBy     User    @relation("ReceivedInvites", fields: [receivedUserId], references: [id], onDelete: Cascade)
+  sentFrom       User    @relation("SentInvites", fields: [sentUserId], references: [id], onDelete: Cascade)
 }
 
 model VerificationRequest {
   id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now()) @map(name: "created_at")
-  updatedAt  DateTime? @updatedAt @map(name: "updated_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime? @updatedAt @map("updated_at")
   identifier String
   token      String
   expires    DateTime?
 
-  @@map(name: "verification_requests")
+  @@map("verification_requests")
 }
 
 model Project {
-  id      Int           @id @default(autoincrement())
-  name    String
-  users   UserProject[]
-  org     Org           @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  orgId   Int
-  columns Column[]
-
+  id         Int           @id @default(autoincrement())
+  name       String
+  orgId      Int
+  org        Org           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  columns    Column[]
   Invitation Invitation[]
+  users      UserProject[]
 }
 
 model UserProject {
-
-  user      User    @relation(fields: [userId], references: [id])
   userId    Int
-  project   Project @relation(fields: [projectId], references: [id])
   projectId Int
   isAdmin   Boolean
-
+  project   Project @relation(fields: [projectId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 
   @@id([userId, projectId])
 }
@@ -85,16 +71,16 @@ model UserProject {
 model Org {
   id       Int       @id @default(autoincrement())
   name     String?
-  users    UserOrg[]
   projects Project[]
+  users    UserOrg[]
 }
 
 model UserOrg {
-  user      User    @relation(fields: [userId], references: [id])
   userId    Int
-  org       Org     @relation(fields: [orgId], references: [id])
   orgId     Int
   isCreator Boolean @default(false)
+  org       Org     @relation(fields: [orgId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 
   @@id([userId, orgId])
 }
@@ -102,62 +88,67 @@ model UserOrg {
 model Column {
   id        Int      @id @default(autoincrement())
   title     String
-  tasks     Task[]
-  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId Int?
   index     Int
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tasks     Task[]
 }
 
 model Task {
   id       Int       @id @default(autoincrement())
   title    String
   body     String
-  user     User[]
-  column   Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
   columnId Int
-  comments Comment[]
   index    Int
+  column   Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  comments Comment[]
+  user     User[]
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
   body      String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  tasks     Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    Int
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  tasks     Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
   id                 Int       @id @default(autoincrement())
-  compoundId         String    @unique @map(name: "compound_id")
-  userId             Int       @map(name: "user_id")
-  providerType       String    @map(name: "provider_type")
-  providerId         String    @map(name: "provider_id")
-  providerAccountId  String    @map(name: "provider_account_id")
-  refreshToken       String?   @map(name: "refresh_token")
-  accessToken        String?   @map(name: "access_token")
-  accessTokenExpires DateTime? @map(name: "access_token_expires")
-  createdAt          DateTime  @default(now()) @map(name: "created_at")
-  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
-
+  compoundId         String    @unique @map("compound_id")
+  userId             Int       @map("user_id")
+  providerType       String    @map("provider_type")
+  providerId         String    @map("provider_id")
+  providerAccountId  String    @map("provider_account_id")
+  refreshToken       String?   @map("refresh_token")
+  accessToken        String?   @map("access_token")
+  accessTokenExpires DateTime? @map("access_token_expires")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @default(now()) @map("updated_at")
 
   @@index([providerAccountId], name: "providerAccountId")
   @@index([providerId], name: "providerId")
   @@index([userId], name: "userId")
-  @@map(name: "accounts")
+  @@map("accounts")
 }
 
 model Session {
   id           Int      @id @default(autoincrement())
-  userId       Int      @map(name: "user_id")
+  userId       Int      @map("user_id")
   expires      DateTime
-  sessionToken String   @unique @map(name: "session_token")
-  accessToken  String   @unique @map(name: "access_token")
-  createdAt    DateTime @default(now()) @map(name: "created_at")
-  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+  sessionToken String   @unique @map("session_token")
+  accessToken  String   @unique @map("access_token")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
 
-  @@map(name: "sessions")
+  @@map("sessions")
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  DECLINED
 }

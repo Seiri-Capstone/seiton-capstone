@@ -22,6 +22,7 @@ import Link from 'next/link'
 export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
   const project = useSelector(state => state.project)
+
   const dispatch = useDispatch()
   const router = useRouter()
   const [isColumnReordered, setIsColumnReordered] = useState(false)

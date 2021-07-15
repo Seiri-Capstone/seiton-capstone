@@ -15,6 +15,18 @@
   letter-spacing: 1px;
 }
 
+#smallLogo {
+  font-family: 'Tenor Sans';
+  text-transform: uppercase;
+  font-size: 2.5em;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+#tenor {
+  font-family: 'Tenor Sans';
+}
+
 h1 {
   @apply text-6xl text-left font-bold tracking-wide leading-relaxed;
 }
@@ -25,4 +37,8 @@ h4 {
 
 .largeButton {
   @apply bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white font-semibold uppercase tracking-widest text-lg py-4 px-6 rounded-lg;
+}
+
+button {
+  @apply text-2xl tracking-wide;
 }

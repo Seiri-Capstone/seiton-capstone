@@ -22,12 +22,13 @@ export default async function handler(req, res) {
                 tasks: {
                   orderBy: { index: 'asc' },
                   include: {
-                    comments: {
-                      orderBy: { createdAt: 'asc' },
-                      include: {
-                        user: true
-                      }
-                    }
+                    // comments: {
+                    //   orderBy: { createdAt: 'asc' },
+                    //   include: {
+                    //     user: true
+                    //   }
+                    // }
+                    user: true // TODO(sey)
                   }
                 }
               }

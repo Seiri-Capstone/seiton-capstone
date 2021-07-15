@@ -8,10 +8,24 @@ export const fetchProject = createAsyncThunk(
   async projectId => {
     // try catch here
     const response = await fetch(`/api/project/${projectId}`)
-
     // ultimately we want it to represent an array form
     return await response.json()
     // Get back sorted array
+  }
+)
+// PUT tasks // TODO(sey)
+export const assignTask = createAsyncThunk(
+  'project/assignTask',
+  async ({ colId, taskId, users }) => {
+    const userIds = users.map(u => u.id)
+    // should be a map
+    const { data: task } = await axios.put(`/api/task/${taskId}`, {
+      taskId,
+      userIds
+    }) // the id is taken from
+    // what is data being returned here?
+    return task
+    // updated task, with its ID. need the colId passed inhow do we find out
   }
 )
 // POST tasks
@@ -150,6 +164,13 @@ export const projectSlice = createSlice({
       const updatedColId = state.columns.filter(col => col.id === columnId)[0]
         .index
       state.columns[updatedColId].tasks.push(action.payload)
+    },
+    // TODO(sey)
+    [assignTask.fulfilled]: (state, action) => {
+      // update it with the user...
+      const task = action.payload
+      state.columns[task.columnId][task.id].user = [{}]
+      return state
     },
     [createColumn.fulfilled]: (state, action) => {
       action.payload['tasks'] = []
