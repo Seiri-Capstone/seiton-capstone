@@ -13,7 +13,6 @@ const UserPage = () => {
 
   //grabbing user from the state
   const user = useSelector(state => state.user)
-
   //getting user from the DB/componentDidMount
   useEffect(() => {
     dispatch(fetchUser())

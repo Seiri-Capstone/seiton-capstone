@@ -12,6 +12,7 @@ export default async function handler(req, res) {
     //GET user
     if (req.method === 'GET') {
       try {
+        console.log('SESSION==> ', session)
         const user = await prisma.user.findUnique({
           where: {
             id: parseInt(session.user.sub)
