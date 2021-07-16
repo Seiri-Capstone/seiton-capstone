@@ -24,8 +24,11 @@ export default async function handler(req, res) {
           }
         })
 
+        console.log('invite', invite)
+
         //if accept, create userProject row
         if (value === 'ACCEPTED') {
+          console.log('we are connecting a userProject', invite.projectId)
           if (invite.projectId) {
             const userProject = await prisma.userProject.create({
               data: {

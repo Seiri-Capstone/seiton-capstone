@@ -62,7 +62,7 @@ export default async function handler(req, res) {
         })
 
         //get searchUser to grab id
-        if (searchEmail) {
+        if (!projectId) {
           const searchUser = await prisma.user.findUnique({
             where: { email: searchEmail }
           })
@@ -89,7 +89,38 @@ export default async function handler(req, res) {
               }
             }
           })
-        } else if (projectId) {
+        } else if (projectId && searchEmail) {
+          const searchUser = await prisma.user.findUnique({
+            where: { email: searchEmail }
+          })
+
+          receivedById = searchUser.id
+
+          const invitation = await prisma.invitation.create({
+            data: {
+              sentFrom: {
+                connect: {
+                  id: user.id
+                }
+              },
+              receivedBy: {
+                connect: {
+                  id: receivedById
+                }
+              },
+              project: {
+                connect: {
+                  id: projectId
+                }
+              },
+              org: {
+                connect: {
+                  id: orgId
+                }
+              }
+            }
+          })
+        } else {
           const invitation = await prisma.invitation.create({
             data: {
               sentFrom: {
