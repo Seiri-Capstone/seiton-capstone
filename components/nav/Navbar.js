@@ -3,11 +3,11 @@ import { signOut } from 'next-auth/client'
 import Link from 'next/link'
 import ThemeSwitch from '../ThemeSwitch'
 import Image from 'next/image'
-import building from '../../public/buildingIcon.svg'
-import book from '../../public/bookIcon.svg'
-import box from '../../public/boxIcon.svg'
-import signout from '../../public/signoutIcon.svg'
-import profile from '../../public/profileIcon.svg'
+import building from '../../public/assets/buildingIcon.svg'
+import book from '../../public/assets/bookIcon.svg'
+import box from '../../public/assets/boxIcon.svg'
+import signout from '../../public/assets/signoutIcon.svg'
+import profile from '../../public/assets/profileIcon.svg'
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(true)
@@ -20,7 +20,7 @@ export default function Navbar() {
           : 'flex flex-col sm:flex-row w-16 relative'
       }
     >
-      <div className="w-44 bg-gradient-to-t from-purple-600 via-indigo-600 to-blue-600 mt-8 sm:mt-0">
+      <div className="w-44 h-screen bg-gradient-to-t from-purple-900 via-indigo-900 to-blue-900 mt-8 sm:mt-0">
         <div className="mr-4 flex flex-col">
           <div className="mt-4 mr-2 self-end">
             {isExpanded ? (

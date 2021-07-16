@@ -14,11 +14,11 @@ export default function MyProjects() {
 
   console.log('projects--->', projects)
 
-  const bgColors = ['bg-blue-500', 'bg-indigo-500', 'bg-purple-500']
+  const bgColors = ['bg-blue-700', 'bg-indigo-700', 'bg-purple-700']
   const borderColors = [
-    'border-blue-500',
-    'border-indigo-500',
-    'border-purple-500'
+    'border-blue-700',
+    'border-indigo-700',
+    'border-purple-700'
   ]
 
   return (
@@ -46,7 +46,7 @@ export default function MyProjects() {
                       borderColors[i % 3]
                     } lg:border-l-0 lg:border-t-4 lg:${
                       borderColors[i % 3]
-                    } bg-white
+                    } bg-transparent
                   } rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal`}
                   >
                     <div
