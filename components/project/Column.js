@@ -38,15 +38,15 @@ export default function Column(props) {
     }
   }
 
-  const removeColumn = async e => {
-    // make sure there are confirmations here...
-    await dispatch(deleteColumn(column.id))
-    await delCol(true)
-  }
+  // const removeColumn = async e => {
+  //   // make sure there are confirmations here...
+  //   await dispatch(deleteColumn(column.id))
+  //   await delCol(true)
+  // }
 
   return (
     <Draggable
-      // isDragDisabled
+      // isDragDisabled={column.pinned} // true or false depending on column
       draggableId={`column-${column.id}`}
       index={props.index}
     >

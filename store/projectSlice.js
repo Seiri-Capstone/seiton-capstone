@@ -47,6 +47,10 @@ export const createColumn = createAsyncThunk(
     return createdColumn
   }
 )
+// PIN columns // TODO(sey)
+export const pinColumn = createAsyncThunk('project/pinColumn', async colId => {
+  await axios.put(`/api/column/${colId}`, { pinned: true })
+})
 // DELETE task
 export const deleteTask = createAsyncThunk('project/deleteTask', async id => {
   const { data: deletedTask } = await axios.delete(`/api/task/${id}`)
