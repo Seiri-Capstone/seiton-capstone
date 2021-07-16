@@ -13,6 +13,26 @@ const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
 const Project = () => {
   return (
     <div>
+      {/* This is to make sure the colors are built so we can use in different components */}
+      <div className="text-gray-500"></div>
+      <div className="text-warmGray-500"></div>
+      <div className="text-red-500"></div>
+      <div className="text-orange-500"></div>
+      <div className="text-amber-500"></div>
+      <div className="text-yellow-500"></div>
+      <div className="text-lime-500"></div>
+      <div className="text-green-500"></div>
+      <div className="text-emerald-500"></div>
+      <div className="text-teal-500"></div>
+      <div className="text-cyan-500"></div>
+      <div className="text-sky-500"></div>
+      <div className="text-blue-500"></div>
+      <div className="text-indigo-500"></div>
+      <div className="text-violet-500"></div>
+      <div className="text-purple-500"></div>
+      <div className="text-fuschia-500"></div>
+      <div className="text-pink-500"></div>
+      <div className="text-rose-500"></div>
       <div className="flex">
         <Navbar />
         <div className="flex-col">

@@ -95,7 +95,6 @@ export default function Column(props) {
               {/* CONFIRM THAT IT IS CLOSING */}
               <button
                 onClick={() => {
-                  console.log(`🟢  closing `)
                   setIsShowing(true)
                 }}
               >

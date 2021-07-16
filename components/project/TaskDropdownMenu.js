@@ -29,7 +29,11 @@ export default function TaskDropdownMenu({ task }) {
   return (
     <React.Fragment>
       <div className="inline-block relative">
-        <button onClick={() => setIsActive(!isActive)}>
+        <button
+          onClick={() => setIsActive(!isActive)}
+          // onMouseEnter={() => setIsActive(true)}
+          // onMouseLeave={() => setIsActive(false)}
+        >
           <svg
             className="w-6 h-6"
             fill="none"
