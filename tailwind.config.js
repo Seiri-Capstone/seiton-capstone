@@ -1,4 +1,5 @@
 const { fontSize, fontWeight } = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   mode: 'jit',
@@ -6,10 +7,31 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        gray: colors.trueGray,
+        warmGray: colors.warmGray,
+        red: colors.red,
+        orange: colors.orange,
+        amber: colors.amber,
+        yellow: colors.yellow,
+        lime: colors.lime,
+        green: colors.green,
+        emerald: colors.emerald,
+        teal: colors.teal,
+        cyan: colors.cyan,
+        sky: colors.sky,
+        blue: colors.blue,
+        indigo: colors.indigo,
+        violet: colors.violet,
+        purple: colors.purple,
+        fuschia: colors.fuschia,
+        pink: colors.pink,
+        rose: colors.rose
+      },
       typography: theme => ({
         DEFAULT: {
           css: {
-            fontSize: '.75rem',
+            // fontSize: '.5 rem',
             color: theme('colors.gray.700'),
             h1: {
               letterSpacing: theme('letterSpacing.tight'),

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import NewTask from './NewTask'
 import { deleteColumn, updateColumnName } from '../../store/projectSlice'
 import { useDispatch } from 'react-redux'
-// import { Pencil } from '@heroicons/react/solid'
+import DeleteColumnModal from '../../components/project/DeleteColumnModal'
 
 export default function Column(props) {
   const { setCol, delCol, addTask, column } = props
@@ -14,6 +14,15 @@ export default function Column(props) {
 
   const [columnName, setColumnName] = useState(column.title)
   const [isEditActive, setEditActive] = useState(false)
+
+  // Confirm Delete Column Modal
+  const [isShowing, setIsShowing] = useState(false)
+  const [isClosed, setClosed] = useState(false)
+
+  function toggle() {
+    setClosed(!isClosed)
+    setIsShowing(!isShowing)
+  }
 
   const [toggleTask, setToggleTask] = useState(false)
   const toggleNewTask = () => setToggleTask(!toggleTask)
@@ -30,6 +39,7 @@ export default function Column(props) {
   }
 
   const removeColumn = async e => {
+    // make sure there are confirmations here...
     await dispatch(deleteColumn(column.id))
     await delCol(true)
   }
@@ -82,8 +92,13 @@ export default function Column(props) {
                 <a>+</a>
               </button>
 
-              <button onClick={removeColumn}>
-                {/* TODO: Are you sure you want to remove column? */}
+              {/* CONFIRM THAT IT IS CLOSING */}
+              <button
+                onClick={() => {
+                  console.log(`🟢  closing `)
+                  setIsShowing(true)
+                }}
+              >
                 <a>x</a>
               </button>
             </div>
@@ -108,6 +123,14 @@ export default function Column(props) {
               </div>
             )}
           </Droppable>
+          <DeleteColumnModal
+            isShowing={isShowing}
+            toggle={toggle}
+            colId={column.id}
+            delCol={delCol}
+            // onClose={() => setIsShowing(false)}
+          />
+          <div id="columnDeleteModal"></div>
         </div>
       )}
     </Draggable>
