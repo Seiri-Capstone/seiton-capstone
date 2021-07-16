@@ -1,6 +1,6 @@
 import React from 'react'
 import SingleOrg from '../../components/org/SingleOrg'
-import Navbar from '../../components/project/Navbar'
+import Navbar from '../../components/nav/Navbar'
 
 export default function singleOrg() {
   return (

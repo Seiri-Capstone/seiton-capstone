@@ -22,45 +22,50 @@ export default function MyProjects() {
   ]
 
   return (
-    <div>
+    <>
       <Logo />
-      <h1 id="tenor">My Projects</h1>
-      {projects?.map((project, i) => (
-        <>
-          <Link href={`/projects/${project.projectId}`}>
-            <a>
-              <div
-                className=" w-full lg:max-w-full lg:flex my-4"
-                key={project.projectId}
-              >
+      <h2 id="tenor">My Projects</h2>
+      <br />
+      <br />
+      <div className="h-5/6 overflow-y-auto">
+        {projects?.map((project, i) => (
+          <>
+            <Link href={`/projects/${project.projectId}`}>
+              <a>
                 <div
-                  className={`h-48 lg:h-auto lg:w-12 flex-none rounded-t ${
-                    bgColors[i % 3]
-                  } lg:rounded-t-none lg:rounded-l text-center overflow-hidden`}
-                ></div>
-                <div
-                  className={`w-full border-r-4 border-b-4 border-l-4 ${
-                    borderColors[i % 3]
-                  } lg:border-l-0 lg:border-t-4 lg:${
-                    borderColors[i % 3]
-                  } bg-white
-                  } rounded-b lg:rounded-b-none lg:rounded-r p-8 flex flex-col justify-between leading-normal`}
+                  className="w-full lg:max-w-full lg:flex"
+                  key={project.projectId}
                 >
                   <div
-                    id="tenor"
-                    className="text-gray-900 font-bold text-4xl mb-2 capitalize"
+                    className={`h-48 lg:h-auto lg:w-12 flex-none rounded-t ${
+                      bgColors[i % 3]
+                    } lg:rounded-t-none lg:rounded-l text-center overflow-hidden`}
+                  ></div>
+                  <div
+                    className={`w-full border-r-4 border-b-4 border-l-4 ${
+                      borderColors[i % 3]
+                    } lg:border-l-0 lg:border-t-4 lg:${
+                      borderColors[i % 3]
+                    } bg-white
+                  } rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal`}
                   >
-                    {project.project.name}
-                  </div>
-                  <div className="text-2xl leading-loose tracking-wide ml-4">
-                    Organization: {project.project.org.name}
+                    <div
+                      id="tenor"
+                      className="text-gray-900 font-bold text-xl mb-2 capitalize tracking-wide"
+                    >
+                      {project.project.name}
+                    </div>
+                    <div className="text-base tracking-wide ml-4">
+                      Organization: {project.project.org.name}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
-          </Link>
-        </>
-      ))}
-    </div>
+              </a>
+            </Link>
+            <br />
+          </>
+        ))}
+      </div>
+    </>
   )
 }

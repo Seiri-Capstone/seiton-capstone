@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../../../components/project/Navbar'
+import Navbar from '../../../components/nav/Navbar'
 import Members from '../../../components/project/Members'
 
 const members = () => {
