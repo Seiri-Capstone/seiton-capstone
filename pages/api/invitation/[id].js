@@ -24,25 +24,44 @@ export default async function handler(req, res) {
           }
         })
 
-        // console.log('invite', invite)
+        console.log('invite', invite)
 
         //if accept, create userProject row
         if (value === 'ACCEPTED') {
-          const userProject = await prisma.userProject.create({
-            data: {
-              user: {
-                connect: {
-                  id: invite.receivedUserId
-                }
-              },
-              project: {
-                connect: {
-                  id: invite.projectId
-                }
-              },
-              isAdmin: false
-            }
-          })
+          console.log('we are connecting a userProject', invite.projectId)
+          if (invite.projectId) {
+            const userProject = await prisma.userProject.create({
+              data: {
+                user: {
+                  connect: {
+                    id: invite.receivedUserId
+                  }
+                },
+                project: {
+                  connect: {
+                    id: invite.projectId
+                  }
+                },
+                isAdmin: false
+              }
+            })
+          } else {
+            const userOrg = await prisma.userOrg.create({
+              data: {
+                user: {
+                  connect: {
+                    id: invite.receivedUserId
+                  }
+                },
+                org: {
+                  connect: {
+                    id: invite.orgId
+                  }
+                },
+                isCreator: false
+              }
+            })
+          }
         }
 
         res.status(200).json(updatedInvite)

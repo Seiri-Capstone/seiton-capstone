@@ -15,25 +15,29 @@ export default function SendInvite({ show, onClose }) {
   const dispatch = useDispatch()
   const users = selectedOrg.users || []
   //grab users minus session user for dropdown
-  const usersDropdown = users.filter(
-    user => user.user.name !== session?.user.name
-  )
+  const usersDropdown = users.filter(user => {
+    return user.userId !== +session?.user.sub
+  })
+
+  console.log('projects', projects)
+  // console.log('selectedOrg', selectedOrg)
 
   useEffect(() => {
     dispatch(fetchProjects())
-  }, [dispatch])
+  }, [])
 
   useEffect(() => {
     if (selectedProject.project) {
       dispatch(fetchSingleOrg(selectedProject.project.org.id))
     }
-  }, [selectedProject.project])
+  }, [dispatch, selectedProject.project])
 
   const handleSend = () => {
     dispatch(
       fetchCreateInvite({
-        receivedBy: receivingUser,
-        project: selectedProject
+        receivedById: receivingUser.userId,
+        projectId: selectedProject.projectId,
+        orgId: selectedOrg.id
       })
     )
     onClose()

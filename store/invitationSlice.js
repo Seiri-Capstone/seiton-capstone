@@ -7,6 +7,7 @@ export const fetchUpdateInvite = createAsyncThunk(
   'invitation/fetchUpdateInvite',
   async thunkArg => {
     const { invite, value } = thunkArg
+    console.log('invite', invite)
     const { data: invitation } = await axios.put(
       `/api/invitation/${invite.id}`,
       thunkArg
