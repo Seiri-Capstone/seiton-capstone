@@ -8,6 +8,7 @@ import {
 } from '../../store/orgSlice'
 import { fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
+import OrgInvite from './OrgInvite'
 
 export default function Org() {
   const org = useSelector(state => state.org) || {}
@@ -16,8 +17,8 @@ export default function Org() {
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
   const [name, setName] = useState('')
+  const [show, setShow] = useState(false)
 
-  /* https://stackoverflow.com/questions/62716657/how-can-i-ensure-that-the-next-js-router-query-is-not-undefined */
   useEffect(() => {
     if (id) {
       ;(async () => {
@@ -59,6 +60,13 @@ export default function Org() {
           </Link>
         ))}
       </div>
+      <button
+        type="submit"
+        className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
+        onClick={() => setShow(true)}
+      >
+        Send Invite!
+      </button>
       <div>
         <h1>Organization Members</h1>
         {org.users.map(user => (
@@ -102,6 +110,8 @@ export default function Org() {
           Delete Organization
         </button>
       </div>
+      <OrgInvite show={show} onClose={() => setShow(false)} org={org} />
+      <div id="orgInviteModal"></div>
     </React.Fragment>
   )
 }

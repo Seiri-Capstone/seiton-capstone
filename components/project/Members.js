@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { fetchProject, fetchRemoveUserProject } from '../../store/projectSlice'
+import ProjectInvite from './ProjectInvite'
 
 export default function Members() {
   const project = useSelector(state => state.project)
@@ -9,6 +10,7 @@ export default function Members() {
   const router = useRouter()
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
+  const [show, setShow] = useState(false)
 
   useEffect(() => {
     if (id) {
@@ -16,11 +18,11 @@ export default function Members() {
         dispatch(fetchProject(id))
       })()
     }
-  }, [dispatch, id])
+  }, [dispatch, project])
 
   const users = project.users || []
   // console.log('⭐️', id, users)
-  console.log('project in members', project)
+  // console.log('project in members', project)
 
   const removeUser = userId => {
     const body = { userId: userId, projectId: id }
@@ -35,6 +37,14 @@ export default function Members() {
 
       <div>
         <h1>Members</h1>
+        <button
+          type="submit"
+          className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
+          onClick={() => setShow(true)}
+        >
+          Send Invite!
+        </button>
+
         {users.map(user => (
           <div key={user.userId} className="flex">
             <h2 key={user.userId}>{user.user.name}</h2>
@@ -48,6 +58,12 @@ export default function Members() {
           </div>
         ))}
       </div>
+      <ProjectInvite
+        show={show}
+        onClose={() => setShow(false)}
+        project={project}
+      />
+      <div id="projectInviteModal"></div>
     </React.Fragment>
   )
 }

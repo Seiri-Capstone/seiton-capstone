@@ -27,14 +27,16 @@ model User {
 }
 
 model Invitation {
-  id             Int     @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   sentUserId     Int
   receivedUserId Int
-  projectId      Int
-  status         Status  @default(PENDING)
-  project        Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  receivedBy     User    @relation("ReceivedInvites", fields: [receivedUserId], references: [id], onDelete: Cascade)
-  sentFrom       User    @relation("SentInvites", fields: [sentUserId], references: [id], onDelete: Cascade)
+  projectId      Int?
+  status         Status   @default(PENDING)
+  project        Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  org            Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId          Int
+  receivedBy     User     @relation("ReceivedInvites", fields: [receivedUserId], references: [id], onDelete: Cascade)
+  sentFrom       User     @relation("SentInvites", fields: [sentUserId], references: [id], onDelete: Cascade)
 }
 
 model VerificationRequest {
@@ -69,10 +71,11 @@ model UserProject {
 }
 
 model Org {
-  id       Int       @id @default(autoincrement())
-  name     String?
-  projects Project[]
-  users    UserOrg[]
+  id         Int          @id @default(autoincrement())
+  name       String?
+  projects   Project[]
+  users      UserOrg[]
+  Invitation Invitation[]
 }
 
 model UserOrg {

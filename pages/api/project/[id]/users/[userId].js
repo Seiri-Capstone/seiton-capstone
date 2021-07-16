@@ -11,12 +11,18 @@ export default async function handler(req, res) {
   } else {
     if (req.method === 'DELETE') {
       try {
-        console.log("we're in the db query for remove user project")
         const id = Number(req.query.id)
         const userId = Number(req.query.userId)
+        const sessionUser = Number(session.user.sub)
+        console.log(
+          "we're in the db query for remove user project",
+          id,
+          userId,
+          sessionUser
+        )
 
         const user = await prisma.userProject.findMany({
-          where: { userId: userId, projectId: id }
+          where: { userId: sessionUser, projectId: id }
         })
 
         if (user[0].isAdmin) {
