@@ -14,10 +14,25 @@ export default function Task({ task, index }) {
   const [show, setShow] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const [taskColors, setTaskColors] = useState([
+    'gray',
+    'warmGray',
     'red',
-    'blue',
+    'orange',
+    'amber',
+    'yellow',
+    'lime',
     'green',
-    'purple'
+    'emerald',
+    'teal',
+    'cyan',
+    'sky',
+    'blue',
+    'indigo',
+    'violet',
+    'purple',
+    'fuschia',
+    'pink',
+    'rose'
   ])
   const [i, setI] = useState(0)
   const taskId = task.id
@@ -50,8 +65,8 @@ export default function Task({ task, index }) {
             ref={provided.innerRef}
           >
             <div className="flex flex-row justify-between items-center">
-              <h3 className="pl-1">{task.title}</h3>
-              State: {JSON.stringify(taskColors[i])}
+              <h3 className="pl-1 text-teal-500">{task.title}</h3>
+              State: {JSON.stringify(color)}
               <TaskDropdownMenu show={show} task={task} />
               <EditTaskModal
                 task={task}
@@ -81,10 +96,10 @@ export default function Task({ task, index }) {
                 setI(j)
               }}
             >
-              Tags
+              Toggle Color
             </button>
             <button
-              className="text-sm border"
+              className={`text-sm border`}
               onClick={() => console.log('comment button')}
             >
               Comments

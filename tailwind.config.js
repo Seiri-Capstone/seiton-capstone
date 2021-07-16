@@ -1,4 +1,5 @@
-const { fontSize, fontWeight, colors } = require('tailwindcss/defaultTheme')
+const { fontSize, fontWeight } = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   mode: 'jit',
@@ -8,12 +9,24 @@ module.exports = {
     extend: {
       colors: {
         gray: colors.trueGray,
-        indigo: {
-          light: '#b3bcf5',
-          // theme('colors.indigo.DEFAULT')
-          DEFAULT: '#5c6ac4',
-          'indigo-dark': '#202e78'
-        }
+        warmGray: colors.warmGray,
+        red: colors.red,
+        orange: colors.orange,
+        amber: colors.amber,
+        yellow: colors.yellow,
+        lime: colors.lime,
+        green: colors.green,
+        emerald: colors.emerald,
+        teal: colors.teal,
+        cyan: colors.cyan,
+        sky: colors.sky,
+        blue: colors.blue,
+        indigo: colors.indigo,
+        violet: colors.violet,
+        purple: colors.purple,
+        fuschia: colors.fuschia,
+        pink: colors.pink,
+        rose: colors.rose
       },
       typography: theme => ({
         DEFAULT: {
