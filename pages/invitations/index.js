@@ -1,6 +1,6 @@
 import React from 'react'
 import MyInvites from '../../components/invitation/MyInvites'
-import Navbar from '../../components/project/Navbar'
+import Navbar from '../../components/nav/Navbar'
 
 export default function Invitation() {
   return (

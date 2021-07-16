@@ -46,3 +46,7 @@ h4 {
 button {
   @apply text-lg tracking-wide;
 }
+
+.navItem {
+  @apply flex items-center mt-5 py-2 px-4 text-white  hover:bg-gray-700 hover:text-gray-100;
+}

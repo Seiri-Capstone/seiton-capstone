@@ -1,6 +1,6 @@
 import React from 'react'
 import MyProjects from '../../components/projects/MyProjects'
-import Navbar from '../../components/project/Navbar'
+import Navbar from '../../components/nav/Navbar'
 
 export default function Project() {
   return (
