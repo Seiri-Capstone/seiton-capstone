@@ -11,17 +11,16 @@ import profile from '../../public/profileIcon.svg'
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(true)
-  //reference
-  // https://ej2.syncfusion.com/react/demos/sidebar/docking-sidebar/index.html
+
   return (
     <div
       className={
         isExpanded
-          ? 'flex flex-col sm:flex-row w-44 h-screen relative'
-          : 'flex flex-col sm:flex-row w-16 h-screen relative'
+          ? 'flex flex-col sm:flex-row w-44 relative'
+          : 'flex flex-col sm:flex-row w-16 relative'
       }
     >
-      <div className="w-44 h-screen bg-gradient-to-t from-purple-600 via-indigo-600 to-blue-600 mt-8 sm:mt-0">
+      <div className="w-44 bg-gradient-to-t from-purple-600 via-indigo-600 to-blue-600 mt-8 sm:mt-0">
         <div className="mr-4 flex flex-col">
           <div className="mt-4 mr-2 self-end">
             {isExpanded ? (
@@ -93,27 +92,27 @@ export default function Navbar() {
               </span>
             </a>
           </Link>
+
+          <span className="absolute bottom-0 my-10">
+            <Link href="/user">
+              <a className="navItem" href="#">
+                <Image src={profile} alt="profileIcon" width={24} height={24} />
+                <span className={isExpanded ? 'ml-4 font-medium' : 'hidden'}>
+                  My Profile
+                </span>
+              </a>
+            </Link>
+
+            <span onClick={() => signOut()}>
+              <a className="navItem" href="#">
+                <Image src={signout} alt="signoutIcon" width={24} height={24} />
+                <span className={isExpanded ? 'ml-4 font-medium' : 'hidden'}>
+                  Sign Out
+                </span>
+              </a>
+            </span>
+          </span>
         </nav>
-
-        <div className="absolute bottom-0 my-10">
-          <Link href="/user">
-            <a className="navItem" href="#">
-              <Image src={profile} alt="profileIcon" width={24} height={24} />
-              <span className={isExpanded ? 'ml-4 font-medium' : 'hidden'}>
-                My Profile
-              </span>
-            </a>
-          </Link>
-
-          <div onClick={() => signOut()}>
-            <a className="navItem" href="#">
-              <Image src={signout} alt="signoutIcon" width={24} height={24} />
-              <span className={isExpanded ? 'ml-4 font-medium' : 'hidden'}>
-                Sign Out
-              </span>
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   )
