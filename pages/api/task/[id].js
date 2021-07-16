@@ -37,19 +37,7 @@ export default async function handler(req, res) {
             }
           }
         })
-        // do something here, make sure you get back the updatedTask as well as the id
-        console.log(
-          `🟢  successful retreival of updatedTasks in the api/task/:id `
-        )
-        console.log(`🟢  updatedTask `, updatedTask)
-        // {
-        // 	id: 1,
-        // 	title: 'task1',
-        // 	body: 'watch videos on next.js',
-        // 	columnId: 1,
-        // 	index: 1
-        // }
-        return updatedTask
+        res.status(201).json(updatedTask)
       } catch (error) {
         console.log('Error in the /api/task/:id put')
         console.log(error)

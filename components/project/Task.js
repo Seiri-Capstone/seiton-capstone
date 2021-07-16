@@ -7,7 +7,7 @@ import TaskDropdownMenu from './TaskDropdownMenu'
 import Comments from './Comments'
 import { useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
-import { assignTask } from '../../store/projectSlice'
+import { assignTask, pinTask } from '../../store/projectSlice'
 import { colors } from '../../styles/colors'
 
 export default function Task({ task, index }) {
@@ -79,7 +79,12 @@ export default function Task({ task, index }) {
                 Toggle Color
               </button>
               <button className="task-btn">Comments</button>
-              <button className="task-btn">Pin</button>
+              <button
+                onClick={() => dispatch(pinTask(task.id))}
+                className="task-btn"
+              >
+                Pin
+              </button>
             </div>
             {user?.map(u => (
               <div key={u.id}>{u.name}</div>

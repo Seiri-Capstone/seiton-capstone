@@ -24,10 +24,16 @@ export const assignTask = createAsyncThunk(
       userIds
     }) // the id is taken from
     // what is data being returned here?
-    return task
+    return { task, users }
     // updated task, with its ID. need the colId passed inhow do we find out
   }
 )
+// PUT tasks // TODO(sey)
+export const pinTask = createAsyncThunk('project/pinTask', async taskId => {
+  const { data: task } = await axios.put(`/api/task/${taskId}`, {
+    pinned: true
+  })
+})
 // POST tasks
 export const createTask = createAsyncThunk('project/createTask', async body => {
   const { data: createdTask } = await axios.post('/api/task', body)
@@ -167,10 +173,15 @@ export const projectSlice = createSlice({
     },
     // TODO(sey)
     [assignTask.fulfilled]: (state, action) => {
-      // update it with the user...
-      const task = action.payload
-      state.columns[task.columnId][task.id].user = [{}]
-      return state
+      const { task, users } = action.payload
+      // created task add to users... which action did we add
+      console.log(`🟢  task, users `, task, users)
+      // task.id : 3, task.columnId: 2
+      const COL = state.columns[task.columnId - 1]
+      // Doesn't work for the last column
+      const COLTASKS = COL.tasks
+      const TASK = COLTASKS.find(e => e.id === task.id)
+      TASK.user = users
     },
     [createColumn.fulfilled]: (state, action) => {
       action.payload['tasks'] = []
@@ -212,12 +223,8 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const {
-        startTasks,
-        finishTasks,
-        startColId,
-        finishColId
-      } = action.payload
+      const { startTasks, finishTasks, startColId, finishColId } =
+        action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks

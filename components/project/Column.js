@@ -45,7 +45,11 @@ export default function Column(props) {
   }
 
   return (
-    <Draggable draggableId={`column-${column.id}`} index={props.index}>
+    <Draggable
+      // isDragDisabled
+      draggableId={`column-${column.id}`}
+      index={props.index}
+    >
       {provided => (
         <div
           className="bg-gray-200 w-80 rounded-lg m-4 p-4 flex flex-col"
