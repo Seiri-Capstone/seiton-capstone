@@ -16,7 +16,7 @@ export default function Members() {
         dispatch(fetchProject(id))
       })()
     }
-  }, [dispatch, id])
+  }, [dispatch, project])
 
   const users = project.users || []
   // console.log('⭐️', id, users)
