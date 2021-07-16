@@ -3,11 +3,11 @@ import { signOut } from 'next-auth/client'
 import Link from 'next/link'
 import ThemeSwitch from '../ThemeSwitch'
 import Image from 'next/image'
-import building from '../../public/buildingIcon.svg'
-import book from '../../public/bookIcon.svg'
-import box from '../../public/boxIcon.svg'
-import signout from '../../public/signoutIcon.svg'
-import profile from '../../public/profileIcon.svg'
+import building from '../../public/assets/buildingIcon.svg'
+import book from '../../public/assets/bookIcon.svg'
+import box from '../../public/assets/boxIcon.svg'
+import signout from '../../public/assets/signoutIcon.svg'
+import profile from '../../public/assets/profileIcon.svg'
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(true)
