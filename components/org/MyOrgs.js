@@ -25,9 +25,10 @@ export default function MyOrgs() {
   return (
     <div>
       <Logo />
-      <h1 id="tenor">My Organizations</h1>
+      <h2 id="tenor">My Organizations</h2>
+      <br />
       <div>
-        <button onClick={() => setShow(true)}>+ Create Org</button>
+        <button onClick={() => setShow(true)}>+ Create New Organization</button>
       </div>
 
       <CreateOrgModal show={show} onClose={() => setShow(false)} />
@@ -36,7 +37,7 @@ export default function MyOrgs() {
         <>
           <Link href={`/orgs/${org.id}`} key={org.id}>
             <a>
-              <div className=" w-full lg:max-w-full lg:flex">
+              <div className="w-full lg:max-w-full lg:flex">
                 <div
                   className={`h-48 lg:h-auto lg:w-12 flex-none rounded-t ${
                     bgColors[i % 3]
@@ -48,21 +49,16 @@ export default function MyOrgs() {
                   } lg:border-l-0 lg:border-t-4 lg:${
                     borderColors[i % 3]
                   } bg-white
-                  } rounded-b lg:rounded-b-none lg:rounded-r p-8 flex flex-col justify-between leading-normal`}
+                  } rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal`}
                 >
                   <div>
                     <div
                       id="tenor"
-                      className="text-gray-900 font-bold text-4xl mb-2 capitalize"
+                      className="text-gray-900 font-bold text-xl mb-2 capitalize tracking-wide"
                     >
                       {org.name}
                     </div>
-
-                    <b className="text-2xl leading-loose tracking-wide ml-4">
-                      Projects:
-                    </b>
-                    <br />
-                    <p className="text-lg tracking-wide ml-4">
+                    <p className="text-base tracking-wide ml-4">
                       {org.projects && org.projects.length
                         ? org.projects.map(project => (
                             <>

@@ -24,13 +24,14 @@ export default function MyProjects() {
   return (
     <div>
       <Logo />
-      <h1 id="tenor">My Projects</h1>
+      <h2 id="tenor">My Projects</h2>
+      <br />
       {projects?.map((project, i) => (
         <>
           <Link href={`/projects/${project.projectId}`}>
             <a>
               <div
-                className=" w-full lg:max-w-full lg:flex my-4"
+                className="w-full lg:max-w-full lg:flex"
                 key={project.projectId}
               >
                 <div
@@ -44,21 +45,22 @@ export default function MyProjects() {
                   } lg:border-l-0 lg:border-t-4 lg:${
                     borderColors[i % 3]
                   } bg-white
-                  } rounded-b lg:rounded-b-none lg:rounded-r p-8 flex flex-col justify-between leading-normal`}
+                  } rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal`}
                 >
                   <div
                     id="tenor"
-                    className="text-gray-900 font-bold text-4xl mb-2 capitalize"
+                    className="text-gray-900 font-bold text-xl mb-2 capitalize tracking-wide"
                   >
                     {project.project.name}
                   </div>
-                  <div className="text-2xl leading-loose tracking-wide ml-4">
+                  <div className="text-base tracking-wide ml-4">
                     Organization: {project.project.org.name}
                   </div>
                 </div>
               </div>
             </a>
           </Link>
+          <br />
         </>
       ))}
     </div>

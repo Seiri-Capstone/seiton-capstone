@@ -28,17 +28,21 @@
 }
 
 h1 {
-  @apply text-4xl text-left font-bold tracking-wide leading-relaxed;
+  @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-left font-bold tracking-wide leading-loose;
+}
+
+h2 {
+  @apply text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold tracking-wide leading-loose;
 }
 
 h4 {
-  @apply text-xl tracking-wide leading-normal;
+  @apply text-base md:text-base lg:text-lg xl:text-xl tracking-wide leading-normal;
 }
 
 .largeButton {
-  @apply bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white font-semibold uppercase tracking-widest text-lg py-4 px-6 rounded-lg;
+  @apply bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white font-semibold uppercase tracking-widest text-base py-4 px-6 rounded-lg;
 }
 
 button {
-  @apply text-xl tracking-wide;
+  @apply text-lg tracking-wide;
 }
