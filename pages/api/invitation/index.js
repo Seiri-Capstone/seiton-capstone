@@ -25,7 +25,8 @@ export default async function handler(req, res) {
                 receivedBy: {
                   select: { name: true }
                 },
-                project: true
+                project: true,
+                org: true
               }
             },
             receivedInvites: {
@@ -36,7 +37,8 @@ export default async function handler(req, res) {
                 receivedBy: {
                   select: { name: true }
                 },
-                project: true
+                project: true,
+                org: true
               }
             }
           }
@@ -50,33 +52,71 @@ export default async function handler(req, res) {
       }
     } else if (req.method === 'POST') {
       try {
-        const { receivedBy, project } = req.body
+        let { receivedById, projectId, orgId, searchEmail } = req.body
 
         //get user to grab id
         const user = await prisma.user.findUnique({
-          where: { email: session.user.email }
-        })
-
-        //create invitation
-        const invitation = await prisma.invitation.create({
-          data: {
-            sentFrom: {
-              connect: {
-                id: user.id
-              }
-            },
-            receivedBy: {
-              connect: {
-                id: receivedBy.userId
-              }
-            },
-            project: {
-              connect: {
-                id: project.projectId
-              }
-            }
+          where: {
+            id: Number(session.user.sub)
           }
         })
+
+        //get searchUser to grab id
+        if (searchEmail) {
+          const searchUser = await prisma.user.findUnique({
+            where: { email: searchEmail }
+          })
+
+          receivedById = searchUser.id
+
+          //create invitation
+          const invitation = await prisma.invitation.create({
+            data: {
+              sentFrom: {
+                connect: {
+                  id: user.id
+                }
+              },
+              receivedBy: {
+                connect: {
+                  id: receivedById
+                }
+              },
+              org: {
+                connect: {
+                  id: orgId
+                }
+              }
+            }
+          })
+        } else if (projectId) {
+          const invitation = await prisma.invitation.create({
+            data: {
+              sentFrom: {
+                connect: {
+                  id: user.id
+                }
+              },
+              receivedBy: {
+                connect: {
+                  id: receivedById
+                }
+              },
+              project: {
+                connect: {
+                  id: projectId
+                }
+              },
+              org: {
+                connect: {
+                  id: orgId
+                }
+              }
+            }
+          })
+        }
+
+        console.log(receivedById, projectId, orgId, searchEmail)
 
         //get user again with new invitation (there is a better way to do this)
         const result = await prisma.user.findUnique({
@@ -90,7 +130,8 @@ export default async function handler(req, res) {
                 receivedBy: {
                   select: { name: true }
                 },
-                project: true
+                project: true,
+                org: true
               }
             },
             receivedInvites: {
@@ -101,7 +142,8 @@ export default async function handler(req, res) {
                 receivedBy: {
                   select: { name: true }
                 },
-                project: true
+                project: true,
+                org: true
               }
             }
           }

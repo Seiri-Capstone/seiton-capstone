@@ -63,7 +63,7 @@ export default function MyOrgs() {
                     </b>
                     <br />
                     <p className="text-lg tracking-wide ml-4">
-                      {org.projects.length
+                      {org.projects && org.projects.length
                         ? org.projects.map(project => (
                             <>
                               • {project.name} <br />

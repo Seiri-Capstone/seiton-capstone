@@ -35,6 +35,7 @@ export default function MyInvites() {
 
   const handleResponse = (invite, value) => {
     const thunkArg = { invite, value }
+    console.log('invite', invite)
     dispatch(fetchUpdateInvite(thunkArg))
     setInviteResponded(true)
   }
@@ -57,10 +58,17 @@ export default function MyInvites() {
           <h1 className="text-xl">Pending Invites</h1>
           {pendingReceivedInvites.map(invite => (
             <div className="my-3" key={invite.id}>
-              <p>
-                You received an invitation from {invite.sentFrom.name} to join
-                project {invite.project.name}
-              </p>
+              {invite.project ? (
+                <p>
+                  You received an invitation from {invite.sentFrom.name} to join
+                  project {invite.project.name}
+                </p>
+              ) : (
+                <p>
+                  You received an invitation from {invite.sentFrom.name} to join
+                  project {invite.org.name}
+                </p>
+              )}
               <p>{invite.status}</p>
 
               <div>
@@ -86,10 +94,17 @@ export default function MyInvites() {
 
           {pendingSentInvites.map(invite => (
             <div className="my-3" key={invite.id}>
-              <p>
-                You sent an invitation to {invite.receivedBy.name} to join
-                project {invite.project.name}
-              </p>
+              {invite.project ? (
+                <p>
+                  You sent an invitation to {invite.receivedBy.name} to join
+                  project {invite.project.name}
+                </p>
+              ) : (
+                <p>
+                  You sent an invitation to {invite.receivedBy.name} to join
+                  organization {invite.org.name}
+                </p>
+              )}
             </div>
           ))}
         </section>
@@ -98,20 +113,37 @@ export default function MyInvites() {
           <h1 className="text-xl">History</h1>
           {historyReceivedInvites.map(invite => (
             <div className="my-3" key={invite.id}>
-              <p>
-                You were invited by {invite.sentFrom.name} to join project{' '}
-                {invite.project.name}
-              </p>
+              {invite.project ? (
+                <p>
+                  You were invited by {invite.sentFrom.name} to join project
+                  {invite.project.name}
+                </p>
+              ) : (
+                <p>
+                  You were invited by {invite.sentFrom.name} to join
+                  organization
+                  {invite.org.name}
+                </p>
+              )}
               <p>{invite.status}</p>
             </div>
           ))}
 
           {historySentInvites.map(invite => (
             <div className="my-3" key={invite.id}>
-              <p>
-                You invited {invite.receivedBy.name} to join project
-                {invite.project.name}
-              </p>
+              {invite.project ? (
+                <p>
+                  You sent an invitation to {invite.receivedBy.name} to join
+                  project
+                  {invite.project.name}
+                </p>
+              ) : (
+                <p>
+                  You sent an invitation to {invite.receivedBy.name} to join
+                  organization
+                  {invite.org.name}
+                </p>
+              )}
               <p>{invite.status}</p>
             </div>
           ))}
