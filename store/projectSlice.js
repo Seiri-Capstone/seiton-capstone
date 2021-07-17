@@ -200,7 +200,7 @@ export const projectSlice = createSlice({
       console.log(`🟢  task, users `, task, users)
       // task.id : 3, task.columnId: 2
       // find col by finding which index is the column
-      const COL = project.columns.find(c => c.id === task.columnId)
+      const COL = state.columns.find(c => c.id === task.columnId)
       // const COL = state.columns[task.columnId - 1]
       // Doesn't work for the last column
       const COLTASKS = COL.tasks

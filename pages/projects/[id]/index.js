@@ -32,8 +32,26 @@ const Project = () => {
       <div className="text-fuschia-500"></div>
       <div className="text-pink-500"></div>
       <div className="text-rose-500"></div>
+      <div className="border-gray-500"></div>
+      <div className="border-warmGray-500"></div>
+      <div className="border-red-500"></div>
+      <div className="border-orange-500"></div>
+      <div className="border-amber-500"></div>
+      <div className="border-yellow-500"></div>
+      <div className="border-lime-500"></div>
+      <div className="border-green-500"></div>
+      <div className="border-emerald-500"></div>
+      <div className="border-teal-500"></div>
+      <div className="border-cyan-500"></div>
+      <div className="border-sky-500"></div>
+      <div className="border-blue-500"></div>
+      <div className="border-indigo-500"></div>
+      <div className="border-violet-500"></div>
+      <div className="border-purple-500"></div>
+      <div className="border-fuschia-500"></div>
+      <div className="border-pink-500"></div>
+      <div className="border-rose-500"></div>
       <div className="flex">
-        <Navbar />
         <div className="flex-col">
           <ProjectBoard pusher={pusher} />
         </div>
