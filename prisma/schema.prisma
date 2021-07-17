@@ -56,7 +56,7 @@ model Project {
   orgId      Int
   org        Org           @relation(fields: [orgId], references: [id], onDelete: Cascade)
   createdAt  DateTime      @default(now()) @map("created_at")
-  updatedAt  DateTime?     @updatedAt @map("updated_at")
+  updatedAt  DateTime      @default(now()) @map("updated_at")
   columns    Column[]
   Invitation Invitation[]
   users      UserProject[]
@@ -76,7 +76,7 @@ model Org {
   id         Int          @id @default(autoincrement())
   name       String?
   createdAt  DateTime     @default(now()) @map("created_at")
-  updatedAt  DateTime?    @updatedAt @map("updated_at")
+  updatedAt  DateTime     @default(now()) @map("updated_at")
   projects   Project[]
   users      UserOrg[]
   Invitation Invitation[]
@@ -109,7 +109,7 @@ model Task {
   index     Int
   column    Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
   comments  Comment[]
   user      User[]
 }

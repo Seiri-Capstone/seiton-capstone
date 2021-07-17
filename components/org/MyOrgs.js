@@ -87,7 +87,7 @@ export default function MyOrgs() {
                                 <span className="text-sm text-gray-600 dark:text-gray-400 pl-2">
                                   {' '}
                                   ({project.users.length}{' '}
-                                  {project.users.length > 1
+                                  {project.users.length !== 1
                                     ? 'members'
                                     : 'member'}
                                   )
