@@ -34,32 +34,40 @@ export default function MyOrgs() {
 
       <CreateOrgModal show={show} onClose={() => setShow(false)} />
       <br />
+
+      <div className="mt-12 text-skyblue max-w-prose leading-loose">
+        {orgs.length === 0 && (
+          <>
+            <h3 className="leading-loose">
+              Currently, you do not belong to any organizations!
+            </h3>
+            <h4>
+              Create a new organization to get started, or check your
+              invitations to see if you were invited to an existing
+              organization.
+            </h4>
+          </>
+        )}
+      </div>
+
       <div className="h-5/6 overflow-y-auto">
         {orgs?.map((org, i) => (
           <>
             <Link href={`/orgs/${org.id}`} key={org.id}>
-              <a>
+              <a className="hover:text-black">
                 <div className="w-full lg:max-w-full lg:flex">
                   <div
-                    className={`h-48 lg:h-auto lg:w-12 flex-none rounded-t ${
-                      bgColors[i % 4]
-                    } lg:rounded-t-none lg:rounded-l text-center overflow-hidden`}
-                  ></div>
-                  <div
-                    className={`w-full border-r-4 border-b-4 border-l-4 ${
-                      borderColors[i % 4]
-                    } lg:border-l-0 lg:border-t-4 lg:${
-                      borderColors[i % 4]
-                    } bg-transparent
-                  } rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal`}
+                    className="w-3/5 lg:w-full shadow-xl bg-white hover:border-yellow-400 hover:border-2
+                   rounded-lg p-4 flex flex-col justify-between leading-normal"
                   >
                     <div>
                       <div
                         id="tenor"
-                        className="text-gray-900 font-bold text-xl mb-2 capitalize tracking-wide"
+                        className="text-gray-900 font-bold text-xl mb-2 capitalize tracking-wider"
                       >
-                        {org.name}
+                        {org.name} ({org.projects?.length})
                       </div>
+                      <hr className="border-1 border-skyblue pb-2"></hr>
                       <p className="text-base tracking-wide ml-4">
                         {org.projects && org.projects.length
                           ? org.projects.map(project => (
@@ -67,7 +75,7 @@ export default function MyOrgs() {
                                 • {project.name} <br />
                               </>
                             ))
-                          : 'Currently no projects are under this organization.'}
+                          : 'Currently there are no projects under this organization.'}
                       </p>
                     </div>
                   </div>
