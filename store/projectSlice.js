@@ -30,9 +30,14 @@ export const assignTask = createAsyncThunk(
 )
 // PUT tasks // TODO(sey)
 export const pinTask = createAsyncThunk('project/pinTask', async taskId => {
+  console.log(`🟢  taskId `, taskId)
   const { data: task } = await axios.put(`/api/task/${taskId}`, {
-    pinned: true
+    action: 'pinTask',
+    pinned: true,
+    taskId
   })
+  console.log(`🟢 THUNK, task:`, task)
+  return { pinned, task }
 })
 // POST tasks
 export const createTask = createAsyncThunk('project/createTask', async body => {
@@ -186,6 +191,18 @@ export const projectSlice = createSlice({
       const COLTASKS = COL.tasks
       const TASK = COLTASKS.find(e => e.id === task.id)
       TASK.user = users
+    },
+    // TODO(sey)
+    [pinTask.fulfilled]: (state, action) => {
+      // change the tasks following the same logic
+      // task returns: columnId, id, index
+      // need a pin task too
+      const { task, pinned } = action.payload
+      const COL = state.columns[task.columnId - 1]
+      const COLTASKS = COL.tasks
+      const TASK = COLTASKS.find(e => e.id === task.id)
+      TASK.pinned = pinned
+      return state
     },
     [createColumn.fulfilled]: (state, action) => {
       action.payload['tasks'] = []

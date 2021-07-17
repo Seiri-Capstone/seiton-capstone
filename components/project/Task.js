@@ -47,6 +47,7 @@ export default function Task({ task, index }) {
           >
             <div className="flex flex-row justify-between items-center">
               <h3 className="text-xl font-bold pl-1">{task.title}</h3>
+              <div>{task.pinned ? 'pinned' : 'not pinned'}</div>
               <TaskDropdownMenu show={show} task={task} />
               <EditTaskModal
                 task={task}
