@@ -38,14 +38,18 @@ export default function Column(props) {
     }
   }
 
-  const removeColumn = async e => {
-    // make sure there are confirmations here...
-    await dispatch(deleteColumn(column.id))
-    await delCol(true)
-  }
+  // const removeColumn = async e => {
+  //   // make sure there are confirmations here...
+  //   await dispatch(deleteColumn(column.id))
+  //   await delCol(true)
+  // }
 
   return (
-    <Draggable draggableId={`column-${column.id}`} index={props.index}>
+    <Draggable
+      // isDragDisabled={column.pinned} // true or false depending on column
+      draggableId={`column-${column.id}`}
+      index={props.index}
+    >
       {provided => (
         <div
           className="bg-gray-200 w-80 rounded-lg m-4 p-4 flex flex-col"
@@ -95,7 +99,6 @@ export default function Column(props) {
               {/* CONFIRM THAT IT IS CLOSING */}
               <button
                 onClick={() => {
-                  console.log(`🟢  closing `)
                   setIsShowing(true)
                 }}
               >
