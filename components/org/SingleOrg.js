@@ -120,7 +120,7 @@ export default function Org() {
               <form className="px-2 max-w-full mx-auto rounded-lg">
                 <input
                   className="w-2/3 p-3 py-1 text-gray-700 dark:text-gray-300 border rounded-lg mb-3 shadow-sm"
-                  placeholder="Name of Project"
+                  placeholder="Project Name"
                   onChange={e => setName(e.target.value)}
                 ></input>
                 <button
