@@ -6,7 +6,6 @@ import {
   fetchRemoveUserProject,
   fetchAdminUserUpdate
 } from '../../store/projectSlice'
-import ProjectInvite from './ProjectInvite'
 import { useSession } from 'next-auth/client'
 import { fetchCreateInvite } from '../../store/invitationsSlice'
 

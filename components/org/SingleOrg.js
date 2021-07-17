@@ -45,6 +45,8 @@ export default function Org() {
   //workaround to solve the empty query on initial render
   if (org.projects === undefined) return null
 
+  console.log('org', org)
+
   return (
     <React.Fragment>
       <h2 id="tenor" className="capitalize">
