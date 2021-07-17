@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchProjects } from '../../store/projectsSlice'
 import Link from 'next/link'
 import Logo from '../../components/Logo'
+import Image from 'next/image'
+import x from '../../public/assets/xIcon.svg'
 
 export default function MyProjects() {
   const projects = useSelector(state => state.projects)
@@ -14,19 +16,26 @@ export default function MyProjects() {
 
   console.log('projects--->', projects)
 
-  const bgColors = ['bg-blue-700', 'bg-indigo-700', 'bg-purple-700']
-  const borderColors = [
-    'border-blue-700',
-    'border-indigo-700',
-    'border-purple-700'
-  ]
-
   return (
     <>
       <Logo />
       <h2 id="tenor">My Projects</h2>
-      <br />
-      <br />
+
+      <div className="mt-12 text-black max-w-prose">
+        {projects.length === 0 && (
+          <>
+            <h4 className="leading-loose">
+              Currently, you do not belong to any projects!
+            </h4>
+            <p className="tracking-wide">
+              A new project must be created under an organization. Follow the
+              instructions on the organization page to get started. To join an
+              existing project, ask a current team mate for an invite!
+            </p>
+          </>
+        )}
+      </div>
+
       <div className="h-5/6 overflow-y-auto">
         {projects?.map((project, i) => (
           <>
@@ -37,26 +46,36 @@ export default function MyProjects() {
                   key={project.projectId}
                 >
                   <div
-                    className={`h-48 lg:h-auto lg:w-12 flex-none rounded-t ${
-                      bgColors[i % 3]
-                    } lg:rounded-t-none lg:rounded-l text-center overflow-hidden`}
-                  ></div>
-                  <div
-                    className={`w-full border-r-4 border-b-4 border-l-4 ${
-                      borderColors[i % 3]
-                    } lg:border-l-0 lg:border-t-4 lg:${
-                      borderColors[i % 3]
-                    } bg-transparent
-                  } rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal`}
+                    className="w-3/5 lg:w-full shadow-xl bg-white dark:bg-gray-700 dark:hover:border-blue-300 hover:border-yellow-400 hover:border-2
+                    rounded-lg p-4 flex flex-col justify-between leading-normal"
                   >
-                    <div
-                      id="tenor"
-                      className="text-gray-900 font-bold text-xl mb-2 capitalize tracking-wide"
-                    >
-                      {project.project.name}
-                    </div>
-                    <div className="text-base tracking-wide ml-4">
-                      Organization: {project.project.org.name}
+                    <div>
+                      <div className="flex justify-between">
+                        <div
+                          id="tenor"
+                          className="text-gray-900 dark:text-gray-100 font-bold text-xl mb-2 capitalize tracking-wider"
+                        >
+                          {project.project.name}
+                        </div>
+                        <div className="">
+                          <Image
+                            src={x}
+                            alt="deleteIcon"
+                            width={24}
+                            height={24}
+                          />
+                        </div>
+                      </div>
+                      <hr className="border-1 border-skyblue dark:border-gray-500 pb-2"></hr>
+                      <div className="text-base tracking-wide dark:text-gray-300 flex justify-between">
+                        <span>{project.project.org.name}</span>
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                          {project.project.users.length}{' '}
+                          {project.project.users.length > 1
+                            ? 'members in project'
+                            : 'member in project'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

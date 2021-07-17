@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import dynamic from 'next/dynamic'
 const ProjectBoard = dynamic(import('../../../components/project/ProjectBoard'))
-import Navbar from '../../../components/nav/Navbar'
 import Pusher from 'pusher-js'
 
 const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
