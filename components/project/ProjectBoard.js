@@ -18,6 +18,7 @@ import axios from 'axios'
 import Pusher from 'pusher-js'
 import Members from './Members'
 import Link from 'next/link'
+import Navbar from '../nav/Navbar'
 
 export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
@@ -201,57 +202,71 @@ export default function ProjectBoard({ pusher }) {
 
   return (
     <React.Fragment>
-      <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
-        {project.name}
-      </h1>
-      <div className="flex justify-end mt-2 mr-12">
-        <button onClick={addColumn}>+ Add New Column</button>
-      </div>
+      <div className="flex overflow-hidden">
+        <div className="flex-col ">
+          <Navbar />
+        </div>
+        <div className="flex flex-col h-screen w-5/6">
+          <h1 className="flex justify-center flexfont-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
+            {project.name}
+          </h1>
 
-      <div className="flex justify-end mt-2 mr-12">
-        <button
-          className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
-          onClick={deleteProject}
-        >
-          Delete Project
-        </button>
-      </div>
-
-      <div className="flex justify-end mt-2 mr-12">
-        <Link href={`/projects/${id}/members`}>Project Members</Link>
-      </div>
-
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable
-          droppableId="all-columns"
-          direction="horizontal"
-          type="column"
-        >
-          {provided => (
-            <div
-              className="mx-auto flex flex-col md:flex-row min-w-[300px] justify-center"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
+          <div className="flex justify-end mt-2 mr-12">
+            <button
+              className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
+              onClick={deleteProject}
             >
-              {project.columns &&
-                project.columns.map((column, index) => (
-                  <div key={column.id}>
-                    <Column
-                      setCol={setIsColNameEdited}
-                      delCol={setIsColDeleted}
-                      addTask={setisTaskAdded}
-                      key={column.id}
-                      column={column}
-                      index={index}
-                    />
-                  </div>
-                ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      {/* {toggleTask && <NewTask />} */}
+              Delete Project
+            </button>
+          </div>
+
+          <div className="flex justify-end mt-2 mr-12">
+            <Link href={`/projects/${id}/members`}>Project Members</Link>
+          </div>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable
+              droppableId="all-columns"
+              direction="horizontal"
+              type="column"
+            >
+              {provided => (
+                <div
+                  className="flex w-full h-3/4 md:flex-row overflow-auto"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {project.columns &&
+                    project.columns.map((column, index) =>
+                      index !== project.columns.length - 1 ? (
+                        <div key={column.id}>
+                          <Column
+                            setCol={setIsColNameEdited}
+                            delCol={setIsColDeleted}
+                            addTask={setisTaskAdded}
+                            key={column.id}
+                            column={column}
+                            index={index}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <button
+                            className="border-dashed border-2 border-black-500 w-80 h-18 rounded-lg m-4 p-4 justify-end"
+                            onClick={addColumn}
+                          >
+                            + Add New Column
+                          </button>
+                        </div>
+                      )
+                    )}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          {/* {toggleTask && <NewTask />} */}
+        </div>
+      </div>
     </React.Fragment>
   )
 }
