@@ -24,14 +24,6 @@ export default function MyOrgs() {
   //   router.push('/orgs')
   // }
 
-  const bgColors = ['bg-navyblue', 'bg-skyblue', 'bg-darkblue', 'bg-medblue']
-  const borderColors = [
-    'border-navyblue',
-    'border-skyblue',
-    'border-darkblue',
-    'border-medblue'
-  ]
-
   return (
     <>
       <Logo />
@@ -43,17 +35,17 @@ export default function MyOrgs() {
 
       <CreateOrgModal show={show} onClose={() => setShow(false)} />
 
-      <div className="mt-12 text-skyblue max-w-prose leading-loose">
+      <div className="mt-12 text-black max-w-prose">
         {orgs.length === 0 && (
           <>
-            <h3 className="leading-loose">
+            <h4 className="leading-loose">
               Currently, you do not belong to any organizations!
-            </h3>
-            <h4>
+            </h4>
+            <p className="tracking-wide">
               Create a new organization to get started, or check your
               invitations to see if you were invited to an existing
               organization.
-            </h4>
+            </p>
           </>
         )}
       </div>
@@ -74,7 +66,8 @@ export default function MyOrgs() {
                           id="tenor"
                           className="text-gray-900 dark:text-gray-100 font-bold text-xl mb-2 capitalize tracking-wider"
                         >
-                          {org.name} ({org.projects?.length})
+                          {org.name} ({org.projects?.length || 0}{' '}
+                          {org.projects?.length !== 1 ? 'projects' : 'project'})
                         </div>
                         <div className="">
                           <Image
@@ -90,7 +83,16 @@ export default function MyOrgs() {
                         {org.projects && org.projects.length
                           ? org.projects.map(project => (
                               <>
-                                • {project.name} <br />
+                                – {project.name}{' '}
+                                <span className="text-sm text-gray-600 dark:text-gray-400 pl-2">
+                                  {' '}
+                                  ({project.users.length}{' '}
+                                  {project.users.length > 1
+                                    ? 'members'
+                                    : 'member'}
+                                  )
+                                </span>
+                                <br />
                               </>
                             ))
                           : 'Currently there are no projects under this organization.'}

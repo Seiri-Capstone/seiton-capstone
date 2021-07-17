@@ -20,7 +20,11 @@ export default async function handler(req, res) {
               include: {
                 org: {
                   include: {
-                    projects: true
+                    projects: {
+                      include: {
+                        users: true
+                      }
+                    }
                   }
                 }
               }
