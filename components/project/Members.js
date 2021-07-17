@@ -8,15 +8,17 @@ import {
 } from '../../store/projectSlice'
 import ProjectInvite from './ProjectInvite'
 import { useSession } from 'next-auth/client'
+import { fetchCreateInvite } from '../../store/invitationsSlice'
 
 export default function Members() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
   const [session, loading] = useSession()
+  const [searchEmail, setSearchEmail] = useState('')
   const router = useRouter()
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
-  const [show, setShow] = useState(false)
+
   const users = project.users || []
 
   useEffect(() => {
@@ -29,8 +31,6 @@ export default function Members() {
 
   const sessionUser = users.filter(user => user.userId === +session?.user.sub)
   const isAdmin = sessionUser.length > 0 ? sessionUser[0].isAdmin : false
-
-  console.log('⭐️', sessionUser)
 
   const removeUser = userId => {
     const body = { userId: userId, projectId: id }
@@ -47,7 +47,17 @@ export default function Members() {
       userId: userId
     }
     dispatch(fetchAdminUserUpdate(thunkArg))
-    console.log('thunk arg', thunkArg)
+  }
+
+  const handleSend = () => {
+    const thunkArg = {
+      receivedBy: null,
+      projectId: +id,
+      orgId: project.orgId,
+      searchEmail: searchEmail
+    }
+    dispatch(fetchCreateInvite(thunkArg))
+    setSearchEmail('')
   }
 
   return (
@@ -58,13 +68,23 @@ export default function Members() {
 
       <div>
         <h1>Members</h1>
-        <button
-          type="submit"
-          className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
-          onClick={() => setShow(true)}
-        >
-          Send Invite!
-        </button>
+
+        <section>
+          <h2>send invite to: </h2>
+          <label>Search by email</label>
+          <input
+            className="w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none rows=4 mb-3 focus:outline-none"
+            onChange={e => setSearchEmail(e.target.value)}
+          ></input>
+
+          <button
+            type="submit"
+            className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
+            onClick={handleSend}
+          >
+            Send Invite!
+          </button>
+        </section>
 
         {users.map(user => (
           <div key={user.userId} className="flex">
@@ -105,12 +125,6 @@ export default function Members() {
           </div>
         ))}
       </div>
-      <ProjectInvite
-        show={show}
-        onClose={() => setShow(false)}
-        project={project}
-      />
-      <div id="projectInviteModal"></div>
     </React.Fragment>
   )
 }
