@@ -233,7 +233,7 @@ export default function ProjectBoard({ pusher }) {
             >
               {provided => (
                 <div
-                  className="flex w-full h-3/4 md:flex-row overflow-auto"
+                  className="flex w-full h-3/4 md:flex-row"
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
