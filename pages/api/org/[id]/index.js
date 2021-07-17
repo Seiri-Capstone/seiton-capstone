@@ -73,6 +73,8 @@ export default async function handler(req, res) {
           }
         })
 
+        console.log(deletedOrg, 'delete')
+
         res.status(200).json(deletedOrg)
       } catch (error) {
         console.log('error in the delete org id api call!', error)
