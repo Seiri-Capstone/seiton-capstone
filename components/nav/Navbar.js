@@ -20,7 +20,7 @@ export default function Navbar() {
           : 'flex flex-col sm:flex-row w-16 relative'
       }
     >
-      <div className="w-44 h-screen bg-gradient-to-t bg-navyblue dark:bg-gray-800 shadow-xl mt-8 sm:mt-0">
+      <div className="w-44 h-screen bg-gradient-to-t bg-navyblue dark:bg-gray-900 shadow-xl mt-8 sm:mt-0">
         <div className="mr-4 flex flex-col">
           <div className="mt-4 mr-2 self-end">
             {isExpanded ? (
