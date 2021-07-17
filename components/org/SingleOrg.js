@@ -46,6 +46,7 @@ export default function Org() {
   if (org.projects === undefined) return null
 
   console.log('org', org)
+  const createdDate = String(new Date(org.createdAt)).substring(3, 15)
 
   return (
     <React.Fragment>
