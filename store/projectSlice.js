@@ -29,15 +29,16 @@ export const assignTask = createAsyncThunk(
   }
 )
 // PUT tasks // TODO(sey)
-export const pinTask = createAsyncThunk('project/pinTask', async taskId => {
-  console.log(`🟢  taskId `, taskId)
-  const { data: task } = await axios.put(`/api/task/${taskId}`, {
+export const pinTask = createAsyncThunk('project/pinTask', async task => {
+  const { id, pinned } = task
+  console.log(`🟢  working???`, id, pinned)
+  const { data } = await axios.put(`/api/task/${id}`, {
     action: 'pinTask',
-    pinned: true,
-    taskId
+    pinned: !pinned, // Toggle
+    id
   })
-  console.log(`🟢 THUNK, task:`, task)
-  return { pinned, task }
+  console.log(`🟢  data returned from axios `, data)
+  return data
 })
 // POST tasks
 export const createTask = createAsyncThunk('project/createTask', async body => {
@@ -186,7 +187,9 @@ export const projectSlice = createSlice({
       // created task add to users... which action did we add
       console.log(`🟢  task, users `, task, users)
       // task.id : 3, task.columnId: 2
-      const COL = state.columns[task.columnId - 1]
+      // find col by finding which index is the column
+      const COL = project.columns.find(c => c.id === task.columnId)
+      // const COL = state.columns[task.columnId - 1]
       // Doesn't work for the last column
       const COLTASKS = COL.tasks
       const TASK = COLTASKS.find(e => e.id === task.id)
@@ -194,15 +197,10 @@ export const projectSlice = createSlice({
     },
     // TODO(sey)
     [pinTask.fulfilled]: (state, action) => {
-      // change the tasks following the same logic
-      // task returns: columnId, id, index
-      // need a pin task too
-      const { task, pinned } = action.payload
-      const COL = state.columns[task.columnId - 1]
-      const COLTASKS = COL.tasks
-      const TASK = COLTASKS.find(e => e.id === task.id)
+      const { columnId, id, pinned } = action.payload
+      const COL = state.columns.find(c => c.id === columnId)
+      const TASK = COL.tasks.find(c => c.id === id)
       TASK.pinned = pinned
-      return state
     },
     [createColumn.fulfilled]: (state, action) => {
       action.payload['tasks'] = []

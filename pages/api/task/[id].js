@@ -24,13 +24,14 @@ export default async function handler(req, res) {
       // pinTask
       if (req.body.action === 'pinTask') {
         try {
-          const { pinned, taskId } = req.body
+          console.log(`🟢  HITTING api/task/id`)
+          const { pinned, id } = req.body
           const task = await prisma.task.update({
             where: {
-              id: +taskId
+              id: +id
             },
             data: {
-              pinned // toggle this? not possible rn
+              pinned // Should toggle
             }
           })
 

@@ -5,7 +5,7 @@ import DeleteTaskModal from './DeleteTaskModal'
 import AssignModal from './AssignModal'
 import Transition from './SideBarTransition'
 
-export default function TaskDropdownMenu({ taskShow, setTaskShow, task }) {
+export default function TaskDropdownMenu({ task }) {
   const [isActive, setIsActive] = useState(false)
   // const { isShowing, toggle } = useModal()
   const [isClosed, setClosed] = useState(false)
@@ -29,11 +29,7 @@ export default function TaskDropdownMenu({ taskShow, setTaskShow, task }) {
   return (
     <React.Fragment>
       <div className="inline-block relative">
-        <button
-          onClick={() => setIsActive(!isActive)}
-          // onMouseEnter={() => setIsActive(true)}
-          // onMouseLeave={() => setIsActive(false)}
-        >
+        <button onClick={() => setIsActive(!isActive)}>
           <svg
             className="w-6 h-6"
             fill="none"

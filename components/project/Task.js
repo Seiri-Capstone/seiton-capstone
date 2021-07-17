@@ -37,7 +37,11 @@ export default function Task({ task, index }) {
 
   return (
     <React.Fragment>
-      <Draggable draggableId={`task-${task.id}`} index={index}>
+      <Draggable
+        isDragDisabled={task.pinned}
+        draggableId={`task-${task.id}`}
+        index={index}
+      >
         {provided => (
           <div
             className={`flex flex-col bg-gray-100 rounded-lg my-4 p-1 border-2 border-${color}-500`}
@@ -49,8 +53,8 @@ export default function Task({ task, index }) {
               <h3 className="text-xl font-bold pl-1">{task.title}</h3>
               <div>{task.pinned ? 'pinned' : 'not pinned'}</div>
               <TaskDropdownMenu
-                taskShow={taskShow}
-                setTaskShow={setTaskShow}
+                // taskShow={taskShow}
+                // setTaskShow={setTaskShow}
                 task={task}
               />
               <EditTaskModal
@@ -85,7 +89,7 @@ export default function Task({ task, index }) {
               </button>
               <button className="task-btn">Comments</button>
               <button
-                onClick={() => dispatch(pinTask(task.id))}
+                onClick={() => dispatch(pinTask(task))}
                 className="task-btn"
               >
                 Pin
