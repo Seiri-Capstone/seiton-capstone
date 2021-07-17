@@ -12,7 +12,7 @@ import { colors } from '../../styles/colors'
 
 export default function Task({ task, index }) {
   // const { isShowing, toggle } = useModal()
-  const [show, setShow] = useState(false)
+  const [taskShow, setTaskShow] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const [taskColors, setTaskColors] = useState(colors)
   const [i, setI] = useState(0)
@@ -48,7 +48,11 @@ export default function Task({ task, index }) {
             <div className="flex flex-row justify-between items-center">
               <h3 className="text-xl font-bold pl-1">{task.title}</h3>
               <div>{task.pinned ? 'pinned' : 'not pinned'}</div>
-              <TaskDropdownMenu show={show} task={task} />
+              <TaskDropdownMenu
+                taskShow={taskShow}
+                setTaskShow={setTaskShow}
+                task={task}
+              />
               <EditTaskModal
                 task={task}
                 show={showEditTask}

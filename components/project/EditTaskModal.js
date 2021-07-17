@@ -53,7 +53,7 @@ export default function EditTaskModal({
                 </button>
                 {/* Close X */}
                 <button
-                  className="text-red-500  font-bold uppercase text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  className="text-red-500 font-bold uppercase text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
                   onClick={() => {
                     onClose()
@@ -77,14 +77,17 @@ export default function EditTaskModal({
                 </button>
               </div>
               {isEditActive ? (
-                <div>
+                <div className="flex flex-col">
                   <input
                     className="text-xl font-semibold text-gray-800 border border-gray-500"
-                    onChange={e => setTaskTitle(e.target.value)}
+                    onChange={e => {
+                      console.log('ON CHANGE', e.target.value)
+                      setTaskTitle(e.target.value)
+                    }}
                     value={taskTitle}
                   />
                   <textarea
-                    ref={input => input && input.focus()}
+                    // ref={input => input && input.focus()}
                     className="my-4 text-sm leading-relaxed italic"
                     name="body"
                     value={taskBody}
@@ -93,6 +96,7 @@ export default function EditTaskModal({
                       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
                         handleSave()
                         onClose()
+                        toggleEdit()
                       }
                     }}
                   ></textarea>
@@ -118,6 +122,7 @@ export default function EditTaskModal({
               onClick={() => {
                 handleSave()
                 onClose()
+                toggleEdit()
               }}
             >
               Save

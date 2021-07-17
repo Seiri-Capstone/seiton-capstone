@@ -5,7 +5,7 @@ import DeleteTaskModal from './DeleteTaskModal'
 import AssignModal from './AssignModal'
 import Transition from './SideBarTransition'
 
-export default function TaskDropdownMenu({ task }) {
+export default function TaskDropdownMenu({ taskShow, setTaskShow, task }) {
   const [isActive, setIsActive] = useState(false)
   // const { isShowing, toggle } = useModal()
   const [isClosed, setClosed] = useState(false)
@@ -73,20 +73,30 @@ export default function TaskDropdownMenu({ task }) {
               onClick={() => {
                 setShow(true)
                 toggleEdit()
+                setIsActive(false)
               }}
             >
               Edit
             </button>
           </li>
           <li>
-            <button className="text-sm hover:text-red-500" onClick={toggle}>
+            <button
+              className="text-sm hover:text-red-500"
+              onClick={() => {
+                toggle()
+                setIsActive(false)
+              }}
+            >
               Delete
             </button>
           </li>
           <li>
             <button
               className="text-sm hover:text-purple-500"
-              onClick={toggleAssignUser}
+              onClick={() => {
+                toggleAssignUser()
+                setIsActive(false)
+              }}
             >
               Assign User
             </button>
