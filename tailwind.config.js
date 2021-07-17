@@ -26,7 +26,14 @@ module.exports = {
         purple: colors.purple,
         fuschia: colors.fuschia,
         pink: colors.pink,
-        rose: colors.rose
+        rose: colors.rose,
+        darkblue: '#2c4482',
+        medblue: '#1f487e',
+        skyblue: '#376996',
+        navyblue: '#15325f',
+        darkteal: '#1a81a5',
+        peach: '#efe1c6',
+        lightorange: '#efc085'
       },
       typography: theme => ({
         DEFAULT: {

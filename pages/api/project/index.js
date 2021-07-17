@@ -22,7 +22,8 @@ export default async function handler(req, res) {
           include: {
             project: {
               include: {
-                org: true
+                org: true,
+                users: true
               }
             }
           }

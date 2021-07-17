@@ -19,7 +19,6 @@ export const fetchCreateOrg = createAsyncThunk(
 export const fetchDeletedOrg = createAsyncThunk(
   'orgs/fetchDeletedOrg',
   async orgId => {
-    console.log('in the delete thunk')
     const { data: org } = await axios.delete(`/api/org/${orgId}`)
     return org
   }
@@ -37,6 +36,7 @@ export const orgsSlice = createSlice({
       return [...state, action.payload]
     },
     [fetchDeletedOrg.fulfilled]: (state, action) => {
+      console.log('in reducer state', JSON.parse(JSON.stringify(state)))
       return state.filter(org => org.id !== action.payload.id)
     }
   }
