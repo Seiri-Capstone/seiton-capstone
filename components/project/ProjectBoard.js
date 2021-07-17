@@ -119,6 +119,8 @@ export default function ProjectBoard({ pusher }) {
     router.push('/projects')
   }
 
+  // Since [+] is project.columns.length, the newly created col should have an index of len - 1
+  // 1 2 3 [+] => 1 2 3 [new] [+]
   const addColumn = async e => {
     const index = project.columns.length
     const title = `Column-${index}`
@@ -236,29 +238,26 @@ export default function ProjectBoard({ pusher }) {
                   ref={provided.innerRef}
                 >
                   {project.columns &&
-                    project.columns.map((column, index) =>
-                      index !== project.columns.length - 1 ? (
-                        <div key={column.id}>
-                          <Column
-                            setCol={setIsColNameEdited}
-                            delCol={setIsColDeleted}
-                            addTask={setisTaskAdded}
-                            key={column.id}
-                            column={column}
-                            index={index}
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          <button
-                            className="border-dashed border-2 border-black-500 w-80 h-18 rounded-lg m-4 p-4 justify-end"
-                            onClick={addColumn}
-                          >
-                            + Add New Column
-                          </button>
-                        </div>
-                      )
-                    )}
+                    project.columns.map((column, index) => (
+                      <div key={column.id}>
+                        <Column
+                          setCol={setIsColNameEdited}
+                          delCol={setIsColDeleted}
+                          addTask={setisTaskAdded}
+                          key={column.id}
+                          column={column}
+                          index={index}
+                        />
+                      </div>
+                    ))}
+                  <div>
+                    <button
+                      className="border-dashed border-2 border-black-500 w-80 h-18 rounded-lg m-4 p-4 justify-end"
+                      onClick={addColumn}
+                    >
+                      + Add New Column
+                    </button>
+                  </div>
                   {provided.placeholder}
                 </div>
               )}
