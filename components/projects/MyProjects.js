@@ -14,11 +14,12 @@ export default function MyProjects() {
 
   console.log('projects--->', projects)
 
-  const bgColors = ['bg-blue-700', 'bg-indigo-700', 'bg-purple-700']
+  const bgColors = ['bg-navyblue', 'bg-skyblue', 'bg-darkblue', 'bg-medblue']
   const borderColors = [
-    'border-blue-700',
-    'border-indigo-700',
-    'border-purple-700'
+    'border-navyblue',
+    'border-skyblue',
+    'border-darkblue',
+    'border-medblue'
   ]
 
   return (
@@ -28,6 +29,12 @@ export default function MyProjects() {
       <br />
       <br />
       <div className="h-5/6 overflow-y-auto">
+        {!projects && (
+          <h3>
+            You are currently not in any projects! <br />
+            Create a new project by viewing your organization.
+          </h3>
+        )}
         {projects?.map((project, i) => (
           <>
             <Link href={`/projects/${project.projectId}`}>
@@ -38,24 +45,24 @@ export default function MyProjects() {
                 >
                   <div
                     className={`h-48 lg:h-auto lg:w-12 flex-none rounded-t ${
-                      bgColors[i % 3]
+                      bgColors[i % 4]
                     } lg:rounded-t-none lg:rounded-l text-center overflow-hidden`}
                   ></div>
                   <div
                     className={`w-full border-r-4 border-b-4 border-l-4 ${
-                      borderColors[i % 3]
+                      borderColors[i % 4]
                     } lg:border-l-0 lg:border-t-4 lg:${
-                      borderColors[i % 3]
+                      borderColors[i % 4]
                     } bg-transparent
                   } rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal`}
                   >
                     <div
                       id="tenor"
-                      className="text-gray-900 font-bold text-xl mb-2 capitalize tracking-wide"
+                      className="text-gray-900 dark:text-white font-bold text-xl mb-2 capitalize tracking-wide"
                     >
                       {project.project.name}
                     </div>
-                    <div className="text-base tracking-wide ml-4">
+                    <div className="text-base tracking-wide dark:text-gray-300 ml-4">
                       Organization: {project.project.org.name}
                     </div>
                   </div>

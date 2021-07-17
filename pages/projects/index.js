@@ -4,7 +4,7 @@ import Navbar from '../../components/nav/Navbar'
 
 export default function Project() {
   return (
-    <div className="flex h-screen bg-blue-100">
+    <div className="flex h-screen bg-white dark:bg-gray-900">
       <Navbar />
       <div className="flex-col ml-24 mt-12 w-8/12">
         <MyProjects />

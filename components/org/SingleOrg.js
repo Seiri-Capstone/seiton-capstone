@@ -47,41 +47,51 @@ export default function Org() {
 
   return (
     <React.Fragment>
-      <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
+      <h2 id="tenor" className="capitalize">
         {org.name}
-      </h1>
-      <div>
-        <h1>Projects</h1>
-        {org.projects.map(project => (
-          <Link href={`/projects/${project.id}`} key={project.id}>
-            <a>
-              <h1>{project.name}</h1>
-            </a>
-          </Link>
-        ))}
-      </div>
-      <button
-        type="submit"
-        className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
-        onClick={() => setShow(true)}
-      >
-        Send Invite!
-      </button>
-      <div>
-        <h1>Organization Members</h1>
-        {org.users.map(user => (
-          <div key={user.userId} className="flex mt-2 mr-12">
-            <h1 key={user.userId}>{user.user.name}</h1>
+      </h2>
+      <br />
 
-            <button
-              className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white border border-red-500 hover:border-transparent rounded-full"
-              onClick={() => removeUser(user.userId)}
-            >
-              X
-            </button>
+      <div className="flex">
+        <div className="rounded-lg bg-medblue shadow-lg p-8 mr-12 w-1/3">
+          <h3 className="text-white">Current Projects:</h3>
+          <br />
+          <div className="ml-4">
+            {org.projects.map(project => (
+              <Link href={`/projects/${project.id}`} key={project.id}>
+                <a>
+                  <h4>• {project.name}</h4>
+                </a>
+              </Link>
+            ))}
           </div>
-        ))}
+        </div>
+        <div className="rounded-sm bg-medblue p-8 w-1/3">
+          <button
+            type="submit"
+            className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
+            onClick={() => setShow(true)}
+          >
+            Send Invite!
+          </button>
+          <div>
+            <h1>Organization Members</h1>
+            {org.users.map(user => (
+              <div key={user.userId} className="flex mt-2 mr-12">
+                <h1 key={user.userId}>{user.user.name}</h1>
+
+                <button
+                  className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white border border-red-500 hover:border-transparent rounded-full"
+                  onClick={() => removeUser(user.userId)}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
       <br />
       {/* add new project, currently a form but we should make into a modal  */}
       <div>

@@ -22,13 +22,14 @@ export default function AuthForm() {
         <Image src={img} alt="illustration" width={750} height={600} />
       </div>
       <div className="container mx-auto relative">
-        <div className="my-10 pl-12 xl:pl-0 xl:pt-64">
-          <h1>Organize your workflow.</h1>
-          <br />
+        <div className="my-10 pl-12 xl:pl-0 xl:pt-64 text-blue-900">
+          <h1 id="tenor" className="leading-relaxed">
+            Organize your workflow.
+          </h1>
           <h4 className="max-w-md lg:max-w-lg">
             Inspired by the 5S of Japanese workplace organization methodology,
-            Seiton (Japanese for to organize and put in place) will help you and
-            your team to arrange your workflow efficiently.
+            Seiton (to organize) will help you and your team to arrange your
+            workflow efficiently.
           </h4>
 
           <br />

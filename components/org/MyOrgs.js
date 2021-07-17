@@ -15,11 +15,12 @@ export default function MyOrgs() {
     dispatch(fetchOrgs())
   }, [dispatch])
 
-  const bgColors = ['bg-blue-700', 'bg-indigo-700', 'bg-purple-700']
+  const bgColors = ['bg-navyblue', 'bg-skyblue', 'bg-darkblue', 'bg-medblue']
   const borderColors = [
-    'border-blue-700',
-    'border-indigo-700',
-    'border-purple-700'
+    'border-navyblue',
+    'border-skyblue',
+    'border-darkblue',
+    'border-medblue'
   ]
 
   return (
@@ -41,14 +42,14 @@ export default function MyOrgs() {
                 <div className="w-full lg:max-w-full lg:flex">
                   <div
                     className={`h-48 lg:h-auto lg:w-12 flex-none rounded-t ${
-                      bgColors[i % 3]
+                      bgColors[i % 4]
                     } lg:rounded-t-none lg:rounded-l text-center overflow-hidden`}
                   ></div>
                   <div
                     className={`w-full border-r-4 border-b-4 border-l-4 ${
-                      borderColors[i % 3]
+                      borderColors[i % 4]
                     } lg:border-l-0 lg:border-t-4 lg:${
-                      borderColors[i % 3]
+                      borderColors[i % 4]
                     } bg-transparent
                   } rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal`}
                   >
