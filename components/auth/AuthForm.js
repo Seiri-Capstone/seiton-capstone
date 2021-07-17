@@ -15,7 +15,10 @@ export default function AuthForm() {
 
   return (
     <>
-      <div id="logo" className="pl-8 pt-4 p-4 bg-white ">
+      <div
+        id="logo"
+        className="pl-8 pt-4 p-4 text-black dark:text-black bg-white "
+      >
         Seiton
       </div>
       <div className="ml-4 xl:ml-12 flex flex-col xl:absolute xl:top-10 xl:right-10">
