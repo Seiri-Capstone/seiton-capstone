@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
-import { fetchProject, fetchRemoveUserProject } from '../../store/projectSlice'
+import {
+  fetchProject,
+  fetchRemoveUserProject,
+  fetchAdminUserUpdate
+} from '../../store/projectSlice'
 import ProjectInvite from './ProjectInvite'
+import { useSession } from 'next-auth/client'
 
 export default function Members() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
+  const [session, loading] = useSession()
   const router = useRouter()
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
   const [show, setShow] = useState(false)
+  const users = project.users || []
 
   useEffect(() => {
     if (id) {
@@ -18,15 +25,29 @@ export default function Members() {
         dispatch(fetchProject(id))
       })()
     }
-  }, [dispatch, project])
+  }, [dispatch, id])
 
-  const users = project.users || []
-  // console.log('⭐️', id, users)
-  // console.log('project in members', project)
+  const sessionUser = users.filter(user => user.userId === +session?.user.sub)
+  const isAdmin = sessionUser.length > 0 ? sessionUser[0].isAdmin : false
+
+  console.log('⭐️', sessionUser)
 
   const removeUser = userId => {
     const body = { userId: userId, projectId: id }
     dispatch(fetchRemoveUserProject(body))
+  }
+
+  const handleAdminChange = (e, userId) => {
+    let adminBool = e.target.value === 'true' ? true : false
+
+    const thunkArg = {
+      isAdmin: adminBool,
+      projectId: id,
+      sessionUserId: sessionUser[0].userId,
+      userId: userId
+    }
+    dispatch(fetchAdminUserUpdate(thunkArg))
+    console.log('thunk arg', thunkArg)
   }
 
   return (
@@ -47,14 +68,40 @@ export default function Members() {
 
         {users.map(user => (
           <div key={user.userId} className="flex">
-            <h2 key={user.userId}>{user.user.name}</h2>
-            {user.isAdmin ? <p>Admin</p> : <p>Collaborater</p>}
-            <button
-              className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white border border-red-500 hover:border-transparent rounded-full"
-              onClick={() => removeUser(user.userId)}
-            >
-              X
-            </button>
+            <h2>{user.user.name}</h2>
+
+            {isAdmin ? (
+              <div>
+                <select
+                  onChange={e => handleAdminChange(e, user.userId)}
+                  defaultValue={user.isAdmin ? true : false}
+                >
+                  <option
+                    value={true}
+                    defaultValue={user.isAdmin ? true : false}
+                  >
+                    Admin
+                  </option>
+                  <option
+                    value={false}
+                    defaultValue={user.isAdmin ? false : false}
+                  >
+                    Collaborater
+                  </option>
+                </select>
+
+                <button
+                  className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white border border-red-500 hover:border-transparent rounded-full"
+                  onClick={() => removeUser(user.userId)}
+                >
+                  X
+                </button>
+              </div>
+            ) : user.isAdmin ? (
+              <p>Admin</p>
+            ) : (
+              <p>Collaborater</p>
+            )}
           </div>
         ))}
       </div>

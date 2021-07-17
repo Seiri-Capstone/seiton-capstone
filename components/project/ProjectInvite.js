@@ -9,7 +9,7 @@ export default function OrgInvite({ show, onClose, project }) {
   const [searchEmail, setSearchEmail] = useState('')
   const dispatch = useDispatch()
 
-  console.log('project', project)
+  // console.log('project', project)
 
   const handleSend = () => {
     const thunkArg = {

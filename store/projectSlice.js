@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = []
@@ -7,9 +7,9 @@ export const fetchProject = createAsyncThunk(
   'project/fetchProject',
   async projectId => {
     // try catch here
-    const response = await fetch(`/api/project/${projectId}`)
+    const response = await axios.get(`/api/project/${projectId}`)
     // ultimately we want it to represent an array form
-    return await response.json()
+    return await response.data
     // Get back sorted array
   }
 )
@@ -150,6 +150,18 @@ export const fetchRemoveUserProject = createAsyncThunk(
   }
 )
 
+//PUT update isAdmin user in project
+export const fetchAdminUserUpdate = createAsyncThunk(
+  'project/fetchAdminUserUpdate',
+  async thunkArg => {
+    const { data: updatedUser } = await axios.put(
+      `/api/project/${thunkArg.projectId}/users/${thunkArg.userId}`,
+      thunkArg
+    )
+    return updatedUser
+  }
+)
+
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
@@ -212,12 +224,8 @@ export const projectSlice = createSlice({
       })
     },
     [fetchTaskOrderDiffCol.fulfilled]: (state, action) => {
-      const {
-        startTasks,
-        finishTasks,
-        startColId,
-        finishColId
-      } = action.payload
+      const { startTasks, finishTasks, startColId, finishColId } =
+        action.payload
       const columns = state.columns
       columns.forEach((column, idx) => {
         if (idx === startColId) column.tasks = startTasks
@@ -247,10 +255,16 @@ export const projectSlice = createSlice({
       })
     },
     [fetchRemoveUserProject.fulfilled]: (state, action) => {
-      console.log('reducer', action.payload)
       state.users = state.users.filter(
         user => user.userId !== action.payload[0].userId
       )
+    },
+    [fetchAdminUserUpdate.fulfilled]: (state, action) => {
+      state.users = state.users.map(user => {
+        return user.userId === action.payload[0].userId
+          ? action.payload[0]
+          : user
+      })
     }
   }
 })
