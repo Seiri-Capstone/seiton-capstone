@@ -9,6 +9,7 @@ import {
 import { fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
 import OrgInvite from './OrgInvite'
+import Logo from '../../components/Logo'
 
 export default function Org() {
   const org = useSelector(state => state.org) || {}
@@ -50,12 +51,46 @@ export default function Org() {
 
   return (
     <React.Fragment>
-      <h2 id="tenor" className="capitalize">
+      <Logo />
+      <h2 id="tenor" className="capitalize leading-loose">
         {org.name}
       </h2>
-      <br />
+      <hr className="border-1 border-skyblue dark:border-gray-500 pb-2"></hr>
+      <span className="dark:text-gray-400">Created on {createdDate}</span>
 
-      <div className="flex">
+      <div className="flex mt-12">
+        <div className="rounded-sm bg-transparent border-2 border-navyblue p-8 w-1/3 mr-8">
+          <div>
+            <h4 id="tenor" className="pb-2">
+              Organization Members
+            </h4>
+            <hr className="border-1 border-skyblue dark:border-gray-500 pt-2"></hr>
+            <button
+              type="submit"
+              className="text-sm"
+              onClick={() => setShow(true)}
+            >
+              + Add New Member
+            </button>
+            {org.users.map(user => (
+              <div key={user.userId} className="flex pt-2 pl-4">
+                <span
+                  key={user.userId}
+                  className="capitalize tracking-wide leading-relaxed"
+                >
+                  - {user.user.name}
+                </span>
+
+                <button
+                  className="text-red-600 pl-2 text-sm"
+                  onClick={() => removeUser(user.userId)}
+                >
+                  {'(remove)'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="rounded-lg bg-medblue shadow-lg p-8 mr-12 w-1/3">
           <h3 className="text-white">Current Projects:</h3>
           <br />
@@ -66,30 +101,6 @@ export default function Org() {
                   <h4>• {project.name}</h4>
                 </a>
               </Link>
-            ))}
-          </div>
-        </div>
-        <div className="rounded-sm bg-medblue p-8 w-1/3">
-          <button
-            type="submit"
-            className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
-            onClick={() => setShow(true)}
-          >
-            Send Invite!
-          </button>
-          <div>
-            <h1>Organization Members</h1>
-            {org.users.map(user => (
-              <div key={user.userId} className="flex mt-2 mr-12">
-                <h1 key={user.userId}>{user.user.name}</h1>
-
-                <button
-                  className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white border border-red-500 hover:border-transparent rounded-full"
-                  onClick={() => removeUser(user.userId)}
-                >
-                  X
-                </button>
-              </div>
             ))}
           </div>
         </div>
