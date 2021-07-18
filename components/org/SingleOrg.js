@@ -9,7 +9,6 @@ import {
 } from '../../store/orgSlice'
 import { fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
-import OrgInvite from './OrgInvite'
 import Logo from '../../components/Logo'
 import { fetchCreateInvite } from '../../store/invitationsSlice'
 
@@ -20,7 +19,7 @@ export default function Org() {
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
   const [name, setName] = useState('')
-  const [show, setShow] = useState(false)
+  // const [show, setShow] = useState(false)
   const [showProj, setShowProj] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
   const [searchEmail, setSearchEmail] = useState('')
@@ -49,7 +48,7 @@ export default function Org() {
     dispatch(fetchRemoveUserOrg(body))
   }
 
-  const handleSend = () => {
+  const handleSend = e => {
     e.preventDefault()
     const thunkArg = {
       receivedBy: null,

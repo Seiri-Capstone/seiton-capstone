@@ -51,14 +51,14 @@ export default function MyInvites() {
       <h2 id="tenor">Invitations</h2>
       <br />
       <br />
-
+      {/*
       <button
         type="submit"
         className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
         onClick={() => setShow(true)}
       >
         Send Invite!
-      </button>
+</button>*/}
       <div>
         <section className="ml-6">
           <h1 className="text-xl">Pending Invites</h1>
