@@ -12,14 +12,11 @@ export default async function handler(req, res) {
     if (req.method === 'DELETE') {
       try {
         const { id } = req.query
-        console.log(`🟢  id `, id)
+
         const deletedColumn = await prisma.column.delete({
           where: { id: Number(id) }
         })
-        // Ideally, we want to do a CASCADE delete, but we will do independent deletes
-        await prisma.task.deleteMany({
-          where: { columnId: id }
-        })
+
         res.status(200).json(deletedColumn)
       } catch (error) {
         console.error(error)

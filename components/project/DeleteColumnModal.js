@@ -6,15 +6,16 @@ import Transition from './SideBarTransition'
 
 // Reusable modal, copy to new component and modify to your needs
 // working example on how to use it, look at Task model, only 4 lines of code
-function DeleteColumnModal({ isShowing, toggle, colId, delCol }) {
+function DeleteColumnModal({ isShowing, onClose, colId, delCol }) {
   const dispatch = useDispatch()
   //delete task handler
   const submitHandle = async event => {
     // col id is passed
     const cIdx = +event.target.value
+    console.log('handle delete col id', cIdx)
     await dispatch(deleteColumn(cIdx))
+    onClose()
     delCol(true) // DELCOL TRUE ==>> pusher does NOT WORK!
-    toggle()
   }
 
   return isShowing
@@ -39,7 +40,7 @@ function DeleteColumnModal({ isShowing, toggle, colId, delCol }) {
                 className=" flex justify-end mr-3 focus:outline-none"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={toggle}
+                onClick={onClose}
               >
                 <span
                   className=" flex justify-end outline-none  border-solid"
@@ -64,7 +65,7 @@ function DeleteColumnModal({ isShowing, toggle, colId, delCol }) {
                   <button
                     className="mr-2 border px-2 rounded text-black-800 hover:text-green-500 border-black-500 focus:outline-none"
                     type="button"
-                    onClick={toggle}
+                    onClick={onClose}
                   >
                     Cancel
                   </button>

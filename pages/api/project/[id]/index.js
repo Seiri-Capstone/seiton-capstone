@@ -72,19 +72,12 @@ export default async function handler(req, res) {
     if (req.method === 'DELETE') {
       try {
         const id = Number(req.query.id)
-        // const deletedUserProject = await prisma.userProject.deleteMany({
-        //   where: {
-        //     projectId: id
-        //   }
-        // })
 
         const deletedProject = await prisma.project.delete({
           where: {
             id: id
           }
         })
-
-        console.log('deleted project', deletedProject)
 
         res.status(200).json(deletedProject)
       } catch (error) {

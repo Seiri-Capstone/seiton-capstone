@@ -154,10 +154,10 @@ export default function Column(props) {
           </Droppable>
           <DeleteColumnModal
             isShowing={isShowing}
-            toggle={toggle}
+            // toggle={toggle}
             colId={column.id}
             delCol={delCol}
-            // onClose={() => setIsShowing(false)}
+            onClose={() => setIsShowing(!isShowing)}
           />
           <div id="columnDeleteModal"></div>
         </div>
