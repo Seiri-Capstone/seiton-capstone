@@ -36,6 +36,8 @@ export default function ProjectBoard({ pusher }) {
   const [mounted, setMounted] = useState(false)
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
+  const [colColors, setColColors] = useState(['rose', 'red', 'green', 'purple'])
+  const [i, setI] = useState(0)
 
   console.log('project in projectboard', project)
 
@@ -119,6 +121,8 @@ export default function ProjectBoard({ pusher }) {
     router.push('/projects')
   }
 
+  // Since [+] is project.columns.length, the newly created col should have an index of len - 1
+  // 1 2 3 [+] => 1 2 3 [new] [+]
   const addColumn = async e => {
     const index = project.columns.length
     const title = `Column-${index}`
@@ -202,6 +206,11 @@ export default function ProjectBoard({ pusher }) {
 
   return (
     <React.Fragment>
+      <div className="bg-rose-200"></div>
+      <div className="bg-red-200"></div>
+      <div className="bg-green-200"></div>
+      <div className="bg-purple-200"></div>
+
       <div className="flex overflow-hidden">
         <div className="flex-col ">
           <Navbar />
@@ -231,34 +240,32 @@ export default function ProjectBoard({ pusher }) {
             >
               {provided => (
                 <div
-                  className="flex w-full h-3/4 md:flex-row overflow-auto"
+                  className="flex w-full h-3/4 md:flex-row"
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
                   {project.columns &&
-                    project.columns.map((column, index) =>
-                      index !== project.columns.length - 1 ? (
-                        <div key={column.id}>
-                          <Column
-                            setCol={setIsColNameEdited}
-                            delCol={setIsColDeleted}
-                            addTask={setisTaskAdded}
-                            key={column.id}
-                            column={column}
-                            index={index}
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          <button
-                            className="border-dashed border-2 border-black-500 w-80 h-18 rounded-lg m-4 p-4 justify-end"
-                            onClick={addColumn}
-                          >
-                            + Add New Column
-                          </button>
-                        </div>
-                      )
-                    )}
+                    project.columns.map((column, index) => (
+                      <div key={column.id}>
+                        <Column
+                          setCol={setIsColNameEdited}
+                          delCol={setIsColDeleted}
+                          addTask={setisTaskAdded}
+                          key={column.id}
+                          column={column}
+                          index={index}
+                          colColor={colColors[i]}
+                        />
+                      </div>
+                    ))}
+                  <div>
+                    <button
+                      className="border-dashed border-2 border-black-500 w-80 h-18 rounded-lg m-4 p-4 justify-end"
+                      onClick={addColumn}
+                    >
+                      + Add New Column
+                    </button>
+                  </div>
                   {provided.placeholder}
                 </div>
               )}

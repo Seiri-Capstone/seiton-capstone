@@ -9,12 +9,14 @@ import { useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
 import { assignTask, pinTask } from '../../store/projectSlice'
 import { colors } from '../../styles/colors'
+import { comment } from 'postcss'
 
 export default function Task({ task, index }) {
   // const { isShowing, toggle } = useModal()
   const [taskShow, setTaskShow] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const [taskColors, setTaskColors] = useState(colors)
+  const [showUser, setShowUser] = useState(false)
   const [i, setI] = useState(0)
   const taskId = task.id
   const { user } = task
@@ -50,8 +52,28 @@ export default function Task({ task, index }) {
             ref={provided.innerRef}
           >
             <div className="flex flex-row justify-between items-center">
-              <h3 className="text-xl font-bold pl-1">{task.title}</h3>
-              <div>{task.pinned ? 'pinned' : 'not pinned'}</div>
+              <h3
+                onClick={() => setShowEditTask(true)}
+                className="text-xl font-bold pl-1 pt-4 pb-8"
+              >
+                {task.title}
+              </h3>
+              <div>
+                {task.pinned ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-700 dark:text-warmGray-300"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) : null}
+              </div>
               <TaskDropdownMenu
                 // taskShow={taskShow}
                 // setTaskShow={setTaskShow}
@@ -65,7 +87,7 @@ export default function Task({ task, index }) {
                 onKey={onKey}
               />
             </div>
-            <div className="prose">
+            {/* <div className="prose">
               <div
                 className="border-t pl-1"
                 onClick={() => {
@@ -75,7 +97,7 @@ export default function Task({ task, index }) {
                   __html: marked(task.body)
                 }}
               ></div>
-            </div>
+            </div> */}
             {/* user is an [] */}
             <div className="flex">
               <button
@@ -87,17 +109,28 @@ export default function Task({ task, index }) {
               >
                 Toggle Color
               </button>
-              <button className="task-btn">Comments</button>
+              <button className="task-btn">
+                Comments {task.comments ? task.comments.length : null}
+              </button>
               <button
                 onClick={() => dispatch(pinTask(task))}
                 className="task-btn"
               >
-                Pin
+                {task.pinned ? 'Unpin' : 'Pin'}
+              </button>
+              <button
+                className="task-btn"
+                onClick={() => setShowUser(!showUser)}
+              >
+                Users ({user?.length})
               </button>
             </div>
-            {user?.map(u => (
-              <div key={u.id}>{u.name}</div>
-            ))}
+            {showUser &&
+              user?.map(u => (
+                <div className="text-sm" key={u.id}>
+                  {u.name}
+                </div>
+              ))}
             {/* <p className="text-sm font-bold text-gray-500">
               Comments{' '}
               <span
