@@ -28,7 +28,8 @@ export default async function handler(req, res) {
           where: { id: req.body.id },
           data: {
             name: req.body.name,
-            email: req.body.email
+            email: req.body.email,
+            image: req.body.image
           }
         })
         res.status(200).json(result)

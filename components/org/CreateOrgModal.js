@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { fetchCreateOrg } from '../../store/orgsSlice'
 import Image from 'next/image'
 import x from '../../public/assets/xIcon.svg'
+import Transition from '../project/SideBarTransition'
 
 export default function CreateOrgModal({ show, onClose }) {
   const [orgName, setOrgName] = useState('')
@@ -18,9 +19,21 @@ export default function CreateOrgModal({ show, onClose }) {
   if (!show) return null
   return ReactDOM.createPortal(
     <div className="justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none top-20">
+      <Transition
+        appear={true}
+        show={show}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-75"
+        leave="transition-opacity duration-300"
+        leaveFrom="opacity-75"
+        leaveTo="opacity-0"
+      >
+        <div className="fixed inset-0 bg-black opacity-0" />
+      </Transition>
       <div className="relative w-2/5 h-2/3 my-6 mx-auto ">
         {/*content*/}
-        <div className="p-8 border-0 rounded-lg shadow-2xl relative w-full bg-white dark:bg-gray-900 outline-none focus:outline-none flex flex-col">
+        <div className="p-8 border-0 rounded-lg relative w-full bg-white dark:bg-gray-900 outline-none focus:outline-none flex flex-col">
           <div className="flex justify-between">
             <h3 id="tenor">Add New Organization</h3>
             <Image

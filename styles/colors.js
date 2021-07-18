@@ -15,7 +15,6 @@ export const colors = [
   'indigo',
   'violet',
   'purple',
-  // 'fuschia', // doesn't work
   'pink',
   'rose'
 ]

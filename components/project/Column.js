@@ -8,21 +8,17 @@ import { deleteColumn, updateColumnName } from '../../store/projectSlice'
 import { useDispatch } from 'react-redux'
 import DeleteColumnModal from '../../components/project/DeleteColumnModal'
 import Circle from '../styled/circle'
+import { colors as COLORS } from '../../styles/colors'
 
 export default function Column(props) {
-  const { setCol, delCol, addTask, column, colColor } = props
+  const { setCol, delCol, addTask, column, colColor, setPin, taskEdit } = props
   const dispatch = useDispatch()
 
   const [columnName, setColumnName] = useState(column.title)
   const [isEditActive, setEditActive] = useState(false)
   const [colorI, setColorI] = useState(0)
-  const [colors, setColors] = useState([
-    'red',
-    'green',
-    'purple',
-    'yellow',
-    'orange'
-  ])
+  const [colors, setColors] = useState(COLORS)
+
   const loopColor = () => {
     let x
     if (colorI === colors.length - 1) x = 0
@@ -67,7 +63,7 @@ export default function Column(props) {
     >
       {provided => (
         <div
-          className={`bg-${colColor}-200 border-${colColor}-300 border-2 w-80 rounded-lg m-4 p-4 flex flex-col`}
+          className={`bg-${colors[colorI]}-200 border-${colors[colorI]}-300 border-2 w-80 rounded-lg m-4 p-4 flex flex-col`}
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
@@ -145,7 +141,13 @@ export default function Column(props) {
                 {column.tasks &&
                   column.tasks.map((task, index) => (
                     <>
-                      <Task task={task} key={task.id} index={index} />
+                      <Task
+                        setPin={setPin}
+                        task={task}
+                        key={task.id}
+                        index={index}
+                        taskEdit={taskEdit}
+                      />
                     </>
                   ))}
                 {provided.placeholder}

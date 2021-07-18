@@ -60,3 +60,10 @@ button {
 .task-btn {
   @apply rounded text-sm border border-gray-600 px-2;
 }
+
+.roundImg {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
