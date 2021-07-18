@@ -24,6 +24,7 @@ export default function Org() {
   const [showProj, setShowProj] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
   const [searchEmail, setSearchEmail] = useState('')
+  const [session] = useSession()
 
   useEffect(() => {
     if (id) {
@@ -134,13 +135,15 @@ export default function Org() {
                 >
                   - {user.user.name}
                 </span>
-
-                <button
-                  className="text-red-600 dark:text-red-300 pl-2 text-sm"
-                  onClick={() => removeUser(user.userId)}
-                >
-                  {'(remove)'}
-                </button>
+                {/* conditional logic to only show remove if the name listed is not current user */}
+                {Number(session.user.sub) !== user.userId && (
+                  <button
+                    className="text-red-600 dark:text-red-300 pl-2 text-sm"
+                    onClick={() => removeUser(user.userId)}
+                  >
+                    {'(remove)'}
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -185,7 +188,6 @@ export default function Org() {
               </span>
             )}
             {org.projects.map(project => (
-              // const lastUpdated = String(new Date(org.createdAt)).substring(3, 15)
               <Link href={`/projects/${project.id}`} key={project.id}>
                 <a>
                   <span className="capitalize tracking-wide leading-relaxed hover:text-skyblue dark:hover:text-blue-300">
@@ -202,9 +204,6 @@ export default function Org() {
           </div>
         </div>
       </div>
-
-      {/* <OrgInvite show={show} onClose={() => setShow(false)} org={org} /> */}
-      {/* <div id="orgInviteModal"></div> */}
     </React.Fragment>
   )
 }
