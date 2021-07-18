@@ -27,7 +27,10 @@ export default function MyProjects() {
   return (
     <>
       <Logo />
-      <h2 id="tenor">My Projects</h2>
+      <h2 id="tenor" className="leading-loose">
+        My Projects
+      </h2>
+      <hr className="border-1 border-skyblue dark:border-gray-500 pb-2"></hr>
       <h4 className="mt-4 text-base">
         A list of all your projects across all organizations.
       </h4>

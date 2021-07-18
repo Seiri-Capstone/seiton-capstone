@@ -29,15 +29,18 @@ export default function MyOrgs() {
   return (
     <>
       <Logo />
-      <h2 id="tenor">My Organizations</h2>
-      <br />
-      <div>
+      <h2 id="tenor" className="leading-loose">
+        My Organizations
+      </h2>
+      <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
+
+      <div className="mt-2">
         <button onClick={() => setShow(true)}>+ Create New Organization</button>
       </div>
 
       <CreateOrgModal show={show} onClose={() => setShow(false)} />
 
-      <div className="mt-12 text-black max-w-prose">
+      <div className="mt-8 text-black max-w-prose">
         {orgs.length === 0 && (
           <>
             <h4 className="leading-loose">
@@ -87,7 +90,7 @@ export default function MyOrgs() {
                         </div>
                       </div>
                       <hr className="border-1 border-skyblue dark:border-gray-500 pb-2"></hr>
-                      <p className="text-base dark:text-gray-300 tracking-wide ml-4">
+                      <div className="text-base dark:text-gray-300 tracking-wide ml-4">
                         {org.projects && org.projects.length
                           ? org.projects.map(project => (
                               <div key={project.id}>
@@ -104,7 +107,7 @@ export default function MyOrgs() {
                               </div>
                             ))
                           : 'Currently there are no projects under this organization.'}
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>

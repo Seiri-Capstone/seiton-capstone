@@ -3,6 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchInvitations } from '../../store/invitationsSlice'
 import { fetchUpdateInvite } from '../../store/invitationSlice'
 import Logo from '../../components/Logo'
+import Image from 'next/image'
+import alert from '../../public/assets/alertIcon.svg'
+import pending from '../../public/assets/pendingIcon.svg'
+import check from '../../public/assets/checkIcon.svg'
 
 export default function MyInvites() {
   const invitations = useSelector(state => state.invitations)
@@ -51,32 +55,50 @@ export default function MyInvites() {
   return (
     <React.Fragment>
       <Logo />
-      <h2 id="tenor">Invitations</h2>
-      <br />
+      <h2 id="tenor" className="leading-loose">
+        Invitations
+      </h2>
+      <hr className="border-1 border-skyblue dark:border-gray-500 pb-2"></hr>
+      <h4 className="mt-4 text-base">
+        Any invitations that you receive will show up here.
+      </h4>
       <br />
 
-      <div>
-        <section className="ml-6">
-          <h3 id="tenor">Pending Invites</h3>
+      <div className="flex flex-col">
+        <section className="my-4 border border-navyblue dark:border-gray-400 rounded-lg p-6 pb-8">
+          <h3 id="tenor" className="mb-2">
+            Pending Invites
+          </h3>
+          <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
+          {receivedInvites.length === 0 &&
+            'You currently do not have any pending invitations.'}
+
           {pendingReceivedInvites.map(invite => (
-            <div className="my-3" key={invite.id}>
+            <div className="flex items-center mt-4 mb-2" key={invite.id}>
               {invite.project ? (
-                <p>
-                  You received an invitation from {invite.sentFrom.name} to join
-                  project {invite.project.name}
-                </p>
+                <>
+                  <Image src={alert} alt="alertIcon" width={24} height={24} />
+                  <span className="pl-2">
+                    {invite.sentFrom.name} invited you to join project{' '}
+                    {invite.project.name}
+                  </span>
+                </>
               ) : (
-                <p>
-                  You received an invitation from {invite.sentFrom.name} to join
-                  organization {invite.org.name}
-                </p>
+                <>
+                  <Image src={alert} alt="alertIcon" width={24} height={24} />
+                  <span className="pl-2">
+                    {invite.sentFrom.name} invited you to join organization{' '}
+                    {invite.org.name}
+                  </span>
+                </>
               )}
-              <p>{invite.status}</p>
+
+              {/* <p>{invite.status}</p> */}
 
               <div>
                 <button
                   type="submit"
-                  className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+                  className="bg-transparent dark:bg-gray-600 text-navyblue hover:text-white  hover:bg-green-500 dark:text-gray-300 border border-navyblue dark:border-gray-600 hover:border-green-500 rounded-lg dark:hover:bg-green-500 p-2 py-1 ml-2 text-xs"
                   value="ACCEPTED"
                   onClick={e => handleResponse(invite, e.target.value)}
                 >
@@ -84,7 +106,7 @@ export default function MyInvites() {
                 </button>
                 <button
                   type="submit"
-                  className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
+                  className="bg-transparent dark:bg-gray-600 text-navyblue hover:text-white hover:bg-red-500 dark:text-gray-300 border border-navyblue dark:border-gray-600 rounded-lg hover:border-red-500  dark:hover:bg-red-500 p-2 py-1 ml-2 text-xs"
                   value="DECLINED"
                   onClick={e => handleResponse(invite, e.target.value)}
                 >
@@ -95,57 +117,81 @@ export default function MyInvites() {
           ))}
 
           {pendingSentInvites.map(invite => (
-            <div className="my-3" key={invite.id}>
+            <div className="flex items-center mt-4 mb-2" key={invite.id}>
               {invite.project ? (
-                <p>
-                  You sent an invitation to {invite.receivedBy.name} to join
-                  project {invite.project.name}
-                </p>
+                <>
+                  <Image
+                    src={pending}
+                    alt="pendingIcon"
+                    width={24}
+                    height={24}
+                  />
+                  <span className="pl-2">
+                    You invited {invite.receivedBy.name} to join project{' '}
+                    {invite.project.name}
+                  </span>
+                </>
               ) : (
-                <p>
-                  You sent an invitation to {invite.receivedBy.name} to join
-                  organization {invite.org.name}
-                </p>
+                <>
+                  <Image
+                    src={pending}
+                    alt="pendingIcon"
+                    width={24}
+                    height={24}
+                  />
+                  <span className="pl-2">
+                    You invited {invite.receivedBy.name} to join organization{' '}
+                    {invite.org.name}
+                  </span>
+                </>
               )}
             </div>
           ))}
         </section>
 
-        <section className="ml-6">
-          <h3 id="tenor">History</h3>
+        <section className="my-4 border border-navyblue dark:border-gray-400 rounded-lg p-6 pb-8 overflow-y-scroll">
+          <h3 id="tenor" className="mb-2">
+            History
+          </h3>
+          <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
           {historyReceivedInvites.map(invite => (
-            <div className="my-3" key={invite.id}>
+            <div
+              className="flex items-center mt-4 mb-2 overflow-y-auto"
+              key={invite.id}
+            >
               {invite.project ? (
-                <p>
+                <span className="pl-2">
                   You were invited by {invite.sentFrom.name} to join project{' '}
                   {invite.project.name}
-                </p>
+                </span>
               ) : (
-                <p>
+                <span className="pl-2">
                   You were invited by {invite.sentFrom.name} to join
-                  organization {invite.org.name}
-                </p>
+                  organization{` ${invite.org.name}`}
+                </span>
               )}
-              <p>{invite.status}</p>
+              <span className="text-xs lowercase pl-2 tracking-wider">
+                ({invite.status})
+              </span>
             </div>
           ))}
 
           {historySentInvites.map(invite => (
-            <div className="my-3" key={invite.id}>
+            <div className="flex items-center mt-4 mb-2" key={invite.id}>
               {invite.project ? (
-                <p>
-                  You sent an invitation to {invite.receivedBy.name} to join
-                  project
-                  {invite.project.name}
-                </p>
+                <span className="pl-2">
+                  {invite.receivedBy.name} received your invitation to join
+                  project{` ${invite.project.name}`}
+                </span>
               ) : (
-                <p>
-                  You sent an invitation to {invite.receivedBy.name} to join
-                  organization
-                  {invite.org.name}
-                </p>
+                <span className="pl-2">
+                  {invite.receivedBy.name} received your invitation to join
+                  organization{` ${invite.org.name}`}
+                </span>
               )}
-              <p>{invite.status}</p>
+              <span className="text-xs lowercase pl-2 tracking-wider">
+                ({invite.status})
+              </span>
             </div>
           ))}
         </section>
