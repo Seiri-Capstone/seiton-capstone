@@ -112,10 +112,10 @@ model Task {
   id       Int       @id @default(autoincrement())
   title    String
   body     String
-  columnId Int
+  columnId Int?
   index    Int
   pinned   Boolean   @default(false)
-  column   Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  column   Column?    @relation(fields: [columnId], references: [id], onDelete: Cascade)
   comments Comment[]
   user     User[]
   createdAt DateTime  @default(now()) @map("created_at")
@@ -126,12 +126,12 @@ model Task {
 model Comment {
   id        Int      @id @default(autoincrement())
   body      String
-  userId    Int
-  taskId    Int
+  userId    Int?
+  taskId    Int?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
-  tasks     Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks     Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {

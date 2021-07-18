@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchProjects } from '../../store/projectsSlice'
+import { fetchProjects, fetchDeletedProject } from '../../store/projectsSlice'
 import Link from 'next/link'
 import Logo from '../../components/Logo'
 import Image from 'next/image'
@@ -13,6 +13,11 @@ export default function MyProjects() {
   useEffect(() => {
     dispatch(fetchProjects())
   }, [dispatch])
+
+  const deleteProject = (e, id) => {
+    e.preventDefault()
+    dispatch(fetchDeletedProject(id))
+  }
 
   console.log('projects--->', projects)
 
@@ -63,6 +68,7 @@ export default function MyProjects() {
                             alt="deleteIcon"
                             width={24}
                             height={24}
+                            onClick={e => deleteProject(e, project.projectId)}
                           />
                         </div>
                       </div>

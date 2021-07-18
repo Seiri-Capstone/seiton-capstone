@@ -19,7 +19,6 @@ export default function MyOrgs() {
   }, [dispatch])
 
   const deleteOrg = (e, id) => {
-    // e.stopPropagation()
     e.preventDefault()
     dispatch(fetchDeletedOrg(id))
   }
