@@ -1,22 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchProjects, fetchDeletedProject } from '../../store/projectsSlice'
 import Link from 'next/link'
 import Logo from '../../components/Logo'
 import Image from 'next/image'
 import x from '../../public/assets/xIcon.svg'
+import DeleteProjectModal from './DeleteProjectModal'
 
 export default function MyProjects() {
   const projects = useSelector(state => state.projects)
   const dispatch = useDispatch()
+  const [show, setShow] = useState(false)
 
   useEffect(() => {
     dispatch(fetchProjects())
   }, [dispatch])
 
-  const deleteProject = (e, id) => {
+  const deleteProject = e => {
     e.preventDefault()
-    dispatch(fetchDeletedProject(id))
+    setShow(true)
+    // dispatch(fetchDeletedProject(id))
   }
 
   console.log('projects--->', projects)
@@ -44,6 +47,11 @@ export default function MyProjects() {
       <div className="h-5/6 overflow-y-auto">
         {projects?.map((project, i) => (
           <>
+            <DeleteProjectModal
+              show={show}
+              onClose={() => setShow(false)}
+              projectId={project.projectId}
+            />
             <Link href={`/projects/${project.projectId}`}>
               <a>
                 <div
