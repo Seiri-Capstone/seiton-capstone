@@ -2,12 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { useDispatch } from 'react-redux'
 import { fetchDeletedOrg } from '../../store/orgsSlice'
+import Transition from '../project/SideBarTransition'
 
 function DeleteOrgModal({ deleteShowing, onClose, orgId }) {
   const dispatch = useDispatch()
 
   const deleteOrg = () => {
-    // e.preventDefault()
     dispatch(fetchDeletedOrg(orgId))
     onClose()
   }
@@ -15,6 +15,19 @@ function DeleteOrgModal({ deleteShowing, onClose, orgId }) {
   return deleteShowing
     ? ReactDOM.createPortal(
         <div className="justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <Transition
+            appear={true}
+            show={deleteShowing}
+            enter="transition-opacity duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-75"
+            leave="transition-opacity duration-300"
+            leaveFrom="opacity-75"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black opacity-0" />
+          </Transition>
+
           <div className="relative w-100 h-40 my-6 mx-auto ">
             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
               <button
