@@ -223,9 +223,6 @@ export default function Org() {
           </div>
         </div>
       </div>
-
-      {/* <OrgInvite show={show} onClose={() => setShow(false)} org={org} /> */}
-      {/* <div id="orgInviteModal"></div> */}
     </React.Fragment>
   )
 }
