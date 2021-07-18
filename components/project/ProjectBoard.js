@@ -36,6 +36,8 @@ export default function ProjectBoard({ pusher }) {
   const [mounted, setMounted] = useState(false)
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
+  const [colColors, setColColors] = useState(['rose', 'red', 'green', 'purple'])
+  const [i, setI] = useState(0)
 
   console.log('project in projectboard', project)
 
@@ -204,6 +206,11 @@ export default function ProjectBoard({ pusher }) {
 
   return (
     <React.Fragment>
+      <div className="bg-rose-200"></div>
+      <div className="bg-red-200"></div>
+      <div className="bg-green-200"></div>
+      <div className="bg-purple-200"></div>
+
       <div className="flex overflow-hidden">
         <div className="flex-col ">
           <Navbar />
@@ -247,6 +254,7 @@ export default function ProjectBoard({ pusher }) {
                           key={column.id}
                           column={column}
                           index={index}
+                          colColor={colColors[i]}
                         />
                       </div>
                     ))}
