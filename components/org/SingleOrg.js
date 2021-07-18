@@ -17,6 +17,7 @@ import { injectStyle } from 'react-toastify/dist/inject-style'
 export default function Org() {
   const org = useSelector(state => state.org) || {}
   const dispatch = useDispatch()
+  const [session, loading] = useSession()
   const router = useRouter()
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
@@ -25,6 +26,8 @@ export default function Org() {
   const [showInvite, setShowInvite] = useState(false)
   const [searchEmail, setSearchEmail] = useState('')
 
+  const users = org.users || []
+
   useEffect(() => {
     if (id) {
       ;(async () => {
@@ -32,6 +35,11 @@ export default function Org() {
       })()
     }
   }, [dispatch, id])
+
+  const sessionUser = users.filter(user => user.userId === +session?.user.sub)
+  const isCreator = sessionUser.length > 0 ? sessionUser[0].isCreator : false
+
+  console.log('🌈 ', sessionUser, isCreator)
 
   const addProject = e => {
     e.preventDefault()
@@ -47,6 +55,7 @@ export default function Org() {
   const removeUser = userId => {
     const body = { userId: userId, orgId: id }
     dispatch(fetchRemoveUserOrg(body))
+    router.push('/orgs')
   }
 
   const notify = () => {
@@ -85,12 +94,21 @@ export default function Org() {
       <div className="flex justify-between">
         <span className="dark:text-gray-400">Created on {createdDate}</span>
 
-        <button
-          className=" text-red-600 dark:text-red-300 text-sm"
-          onClick={deleteOrg}
-        >
-          Delete Organization
-        </button>
+        {isCreator ? (
+          <button
+            className=" text-red-600 dark:text-red-300 text-sm"
+            onClick={deleteOrg}
+          >
+            Delete Organization
+          </button>
+        ) : (
+          <button
+            className=" text-red-600 dark:text-red-300 text-sm"
+            onClick={() => removeUser(+session?.user.sub)}
+          >
+            Leave Organization
+          </button>
+        )}
       </div>
 
       <div className="flex mt-12">
@@ -136,12 +154,14 @@ export default function Org() {
                   - {user.user.name}
                 </span>
 
-                <button
-                  className="text-red-600 dark:text-red-300 pl-2 text-sm"
-                  onClick={() => removeUser(user.userId)}
-                >
-                  {'(remove)'}
-                </button>
+                {isCreator ? (
+                  <button
+                    className="text-red-600 dark:text-red-300 pl-2 text-sm"
+                    onClick={() => removeUser(user.userId)}
+                  >
+                    {'(remove)'}
+                  </button>
+                ) : null}
               </div>
             ))}
           </div>

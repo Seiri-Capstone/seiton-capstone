@@ -33,6 +33,16 @@ export default async function handler(req, res) {
           })
 
           res.status(200).json(deletedUser)
+        } else if (userId === +session.user.sub) {
+          const deletedUserOrg = await prisma.userOrg.deleteMany({
+            where: {
+              orgId: id,
+              userId: userId
+            }
+          })
+
+          console.log(deletedUser)
+          res.status(200).json(deletedUser)
         } else {
           res.status(403).json("you aren't authorized to make this request")
         }

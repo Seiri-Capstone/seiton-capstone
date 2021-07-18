@@ -40,6 +40,8 @@ export default function MyInvites() {
     setInviteResponded(true)
   }
 
+  console.log('invitations', invitations)
+
   if (isLoading) {
     return <h1>Loading...</h1>
   }
