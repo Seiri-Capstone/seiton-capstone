@@ -5,7 +5,7 @@ import DeleteTaskModal from './DeleteTaskModal'
 import AssignModal from './AssignModal'
 import Transition from './SideBarTransition'
 
-export default function TaskDropdownMenu({ task }) {
+export default function TaskDropdownMenu({ task, taskEdit }) {
   const [isActive, setIsActive] = useState(false)
   // const { isShowing, toggle } = useModal()
   const [isClosed, setClosed] = useState(false)
@@ -100,6 +100,7 @@ export default function TaskDropdownMenu({ task }) {
         </ul>
       </div>
       <EditTaskModal
+        taskEdit={taskEdit}
         task={task}
         show={show}
         toggleEdit={toggleEdit}

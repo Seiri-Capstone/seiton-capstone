@@ -10,6 +10,7 @@ import x from '../../public/assets/xIcon.svg'
 
 export default function MyOrgs() {
   const orgs = useSelector(state => state.orgs) || []
+  const org = useSelector(state => state.org)
   const dispatch = useDispatch()
   // const router = useRouter()
   const [show, setShow] = useState(false)
@@ -18,7 +19,7 @@ export default function MyOrgs() {
   console.log('orgs', orgs)
   useEffect(() => {
     dispatch(fetchOrgs())
-  }, [dispatch])
+  }, [dispatch, org])
 
   const deleteOrg = e => {
     e.preventDefault()
@@ -53,7 +54,7 @@ export default function MyOrgs() {
 
       <div className="h-4/5 overflow-y-auto">
         {orgs?.map((org, i) => (
-          <>
+          <div key={org.id}>
             <DeleteOrgModal
               deleteShowing={deleteShowing}
               onClose={() => setDeleteShowing(false)}
@@ -89,7 +90,7 @@ export default function MyOrgs() {
                       <p className="text-base dark:text-gray-300 tracking-wide ml-4">
                         {org.projects && org.projects.length
                           ? org.projects.map(project => (
-                              <>
+                              <div key={project.id}>
                                 – {project.name}{' '}
                                 <span className="text-sm text-gray-600 dark:text-gray-400 pl-2">
                                   {' '}
@@ -100,7 +101,7 @@ export default function MyOrgs() {
                                   )
                                 </span>
                                 <br />
-                              </>
+                              </div>
                             ))
                           : 'Currently there are no projects under this organization.'}
                       </p>
@@ -110,7 +111,7 @@ export default function MyOrgs() {
               </a>
             </Link>
             <br />
-          </>
+          </div>
         ))}
       </div>
     </>

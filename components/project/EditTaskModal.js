@@ -9,16 +9,18 @@ export default function EditTaskModal({
   show,
   toggleEdit,
   onClose,
-  onKey
+  onKey,
+  taskEdit
 }) {
   const [taskBody, setTaskBody] = useState(task.body)
   const [taskTitle, setTaskTitle] = useState(task.title)
   const [isEditActive, setEditActive] = useState(false)
 
   const dispatch = useDispatch()
-  const handleSave = () => {
+  const handleSave = async () => {
     setEditActive(false)
-    dispatch(fetchEditTask({ ...task, title: taskTitle, body: taskBody }))
+    await dispatch(fetchEditTask({ ...task, title: taskTitle, body: taskBody }))
+    await taskEdit(true)
   }
 
   if (!show) return null

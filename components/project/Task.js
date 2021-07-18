@@ -5,13 +5,13 @@ import marked from 'marked'
 import Modal from './DeleteTaskModal'
 import TaskDropdownMenu from './TaskDropdownMenu'
 import Comments from './Comments'
-import { useSession } from 'next-auth/client'
+import { setOptions, useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
 import { assignTask, pinTask } from '../../store/projectSlice'
 import { colors } from '../../styles/colors'
 import { comment } from 'postcss'
 
-export default function Task({ task, index }) {
+export default function Task({ task, index, setPin, taskEdit }) {
   // const { isShowing, toggle } = useModal()
   const [taskShow, setTaskShow] = useState(false)
   const [showComments, setShowComments] = useState(false)
@@ -78,8 +78,10 @@ export default function Task({ task, index }) {
                 // taskShow={taskShow}
                 // setTaskShow={setTaskShow}
                 task={task}
+                taskEdit={taskEdit}
               />
               <EditTaskModal
+                taskEdit={taskEdit}
                 task={task}
                 show={showEditTask}
                 toggleEdit={toggleEdit}
@@ -113,7 +115,10 @@ export default function Task({ task, index }) {
                 Comments {task.comments ? task.comments.length : null}
               </button>
               <button
-                onClick={() => dispatch(pinTask(task))}
+                onClick={async () => {
+                  await dispatch(pinTask(task))
+                  await setPin(true)
+                }}
                 className="task-btn"
               >
                 {task.pinned ? 'Unpin' : 'Pin'}

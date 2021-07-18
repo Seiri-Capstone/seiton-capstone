@@ -19,6 +19,7 @@ import Pusher from 'pusher-js'
 import Members from './Members'
 import Link from 'next/link'
 import Navbar from '../nav/Navbar'
+import { colors } from '../../styles/colors'
 
 export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
@@ -33,10 +34,12 @@ export default function ProjectBoard({ pusher }) {
   const [isColDeleted, setIsColDeleted] = useState(false)
   const [isColAdded, setIsColAdded] = useState(false)
   const [isTaskAdded, setisTaskAdded] = useState(false)
+  const [isPinned, setIsPinned] = useState(false)
+  const [isTaskEdited, setIsTaskEdited] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
-  const [colColors, setColColors] = useState(['rose', 'red', 'green', 'purple'])
+  const [colColors, setColColors] = useState(colors)
   const [i, setI] = useState(0)
 
   console.log('project in projectboard', project)
@@ -50,7 +53,9 @@ export default function ProjectBoard({ pusher }) {
       if (isColNameEdited) setIsColNameEdited(false)
       if (isColDeleted) setIsColDeleted(false)
       if (isTaskAdded) setisTaskAdded(false)
-      axios.post('/api/pusher/reorder', { project }) // make this run once component mounts
+      if (isPinned) setIsPinned(false)
+      if (isTaskEdited) setIsPinned(false)
+      axios.post('/api/pusher/reorder', { id, project }) // make this run once component mounts
     }
   }, [
     isColumnReordered,
@@ -59,26 +64,24 @@ export default function ProjectBoard({ pusher }) {
     isColNameEdited,
     isColDeleted,
     isColAdded,
-    isTaskAdded
+    isTaskAdded,
+    isPinned,
+    isTaskEdited
   ])
-  // const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
-  //   cluster: 'us2', // based on my website
-  //   authEndpoint: `/api/pusher/auth`, // make sure to change in production
-  //   auth: { params: { username: 'helen' } }
-  // })
 
   useEffect(() => {
     if (id) {
       ;(async () => {
         dispatch(fetchProject(id))
       })()
+      const channel = pusher.subscribe(`presence-channel-${id}`)
+      channel.bind('reorder', async project => {
+        dispatch(reorderTaskCol(project))
+      })
+      console.log(`🟢  bound to presence-channel-${id}`)
     }
-    const channel = pusher.subscribe('presence-channel')
-    channel.bind('reorder', async project => {
-      dispatch(reorderTaskCol(project))
-    })
-    setMounted(true) // if this runs <=
-    return () => pusher.unsubscribe('presence-channel')
+    setMounted(true) // Mount for the first time
+    return () => pusher.unsubscribe(`presence-channel-${id}`)
   }, [dispatch, id])
 
   // useEffect(() => {
@@ -247,6 +250,7 @@ export default function ProjectBoard({ pusher }) {
                   {project.columns &&
                     project.columns.map((column, index) => (
                       <div key={column.id}>
+                        {/* onClick={() => setI(i + 1)}> */}
                         <Column
                           setCol={setIsColNameEdited}
                           delCol={setIsColDeleted}
@@ -255,6 +259,8 @@ export default function ProjectBoard({ pusher }) {
                           column={column}
                           index={index}
                           colColor={colColors[i]}
+                          setPin={setIsPinned}
+                          taskEdit={setIsTaskEdited}
                         />
                       </div>
                     ))}

@@ -6,6 +6,7 @@ import Logo from '../../components/Logo'
 
 export default function MyInvites() {
   const invitations = useSelector(state => state.invitations)
+  const invitation = useSelector(state => state.invitation)
   const dispatch = useDispatch()
   const [isLoading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
@@ -31,18 +32,21 @@ export default function MyInvites() {
   useEffect(() => {
     dispatch(fetchInvitations())
     setLoading(false)
-  }, [dispatch, invitations])
+  }, [dispatch, invitation])
 
   const handleResponse = (invite, value) => {
     const thunkArg = { invite, value }
-    console.log('invite', invite)
+    // console.log('invite', invite)
     dispatch(fetchUpdateInvite(thunkArg))
     setInviteResponded(true)
   }
 
+  console.log('invitations', invitations)
+
   if (isLoading) {
     return <h1>Loading...</h1>
   }
+  console.log('invitations', invitations)
 
   return (
     <React.Fragment>
@@ -53,7 +57,7 @@ export default function MyInvites() {
 
       <div>
         <section className="ml-6">
-          <h1 className="text-xl">Pending Invites</h1>
+          <h3 id="tenor">Pending Invites</h3>
           {pendingReceivedInvites.map(invite => (
             <div className="my-3" key={invite.id}>
               {invite.project ? (
@@ -108,19 +112,18 @@ export default function MyInvites() {
         </section>
 
         <section className="ml-6">
-          <h1 className="text-xl">History</h1>
+          <h3 id="tenor">History</h3>
           {historyReceivedInvites.map(invite => (
             <div className="my-3" key={invite.id}>
               {invite.project ? (
                 <p>
-                  You were invited by {invite.sentFrom.name} to join project
+                  You were invited by {invite.sentFrom.name} to join project{' '}
                   {invite.project.name}
                 </p>
               ) : (
                 <p>
                   You were invited by {invite.sentFrom.name} to join
-                  organization
-                  {invite.org.name}
+                  organization {invite.org.name}
                 </p>
               )}
               <p>{invite.status}</p>
