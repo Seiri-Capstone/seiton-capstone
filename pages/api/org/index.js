@@ -85,7 +85,8 @@ export default async function handler(req, res) {
               connect: {
                 id: newOrg.id
               }
-            }
+            },
+            isCreator: true
           }
         })
 

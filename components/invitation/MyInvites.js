@@ -6,6 +6,7 @@ import Logo from '../../components/Logo'
 
 export default function MyInvites() {
   const invitations = useSelector(state => state.invitations)
+  const invitation = useSelector(state => state.invitation)
   const dispatch = useDispatch()
   const [isLoading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
@@ -31,14 +32,16 @@ export default function MyInvites() {
   useEffect(() => {
     dispatch(fetchInvitations())
     setLoading(false)
-  }, [dispatch, invitations])
+  }, [dispatch, invitation])
 
   const handleResponse = (invite, value) => {
     const thunkArg = { invite, value }
-    console.log('invite', invite)
+    // console.log('invite', invite)
     dispatch(fetchUpdateInvite(thunkArg))
     setInviteResponded(true)
   }
+
+  console.log('invitations', invitations)
 
   if (isLoading) {
     return <h1>Loading...</h1>
