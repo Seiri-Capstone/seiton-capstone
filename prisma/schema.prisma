@@ -53,21 +53,22 @@ model VerificationRequest {
 model Project {
   id         Int           @id @default(autoincrement())
   name       String
-  orgId      Int
-  org        Org           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId      Int?
+  org        Org?           @relation(fields: [orgId], references: [id], onDelete: Cascade)
   columns    Column[]
   Invitation Invitation[]
   users      UserProject[]
 }
 
 model UserProject {
+  id         Int          @id @default(autoincrement())
   userId    Int
-  projectId Int
+  projectId Int?
   isAdmin   Boolean
-  project   Project @relation(fields: [projectId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([userId, projectId])
+ @@map("user_project")
 }
 
 model Org {
@@ -79,13 +80,14 @@ model Org {
 }
 
 model UserOrg {
+  id   Int          @id @default(autoincrement())
   userId    Int
-  orgId     Int
+  orgId     Int?
   isCreator Boolean @default(false)
-  org       Org     @relation(fields: [orgId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  org       Org?     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([userId, orgId])
+  @@map("user_org")
 }
 
 model Column {

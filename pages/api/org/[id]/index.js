@@ -61,19 +61,11 @@ export default async function handler(req, res) {
       try {
         const id = Number(req.query.id)
 
-        const deletedUserOrg = await prisma.userOrg.deleteMany({
-          where: {
-            orgId: id
-          }
-        })
-
         const deletedOrg = await prisma.org.delete({
           where: {
             id: id
           }
         })
-
-        console.log(deletedOrg, 'delete')
 
         res.status(200).json(deletedOrg)
       } catch (error) {
