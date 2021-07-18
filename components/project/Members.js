@@ -8,6 +8,8 @@ import {
 } from '../../store/projectSlice'
 import { useSession } from 'next-auth/client'
 import { fetchCreateInvite } from '../../store/invitationsSlice'
+import { toast } from 'react-toastify'
+import { injectStyle } from 'react-toastify/dist/inject-style'
 
 export default function Members() {
   const project = useSelector(state => state.project)
@@ -57,6 +59,13 @@ export default function Members() {
     }
     dispatch(fetchCreateInvite(thunkArg))
     setSearchEmail('')
+    notify()
+  }
+
+  const notify = () => {
+    typeof window !== 'undefined' ? injectStyle() : null
+    toast.configure()
+    toast('Invitation sent !')
   }
 
   return (
@@ -74,6 +83,7 @@ export default function Members() {
           <input
             className="w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none rows=4 mb-3 focus:outline-none"
             onChange={e => setSearchEmail(e.target.value)}
+            value={searchEmail}
           ></input>
 
           <button
