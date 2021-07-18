@@ -52,7 +52,7 @@ const UserPage = () => {
       </h4>
       <span className="my-8 dark:text-gray-400">Joined on {joinedDate}</span>
 
-      <div className="my-2 border rounded-lg border-navyblue p-12 flex justify-evenly w-full">
+      <div className="my-2 border rounded-lg border-navyblue dark:border-gray-400 p-12 flex justify-evenly w-full">
         <div className="mr-2 w-1/4">
           <img src={`${user.image}`} alt="profileImg" className="roundImg" />
         </div>
