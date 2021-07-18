@@ -14,7 +14,6 @@ export default async function handler(req, res) {
       try {
         const { invite, value } = req.body
         //invite status change to accept or decline
-
         const updatedInvite = await prisma.invitation.update({
           where: {
             id: Number(invite.id)

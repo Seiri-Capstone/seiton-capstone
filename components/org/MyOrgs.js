@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchOrgs, fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
 import CreateOrgModal from './CreateOrgModal'
+import DeleteOrgModal from './DeleteOrgModal'
 import Logo from '../../components/Logo'
 import Image from 'next/image'
 import x from '../../public/assets/xIcon.svg'
@@ -12,16 +13,16 @@ export default function MyOrgs() {
   const dispatch = useDispatch()
   // const router = useRouter()
   const [show, setShow] = useState(false)
+  const [deleteShowing, setDeleteShowing] = useState(false)
 
   console.log('orgs', orgs)
   useEffect(() => {
     dispatch(fetchOrgs())
   }, [dispatch])
 
-  const deleteOrg = (e, id) => {
-    // e.stopPropagation()
+  const deleteOrg = e => {
     e.preventDefault()
-    dispatch(fetchDeletedOrg(id))
+    setDeleteShowing(true)
   }
 
   return (
@@ -53,6 +54,11 @@ export default function MyOrgs() {
       <div className="h-4/5 overflow-y-auto">
         {orgs?.map((org, i) => (
           <>
+            <DeleteOrgModal
+              deleteShowing={deleteShowing}
+              onClose={() => setDeleteShowing(false)}
+              orgId={org.id}
+            />
             <Link href={`/orgs/${org.id}`} key={org.id}>
               <a className="hover:text-black">
                 <div className="w-full lg:max-w-full lg:flex">

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchInvitations } from '../../store/invitationsSlice'
 import { fetchUpdateInvite } from '../../store/invitationSlice'
-import SendInviteModal from './SendInviteModal'
 import Logo from '../../components/Logo'
 
 export default function MyInvites() {
@@ -52,13 +51,6 @@ export default function MyInvites() {
       <br />
       <br />
 
-      <button
-        type="submit"
-        className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
-        onClick={() => setShow(true)}
-      >
-        Send Invite!
-      </button>
       <div>
         <section className="ml-6">
           <h1 className="text-xl">Pending Invites</h1>
@@ -72,7 +64,7 @@ export default function MyInvites() {
               ) : (
                 <p>
                   You received an invitation from {invite.sentFrom.name} to join
-                  project {invite.org.name}
+                  organization {invite.org.name}
                 </p>
               )}
               <p>{invite.status}</p>
@@ -155,7 +147,6 @@ export default function MyInvites() {
           ))}
         </section>
       </div>
-      <SendInviteModal show={show} onClose={() => setShow(false)} />
     </React.Fragment>
   )
 }

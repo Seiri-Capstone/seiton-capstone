@@ -36,29 +36,6 @@ export default async function handler(req, res) {
           }
         })
 
-        // const myuser = await prisma.user.findUnique({
-        //   where: { email: session.user.email },
-        //   include: {
-        //     orgs: {
-        //       include: {
-        //         org: {
-        //           include: {
-        //             projects: {
-        //               include: {
-        //                 users: {
-        //                   where: {
-        //                     userId: sessionUser.id
-        //                   }
-        //                 }
-        //               }
-        //             }
-        //           }
-        //         }
-        //       }
-        //     }
-        //   }
-        // })
-
         const orgs = user.orgs.map(org => {
           return org.org
         })

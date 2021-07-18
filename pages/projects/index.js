@@ -11,6 +11,7 @@ export default function Project() {
       <div className="flex-col ml-24 mt-12 w-8/12">
         <MyProjects />
       </div>
+      <span id="projectDeleteModal"></span>
     </div>
   )
 }
