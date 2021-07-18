@@ -33,6 +33,8 @@ export default function ProjectBoard({ pusher }) {
   const [isColDeleted, setIsColDeleted] = useState(false)
   const [isColAdded, setIsColAdded] = useState(false)
   const [isTaskAdded, setisTaskAdded] = useState(false)
+  const [isPinned, setIsPinned] = useState(false)
+  const [isTaskEdited, setIsTaskEdited] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
@@ -50,6 +52,8 @@ export default function ProjectBoard({ pusher }) {
       if (isColNameEdited) setIsColNameEdited(false)
       if (isColDeleted) setIsColDeleted(false)
       if (isTaskAdded) setisTaskAdded(false)
+      if (isPinned) setIsPinned(false)
+      if (isTaskEdited) setIsPinned(false)
       axios.post('/api/pusher/reorder', { project }) // make this run once component mounts
     }
   }, [
@@ -59,7 +63,9 @@ export default function ProjectBoard({ pusher }) {
     isColNameEdited,
     isColDeleted,
     isColAdded,
-    isTaskAdded
+    isTaskAdded,
+    isPinned,
+    isTaskEdited
   ])
   // const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
   //   cluster: 'us2', // based on my website
@@ -255,6 +261,8 @@ export default function ProjectBoard({ pusher }) {
                           column={column}
                           index={index}
                           colColor={colColors[i]}
+                          setPin={setIsPinned}
+                          taskEdit={setIsTaskEdited}
                         />
                       </div>
                     ))}

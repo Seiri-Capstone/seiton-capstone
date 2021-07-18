@@ -10,7 +10,7 @@ import DeleteColumnModal from '../../components/project/DeleteColumnModal'
 import Circle from '../styled/circle'
 
 export default function Column(props) {
-  const { setCol, delCol, addTask, column, colColor } = props
+  const { setCol, delCol, addTask, column, colColor, setPin, taskEdit } = props
   const dispatch = useDispatch()
 
   const [columnName, setColumnName] = useState(column.title)
@@ -145,7 +145,13 @@ export default function Column(props) {
                 {column.tasks &&
                   column.tasks.map((task, index) => (
                     <>
-                      <Task task={task} key={task.id} index={index} />
+                      <Task
+                        setPin={setPin}
+                        task={task}
+                        key={task.id}
+                        index={index}
+                        taskEdit={taskEdit}
+                      />
                     </>
                   ))}
                 {provided.placeholder}
