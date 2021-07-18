@@ -25,7 +25,6 @@ export default function Org() {
   const [showProj, setShowProj] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
   const [searchEmail, setSearchEmail] = useState('')
-  const [session] = useSession()
 
   const users = org.users || []
 
@@ -155,7 +154,6 @@ export default function Org() {
                   - {user.user.name}
                 </span>
                 {isCreator ? (
-
                   <button
                     className="text-red-600 dark:text-red-300 pl-2 text-sm"
                     onClick={() => removeUser(user.userId)}
@@ -163,7 +161,6 @@ export default function Org() {
                     {'(remove)'}
                   </button>
                 ) : null}
-
               </div>
             ))}
           </div>
