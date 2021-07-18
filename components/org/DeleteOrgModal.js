@@ -1,37 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { useDispatch } from 'react-redux'
-import { deleteColumn } from '../../store/projectSlice'
-import Transition from './SideBarTransition'
+import { fetchDeletedOrg } from '../../store/orgsSlice'
 
-// Reusable modal, copy to new component and modify to your needs
-// working example on how to use it, look at Task model, only 4 lines of code
-function DeleteColumnModal({ isShowing, onClose, colId, delCol }) {
+function DeleteOrgModal({ deleteShowing, onClose, orgId }) {
   const dispatch = useDispatch()
 
-  const submitHandle = async event => {
-    const cIdx = +event.target.value
-    console.log('handle delete col id', cIdx)
-    await dispatch(deleteColumn(cIdx))
+  const deleteOrg = () => {
+    // e.preventDefault()
+    dispatch(fetchDeletedOrg(orgId))
     onClose()
-    delCol(true) // DELCOL TRUE ==>> pusher does NOT WORK!
   }
 
-  return isShowing
+  return deleteShowing
     ? ReactDOM.createPortal(
         <div className="justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-          <Transition
-            appear={true}
-            show={isShowing}
-            enter="transition-opacity duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-75"
-            leave="transition-opacity duration-300"
-            leaveFrom="opacity-75"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black opacity-0" />
-          </Transition>
           <div className="relative w-100 h-40 my-6 mx-auto ">
             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
               <button
@@ -50,14 +33,14 @@ function DeleteColumnModal({ isShowing, onClose, colId, delCol }) {
               </button>
               <div className="flex-col items-start p-5 border-b border-solid rounded-t">
                 <h6 className="text-md font-semibold text-center">
-                  Are you sure you want to delete the column?
+                  Are you sure you want to delete this organization? All your
+                  projects will also be deleted
                 </h6>
                 <div className="flex items-center justify-center p-6 border-t border-solid  rounded-b">
                   <button
                     className="mr-2 border px-2 rounded text-black-800 hover:text-red-500 border-red-500 focus:outline-none"
                     type="button"
-                    value={colId}
-                    onClick={submitHandle}
+                    onClick={deleteOrg}
                   >
                     Delete
                   </button>
@@ -73,9 +56,9 @@ function DeleteColumnModal({ isShowing, onClose, colId, delCol }) {
             </div>
           </div>
         </div>,
-        document.getElementById('columnDeleteModal')
+        document.getElementById('orgDeleteModal')
       )
     : null
 }
 
-export default DeleteColumnModal
+export default DeleteOrgModal

@@ -10,6 +10,7 @@ export default function Org() {
       <div className="flex-col ml-24 mt-12 w-8/12">
         <MyOrgs />
         <span id="orgModal"></span>
+        <span id="orgDeleteModal"></span>
       </div>
     </div>
   )
