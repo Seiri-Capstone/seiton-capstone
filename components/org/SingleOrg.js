@@ -11,6 +11,8 @@ import { fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
 import Logo from '../../components/Logo'
 import { fetchCreateInvite } from '../../store/invitationsSlice'
+import { toast } from 'react-toastify'
+import { injectStyle } from 'react-toastify/dist/inject-style'
 
 export default function Org() {
   const org = useSelector(state => state.org) || {}
@@ -19,7 +21,6 @@ export default function Org() {
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
   const [name, setName] = useState('')
-  // const [show, setShow] = useState(false)
   const [showProj, setShowProj] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
   const [searchEmail, setSearchEmail] = useState('')
@@ -48,6 +49,13 @@ export default function Org() {
     dispatch(fetchRemoveUserOrg(body))
   }
 
+  injectStyle()
+  toast.configure()
+
+  const notify = () => {
+    toast('Invitation sent !')
+  }
+
   const handleSend = e => {
     e.preventDefault()
     const thunkArg = {
@@ -58,6 +66,7 @@ export default function Org() {
     }
     dispatch(fetchCreateInvite(thunkArg))
     setShowInvite(false)
+    notify()
   }
 
   //workaround to solve the empty query on initial render
