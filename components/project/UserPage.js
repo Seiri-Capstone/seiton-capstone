@@ -46,11 +46,18 @@ const UserPage = () => {
   return (
     <React.Fragment>
       <Logo />
-      <h2 id="tenor">User Profile</h2>
-      <h4 className="my-4 mt-12">
-        Hi {user.name || 'friend'}! <br />
-      </h4>
-      <span className="my-8 dark:text-gray-400">Joined on {joinedDate}</span>
+      <h2 id="tenor" className="leading-loose">
+        User Profile
+      </h2>
+      <hr className="border-1 border-skyblue dark:border-gray-500 pb-2"></hr>
+      <div className="flex justify-between items-center mb-12">
+        <span className="text-base tracking-wide">
+          Welcome, {user.name || 'friend'}! <br />
+        </span>
+        <span className="text-base tracking-wide dark:text-gray-400">
+          Joined on {joinedDate}
+        </span>
+      </div>
 
       <div className="my-2 border rounded-lg border-navyblue dark:border-gray-400 p-12 flex justify-evenly w-full">
         <div className="mr-2 w-1/4">

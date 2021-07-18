@@ -5,6 +5,7 @@
 /* Can define base styles here for quick-n-dirty */
 * {
   font-family: 'Lato';
+  letter-spacing: 0.025em;
 }
 
 #logo {
