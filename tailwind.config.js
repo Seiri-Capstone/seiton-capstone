@@ -31,9 +31,7 @@ module.exports = {
         medblue: '#1f487e',
         skyblue: '#376996',
         navyblue: '#15325f',
-        darkteal: '#1a81a5',
-        peach: '#efe1c6',
-        lightorange: '#efc085'
+        mutedblue: '#a5c0d1'
       },
       typography: theme => ({
         DEFAULT: {

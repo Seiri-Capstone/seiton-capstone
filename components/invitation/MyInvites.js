@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchInvitations } from '../../store/invitationsSlice'
 import { fetchUpdateInvite } from '../../store/invitationSlice'
 import SendInviteModal from './SendInviteModal'
+import Logo from '../../components/Logo'
 
 export default function MyInvites() {
   const invitations = useSelector(state => state.invitations)
@@ -46,6 +47,11 @@ export default function MyInvites() {
 
   return (
     <React.Fragment>
+      <Logo />
+      <h2 id="tenor">Invitations</h2>
+      <br />
+      <br />
+
       <button
         type="submit"
         className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"

@@ -53,8 +53,13 @@ model VerificationRequest {
 model Project {
   id         Int           @id @default(autoincrement())
   name       String
+
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @default(now()) @map("updated_at")
+
   orgId      Int?
   org        Org?           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
   columns    Column[]
   Invitation Invitation[]
   users      UserProject[]
@@ -74,6 +79,8 @@ model UserProject {
 model Org {
   id         Int          @id @default(autoincrement())
   name       String?
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @default(now()) @map("updated_at")
   projects   Project[]
   users      UserOrg[]
   Invitation Invitation[]
@@ -101,6 +108,7 @@ model Column {
 }
 
 model Task {
+
   id       Int       @id @default(autoincrement())
   title    String
   body     String
@@ -110,6 +118,9 @@ model Task {
   column   Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
   comments Comment[]
   user     User[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+
 }
 
 model Comment {
