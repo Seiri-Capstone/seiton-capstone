@@ -66,6 +66,7 @@ export default function Org() {
     dispatch(fetchCreateInvite(thunkArg))
     setShowInvite(false)
     notify()
+    setSearchEmail('')
   }
 
   //workaround to solve the empty query on initial render
