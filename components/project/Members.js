@@ -72,7 +72,7 @@ export default function Members() {
           <h2>send invite to: </h2>
           <label>Search by email</label>
           <input
-            className="w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none rows=4 mb-3 focus:outline-none"
+            className="w-full p-3 py-2 text-gray-700 border rounded-lg rows=4 mb-3 focus:outline-none"
             onChange={e => setSearchEmail(e.target.value)}
           ></input>
 
