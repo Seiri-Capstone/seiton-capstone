@@ -49,10 +49,9 @@ export default function Org() {
     dispatch(fetchRemoveUserOrg(body))
   }
 
-  injectStyle()
-  toast.configure()
-
   const notify = () => {
+    typeof window !== 'undefined' ? injectStyle() : null
+    toast.configure()
     toast('Invitation sent !')
   }
 
