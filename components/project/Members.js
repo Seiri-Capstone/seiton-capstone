@@ -70,6 +70,7 @@ export default function Members() {
 
         <section>
           <h2>send invite to: </h2>
+          <button onClick={() => router.back()}>Go Back</button>
           <label>Search by email</label>
           <input
             className="w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none rows=4 mb-3 focus:outline-none"
