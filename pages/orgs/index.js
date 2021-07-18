@@ -1,7 +1,6 @@
 import React from 'react'
 import MyOrgs from '../../components/org/MyOrgs'
 import Navbar from '../../components/nav/Navbar'
-import Logo from '../../components/Logo'
 
 export default function Org() {
   return (

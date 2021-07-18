@@ -28,8 +28,10 @@ export default function MyProjects() {
     <>
       <Logo />
       <h2 id="tenor">My Projects</h2>
-
-      <div className="mt-12 text-black max-w-prose">
+      <h4 className="mt-4 text-base">
+        A list of all your projects across all organizations.
+      </h4>
+      <div className="mt-8 text-black max-w-prose">
         {projects.length === 0 && (
           <>
             <h4 className="leading-loose">
