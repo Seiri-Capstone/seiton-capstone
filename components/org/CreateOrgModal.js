@@ -17,10 +17,10 @@ export default function CreateOrgModal({ show, onClose }) {
 
   if (!show) return null
   return ReactDOM.createPortal(
-    <div className="justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+    <div className="justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none top-20">
       <div className="relative w-2/5 h-2/3 my-6 mx-auto ">
         {/*content*/}
-        <div className="p-8 border-0 rounded-lg shadow-lg relative w-full bg-white dark:bg-gray-900 outline-none focus:outline-none flex flex-col">
+        <div className="p-8 border-0 rounded-lg shadow-2xl relative w-full bg-white dark:bg-gray-900 outline-none focus:outline-none flex flex-col">
           <div className="flex justify-between">
             <h3 id="tenor">Add New Organization</h3>
             <Image
@@ -43,7 +43,7 @@ export default function CreateOrgModal({ show, onClose }) {
             </div>
             <div className="w-1/3 ">
               <button
-                className="bg-transparent text-gray-900 dark:text-gray-300 border border-skyblue rounded-lg hover:bg-skyblue hover:text-white p-4 py-1 ml-4 text-base shadow-sm"
+                className="bg-skyblue dark:bg-gray-600 text-white hover:bg-navyblue dark:text-gray-300 rounded-lg dark:hover:bg-skyblue p-4 py-1 ml-4 text-base shadow-sm"
                 type="button"
                 onClick={handleSave}
               >

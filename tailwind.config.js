@@ -30,7 +30,8 @@ module.exports = {
         darkblue: '#2c4482',
         medblue: '#1f487e',
         skyblue: '#376996',
-        navyblue: '#15325f'
+        navyblue: '#15325f',
+        mutedblue: '#a5c0d1'
       },
       typography: theme => ({
         DEFAULT: {

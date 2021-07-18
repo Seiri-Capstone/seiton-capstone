@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/client'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import {
@@ -10,6 +11,7 @@ import { fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
 import OrgInvite from './OrgInvite'
 import Logo from '../../components/Logo'
+import { fetchCreateInvite } from '../../store/invitationsSlice'
 
 export default function Org() {
   const org = useSelector(state => state.org) || {}
@@ -20,6 +22,8 @@ export default function Org() {
   const [name, setName] = useState('')
   const [show, setShow] = useState(false)
   const [showProj, setShowProj] = useState(false)
+  const [showInvite, setShowInvite] = useState(false)
+  const [searchEmail, setSearchEmail] = useState('')
 
   useEffect(() => {
     if (id) {
@@ -43,6 +47,18 @@ export default function Org() {
   const removeUser = userId => {
     const body = { userId: userId, orgId: id }
     dispatch(fetchRemoveUserOrg(body))
+  }
+
+  const handleSend = () => {
+    e.preventDefault()
+    const thunkArg = {
+      receivedBy: null,
+      projectId: null,
+      orgId: org.id,
+      searchEmail: searchEmail
+    }
+    dispatch(fetchCreateInvite(thunkArg))
+    setShowInvite(false)
   }
 
   //workaround to solve the empty query on initial render
@@ -70,7 +86,7 @@ export default function Org() {
       </div>
 
       <div className="flex mt-12">
-        <div className="rounded-sm bg-transparent border border-skyblue p-8 w-1/3 mr-8">
+        <div className="rounded-lg bg-transparent border border-skyblue dark:border-gray-500 p-8 w-1/3 mr-8">
           <div>
             <h4 id="tenor" className="pb-2">
               Organization Members
@@ -78,11 +94,31 @@ export default function Org() {
             <hr className=" border-skyblue dark:border-gray-500 pt-2"></hr>
             <button
               type="submit"
-              className="text-sm pb-6"
-              onClick={() => setShow(true)}
+              className="text-sm pb-4"
+              onClick={() => setShowInvite(!showInvite)}
             >
               + Add New Member
             </button>
+
+            {showInvite && (
+              <div>
+                <form className="max-w-full mx-auto rounded-lg flex flex-col">
+                  <input
+                    className="w-full p-3 py-1 text-gray-700 dark:text-gray-300 border rounded-lg mb-3 shadow-sm"
+                    placeholder="Search by Email"
+                    onChange={e => setSearchEmail(e.target.value)}
+                  ></input>
+                  <button
+                    type="submit"
+                    className="bg-skyblue dark:bg-gray-600 text-white hover:bg-navyblue dark:text-gray-300 rounded-lg dark:hover:bg-skyblue p-4 py-1 mb-4 text-base shadow-sm"
+                    onClick={handleSend}
+                  >
+                    Send Invite
+                  </button>
+                </form>
+              </div>
+            )}
+
             {org.users.map(user => (
               <div key={user.userId} className="flex pl-4">
                 <span
@@ -102,7 +138,7 @@ export default function Org() {
             ))}
           </div>
         </div>
-        <div className="rounded-sm bg-transparent border border-skyblue p-8 w-2/3">
+        <div className="rounded-lg bg-white dark:bg-gray-700 p-8 w-2/3">
           <h4 id="tenor" className="pb-2">
             Current Projects
           </h4>
@@ -125,7 +161,7 @@ export default function Org() {
                 ></input>
                 <button
                   type="submit"
-                  className="bg-transparent text-gray-900 dark:text-gray-300 border border-skyblue rounded-lg hover:bg-skyblue hover:text-white p-4 py-1 ml-4 text-base shadow-sm"
+                  className="bg-skyblue dark:bg-gray-600 text-white hover:bg-navyblue dark:text-gray-300 rounded-lg dark:hover:bg-skyblue p-4 py-1 ml-4 text-base shadow-sm"
                   onClick={addProject}
                 >
                   Submit
@@ -145,7 +181,7 @@ export default function Org() {
               // const lastUpdated = String(new Date(org.createdAt)).substring(3, 15)
               <Link href={`/projects/${project.id}`} key={project.id}>
                 <a>
-                  <span className="capitalize tracking-wide leading-relaxed hover:text-skyblue">
+                  <span className="capitalize tracking-wide leading-relaxed hover:text-skyblue dark:hover:text-blue-300">
                     - {project.name}
                   </span>
                   <span className="text-gray-500 dark:text-gray-400 pl-2 text-sm italic">
@@ -160,8 +196,8 @@ export default function Org() {
         </div>
       </div>
 
-      <OrgInvite show={show} onClose={() => setShow(false)} org={org} />
-      <div id="orgInviteModal"></div>
+      {/* <OrgInvite show={show} onClose={() => setShow(false)} org={org} /> */}
+      {/* <div id="orgInviteModal"></div> */}
     </React.Fragment>
   )
 }
