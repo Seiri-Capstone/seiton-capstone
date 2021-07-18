@@ -81,7 +81,6 @@ export default function EditTaskModal({
                   <input
                     className="text-xl font-semibold text-gray-800 border border-gray-500"
                     onChange={e => {
-                      console.log('ON CHANGE', e.target.value)
                       setTaskTitle(e.target.value)
                     }}
                     value={taskTitle}

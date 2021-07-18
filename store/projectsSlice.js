@@ -31,7 +31,9 @@ export const projectsSlice = createSlice({
       return action.payload
     },
     [fetchDeletedProject.fulfilled]: (state, action) => {
-      return state.filter(project => project.id !== action.payload.id)
+      console.log('reducer', action.payload)
+
+      return state.filter(project => project.projectId !== action.payload.id)
     }
   }
 })
