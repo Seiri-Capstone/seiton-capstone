@@ -19,6 +19,7 @@ import Pusher from 'pusher-js'
 import Members from './Members'
 import Link from 'next/link'
 import Navbar from '../nav/Navbar'
+import { colors } from '../../styles/colors'
 
 export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
@@ -38,7 +39,7 @@ export default function ProjectBoard({ pusher }) {
   const [mounted, setMounted] = useState(false)
   const { query = {} } = router || {}
   const { id = 0 } = query || {}
-  const [colColors, setColColors] = useState(['rose', 'red', 'green', 'purple'])
+  const [colColors, setColColors] = useState(colors)
   const [i, setI] = useState(0)
 
   console.log('project in projectboard', project)
@@ -249,6 +250,7 @@ export default function ProjectBoard({ pusher }) {
                   {project.columns &&
                     project.columns.map((column, index) => (
                       <div key={column.id}>
+                        {/* onClick={() => setI(i + 1)}> */}
                         <Column
                           setCol={setIsColNameEdited}
                           delCol={setIsColDeleted}
