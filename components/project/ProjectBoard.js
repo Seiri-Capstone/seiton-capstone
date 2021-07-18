@@ -54,7 +54,7 @@ export default function ProjectBoard({ pusher }) {
       if (isTaskAdded) setisTaskAdded(false)
       if (isPinned) setIsPinned(false)
       if (isTaskEdited) setIsPinned(false)
-      axios.post('/api/pusher/reorder', { project }) // make this run once component mounts
+      axios.post('/api/pusher/reorder', { id, project }) // make this run once component mounts
     }
   }, [
     isColumnReordered,
@@ -67,24 +67,20 @@ export default function ProjectBoard({ pusher }) {
     isPinned,
     isTaskEdited
   ])
-  // const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
-  //   cluster: 'us2', // based on my website
-  //   authEndpoint: `/api/pusher/auth`, // make sure to change in production
-  //   auth: { params: { username: 'helen' } }
-  // })
 
   useEffect(() => {
     if (id) {
       ;(async () => {
         dispatch(fetchProject(id))
       })()
+      const channel = pusher.subscribe(`presence-channel-${id}`)
+      channel.bind('reorder', async project => {
+        dispatch(reorderTaskCol(project))
+      })
+      console.log(`🟢  bound to presence-channel-${id}`)
     }
-    const channel = pusher.subscribe('presence-channel')
-    channel.bind('reorder', async project => {
-      dispatch(reorderTaskCol(project))
-    })
-    setMounted(true) // if this runs <=
-    return () => pusher.unsubscribe('presence-channel')
+    setMounted(true) // Mount for the first time
+    return () => pusher.unsubscribe(`presence-channel-${id}`)
   }, [dispatch, id])
 
   // useEffect(() => {
