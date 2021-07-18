@@ -53,23 +53,27 @@ model VerificationRequest {
 model Project {
   id         Int           @id @default(autoincrement())
   name       String
-  orgId      Int
-  org        Org           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
   createdAt  DateTime      @default(now()) @map("created_at")
   updatedAt  DateTime      @default(now()) @map("updated_at")
+
+  orgId      Int?
+  org        Org?           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
   columns    Column[]
   Invitation Invitation[]
   users      UserProject[]
 }
 
 model UserProject {
+  id         Int          @id @default(autoincrement())
   userId    Int
-  projectId Int
+  projectId Int?
   isAdmin   Boolean
-  project   Project @relation(fields: [projectId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([userId, projectId])
+ @@map("user_project")
 }
 
 model Org {
@@ -83,13 +87,14 @@ model Org {
 }
 
 model UserOrg {
+  id   Int          @id @default(autoincrement())
   userId    Int
-  orgId     Int
+  orgId     Int?
   isCreator Boolean @default(false)
-  org       Org     @relation(fields: [orgId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  org       Org?     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([userId, orgId])
+  @@map("user_org")
 }
 
 model Column {
@@ -97,21 +102,25 @@ model Column {
   title     String
   projectId Int?
   index     Int
+  pinned    Boolean  @default(false)
   project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
   tasks     Task[]
 }
 
 model Task {
-  id        Int       @id @default(autoincrement())
-  title     String
-  body      String
-  columnId  Int
-  index     Int
-  column    Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
+
+  id       Int       @id @default(autoincrement())
+  title    String
+  body     String
+  columnId Int
+  index    Int
+  pinned   Boolean   @default(false)
+  column   Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  comments Comment[]
+  user     User[]
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @map("updated_at")
-  comments  Comment[]
-  user      User[]
+
 }
 
 model Comment {

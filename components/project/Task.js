@@ -7,33 +7,16 @@ import TaskDropdownMenu from './TaskDropdownMenu'
 import Comments from './Comments'
 import { useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
-import { assignTask } from '../../store/projectSlice'
+import { assignTask, pinTask } from '../../store/projectSlice'
+import { colors } from '../../styles/colors'
+import { comment } from 'postcss'
 
 export default function Task({ task, index }) {
   // const { isShowing, toggle } = useModal()
-  const [show, setShow] = useState(false)
+  const [taskShow, setTaskShow] = useState(false)
   const [showComments, setShowComments] = useState(false)
-  const [taskColors, setTaskColors] = useState([
-    'gray',
-    'warmGray',
-    'red',
-    'orange',
-    'amber',
-    'yellow',
-    'lime',
-    'green',
-    'emerald',
-    'teal',
-    'cyan',
-    'sky',
-    'blue',
-    'indigo',
-    'violet',
-    'purple',
-    'fuschia',
-    'pink',
-    'rose'
-  ])
+  const [taskColors, setTaskColors] = useState(colors)
+  const [showUser, setShowUser] = useState(false)
   const [i, setI] = useState(0)
   const taskId = task.id
   const { user } = task
@@ -56,18 +39,46 @@ export default function Task({ task, index }) {
 
   return (
     <React.Fragment>
-      <Draggable draggableId={`task-${task.id}`} index={index}>
+      <Draggable
+        isDragDisabled={task.pinned}
+        draggableId={`task-${task.id}`}
+        index={index}
+      >
         {provided => (
           <div
-            className={`flex flex-col bg-gray-100 rounded-lg my-4 p-1`}
+            className={`flex flex-col bg-gray-100 rounded-lg my-4 p-1 border-2 border-${color}-500`}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
             <div className="flex flex-row justify-between items-center">
-              <h3 className="pl-1 text-teal-500">{task.title}</h3>
-              State: {JSON.stringify(color)}
-              <TaskDropdownMenu show={show} task={task} />
+              <h3
+                onClick={() => setShowEditTask(true)}
+                className="text-xl font-bold pl-1 pt-4 pb-8"
+              >
+                {task.title}
+              </h3>
+              <div>
+                {task.pinned ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-700 dark:text-warmGray-300"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) : null}
+              </div>
+              <TaskDropdownMenu
+                // taskShow={taskShow}
+                // setTaskShow={setTaskShow}
+                task={task}
+              />
               <EditTaskModal
                 task={task}
                 show={showEditTask}
@@ -76,7 +87,7 @@ export default function Task({ task, index }) {
                 onKey={onKey}
               />
             </div>
-            <div className="prose">
+            {/* <div className="prose">
               <div
                 className="border-t pl-1"
                 onClick={() => {
@@ -86,27 +97,40 @@ export default function Task({ task, index }) {
                   __html: marked(task.body)
                 }}
               ></div>
-            </div>
+            </div> */}
             {/* user is an [] */}
-
-            <button
-              className={`text-sm border text-${color}-500`}
-              onClick={() => {
-                const j = i === taskColors.length - 1 ? 0 : i + 1
-                setI(j)
-              }}
-            >
-              Toggle Color
-            </button>
-            <button
-              className={`text-sm border`}
-              onClick={() => console.log('comment button')}
-            >
-              Comments
-            </button>
-            {user?.map(u => (
-              <div key={u.id}>{u.name}</div>
-            ))}
+            <div className="flex">
+              <button
+                className={`task-btn text-${color}-500 border border-${color}-500`}
+                onClick={() => {
+                  const j = i === taskColors.length - 1 ? 0 : i + 1
+                  setI(j)
+                }}
+              >
+                Toggle Color
+              </button>
+              <button className="task-btn">
+                Comments {task.comments ? task.comments.length : null}
+              </button>
+              <button
+                onClick={() => dispatch(pinTask(task))}
+                className="task-btn"
+              >
+                {task.pinned ? 'Unpin' : 'Pin'}
+              </button>
+              <button
+                className="task-btn"
+                onClick={() => setShowUser(!showUser)}
+              >
+                Users ({user?.length})
+              </button>
+            </div>
+            {showUser &&
+              user?.map(u => (
+                <div className="text-sm" key={u.id}>
+                  {u.name}
+                </div>
+              ))}
             {/* <p className="text-sm font-bold text-gray-500">
               Comments{' '}
               <span

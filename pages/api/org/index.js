@@ -12,9 +12,13 @@ export default async function handler(req, res) {
     // 📡 GET /api/org/
     if (req.method === 'GET') {
       try {
+        const sessionUser = await prisma.user.findUnique({
+          where: { email: session.user.email }
+        })
         //get user by session and eager load org info
         const user = await prisma.user.findUnique({
           where: { email: session.user.email },
+
           include: {
             orgs: {
               include: {
@@ -32,9 +36,45 @@ export default async function handler(req, res) {
           }
         })
 
+        // const myuser = await prisma.user.findUnique({
+        //   where: { email: session.user.email },
+        //   include: {
+        //     orgs: {
+        //       include: {
+        //         org: {
+        //           include: {
+        //             projects: {
+        //               include: {
+        //                 users: {
+        //                   where: {
+        //                     userId: sessionUser.id
+        //                   }
+        //                 }
+        //               }
+        //             }
+        //           }
+        //         }
+        //       }
+        //     }
+        //   }
+        // })
+
         const orgs = user.orgs.map(org => {
           return org.org
         })
+
+        // const filteredOrgs = orgs.filter(org => {
+        //   // console.log(org.projects)
+        //   const newOrg = org.projects.filter(project => {
+        //     // console.log(project.users)
+        //     return project.users.length > 0
+        //   })
+        //   return newOrg
+        // })
+
+        // const filteredProjects = orgs.filter(org => {
+        //   return org.projects.users.length > 0
+        // })
 
         res.status(200).json(orgs)
       } catch (error) {

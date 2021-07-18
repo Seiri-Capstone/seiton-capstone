@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import { useRouter } from 'next/router'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchOrgs, fetchDeletedOrg } from '../../store/orgsSlice'
 import Link from 'next/link'
@@ -19,10 +18,11 @@ export default function MyOrgs() {
     dispatch(fetchOrgs())
   }, [dispatch])
 
-  // const deleteOrg = id => {
-  //   dispatch(fetchDeletedOrg(id))
-  //   router.push('/orgs')
-  // }
+  const deleteOrg = (e, id) => {
+    // e.stopPropagation()
+    e.preventDefault()
+    dispatch(fetchDeletedOrg(id))
+  }
 
   return (
     <>
@@ -69,12 +69,13 @@ export default function MyOrgs() {
                           {org.name} ({org.projects?.length || 0}{' '}
                           {org.projects?.length !== 1 ? 'projects' : 'project'})
                         </div>
-                        <div className="">
+                        <div className="z-50">
                           <Image
                             src={x}
                             alt="deleteIcon"
                             width={24}
                             height={24}
+                            onClick={e => deleteOrg(e, org.id)}
                           />
                         </div>
                       </div>

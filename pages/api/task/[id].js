@@ -1,14 +1,15 @@
 import prisma from '../../../prisma/prisma'
 import { getSession } from 'next-auth/client'
 
-// DELETE/TASK/:id
 export default async function handler(req, res) {
   const session = await getSession({ req })
   if (!session) {
     res.status(403).json({
       message: 'You must be signed in to view this page.'
     })
-  } else {
+  }
+  // DELETE/TASK/:id
+  else {
     if (req.method === 'DELETE') {
       try {
         const deletedTask = await prisma.task.delete({
@@ -20,39 +21,46 @@ export default async function handler(req, res) {
       }
       // PUT/TASK/:id
     } else if (req.method === 'PUT') {
-      /**
-       * For delete, simply submit an empty array from the Multi select down
-       */
-      try {
-        const { taskId, userIds } = req.body
-
-        const ids = userIds.map(userId => ({ id: userId }))
-        const updatedTask = await prisma.task.update({
-          where: {
-            id: +taskId
-          },
-          data: {
-            user: {
-              connect: ids // array of user ids [{ id: 1, }, { id: 2}]
+      // pinTask
+      if (req.body.action === 'pinTask') {
+        try {
+          console.log(`🟢  HITTING api/task/id`)
+          const { pinned, id } = req.body
+          const task = await prisma.task.update({
+            where: {
+              id: +id
+            },
+            data: {
+              pinned // Should toggle
             }
-          }
-        })
-        // do something here, make sure you get back the updatedTask as well as the id
-        console.log(
-          `🟢  successful retreival of updatedTasks in the api/task/:id `
-        )
-        console.log(`🟢  updatedTask `, updatedTask)
-        // {
-        // 	id: 1,
-        // 	title: 'task1',
-        // 	body: 'watch videos on next.js',
-        // 	columnId: 1,
-        // 	index: 1
-        // }
-        return updatedTask
-      } catch (error) {
-        console.log('Error in the /api/task/:id put')
-        console.log(error)
+          })
+
+          res.status(200).json(task)
+        } catch (error) {
+          console.log('error in pinTask', error)
+        }
+      }
+      // assignUser
+      else {
+        try {
+          const { taskId, userIds } = req.body
+
+          const ids = userIds.map(userId => ({ id: userId }))
+          const updatedTask = await prisma.task.update({
+            where: {
+              id: +taskId
+            },
+            data: {
+              user: {
+                connect: ids // array of user ids [{ id: 1, }, { id: 2}]
+              }
+            }
+          })
+          res.status(201).json(updatedTask)
+        } catch (error) {
+          console.log('Error in the /api/task/:id put')
+          console.log(error)
+        }
       }
     }
     // ❗May not be needed
