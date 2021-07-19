@@ -195,6 +195,7 @@ export default function EditTaskModal(props) {
                           ⌘ or Ctrl Enter
                         </div>
                       </div>
+
                     </div>
                   </div>
                 </div>
