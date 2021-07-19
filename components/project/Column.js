@@ -159,7 +159,7 @@ export default function Column(props) {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="border-2 border-black"
+                    className="border-2 border-transparent h-full"
                   >
                     {column.tasks &&
                       column.tasks.map((task, index) => (
