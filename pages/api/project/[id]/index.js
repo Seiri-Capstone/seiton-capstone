@@ -38,7 +38,8 @@ export default async function handler(req, res) {
                 user: {
                   select: {
                     name: true,
-                    email: true
+                    email: true,
+                    image: true
                   }
                 }
               }

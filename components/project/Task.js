@@ -9,6 +9,10 @@ import { setOptions, useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
 import { assignTask, pinTask } from '../../store/projectSlice'
 import { colors } from '../../styles/colors'
+import { comment } from 'postcss'
+import Image from 'next/image'
+import xIcon from '../../public/assets/xIcon.svg'
+import { deleteTask } from '../../store/projectSlice'
 
 export default function Task({ task, index, setPin, taskEdit }) {
   // const { isShowing, toggle } = useModal()
@@ -34,8 +38,12 @@ export default function Task({ task, index, setPin, taskEdit }) {
     }
   }
 
-  const color = taskColors[i % taskColors.length]
+  const handleDelete = taskId => {
+    dispatch(deleteTask(parseInt(taskId)))
+  }
 
+  const color = taskColors[i % taskColors.length]
+  console.log('task', task)
   return (
     <React.Fragment>
       <Draggable
@@ -45,25 +53,25 @@ export default function Task({ task, index, setPin, taskEdit }) {
       >
         {provided => (
           <div
-            className={`flex flex-col bg-gray-100 rounded-lg mb-2 p-1 border-2 border-${color}-500`}
+            className={`flex flex-col bg-gray-100 rounded-lg mb-2 py-1 `}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row pt-1 pr-1 justify-between items-start">
               <h3
                 onClick={() => setShowEditTask(true)}
-                className="text-sm px-4 tracking-wide flex-grow"
+                className="text-sm pl-2 tracking-wide"
               >
                 {task.title}
               </h3>
-              <div className="flex-grow-0">
+              <div className="flex items-center">
                 {task.pinned ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-gray-700 dark:text-warmGray-300"
+                    className={`h-4 w-4 text-${color}-500`}
                     viewBox="0 0 20 20"
-                    fill="gray"
+                    fill="currentColor"
                   >
                     <path
                       fillRule="evenodd"
@@ -72,20 +80,31 @@ export default function Task({ task, index, setPin, taskEdit }) {
                     />
                   </svg>
                 ) : null}
-              </div>
-              <span className="ml-2">
-                <TaskDropdownMenu
+
+                <div className="w-5 h-5">
+                  <button onClick={() => handleDelete(task.id)} type="button">
+                    <Image
+                      src={xIcon}
+                      alt="deleteIcon"
+                      width={20}
+                      height={20}
+                    />
+                    {/* <TaskDropdownMenu
                   // taskShow={taskShow}
                   // setTaskShow={setTaskShow}
                   task={task}
                   taskEdit={taskEdit}
-                />
-              </span>
+                /> */}
+                  </button>
+                </div>
+              </div>
               <EditTaskModal
                 taskEdit={taskEdit}
                 task={task}
                 show={showEditTask}
                 toggleEdit={toggleEdit}
+                colId={task.columnId}
+                taskId={task.id}
                 onClose={() => setShowEditTask(false)}
                 onKey={onKey}
               />
@@ -138,19 +157,32 @@ export default function Task({ task, index, setPin, taskEdit }) {
               >
                 {task.pinned ? 'Unpin' : 'Pin'}
               </button>
-              <button
+              {/* <button
                 className="task-btn self-end text-xs"
                 onClick={() => setShowUser(!showUser)}
               >
-                Assigned to: ({user?.length})
-              </button>
+                Assigned to: ({user?.length}){' '}
+              </button> */}
+              {user?.length !== 0 ? (
+                user?.map(u => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={u.image}
+                    alt="profileImg"
+                    className="profileImg"
+                    key={u.id}
+                  />
+                ))
+              ) : (
+                <span className="text-xs">(0)</span>
+              )}
             </div>
-            {showUser &&
+            {/* {showUser &&
               user?.map(u => (
                 <span className="text-sm text-right pl-2" key={u.id}>
                   {u.name}
                 </span>
-              ))}
+              ))} */}
             {/* <p className="text-sm font-bold text-gray-500">
               Comments{' '}
               <span
