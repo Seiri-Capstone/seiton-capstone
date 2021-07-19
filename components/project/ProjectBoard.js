@@ -11,16 +11,16 @@ import {
   createColumn
 } from '../../store/projectSlice'
 import { fetchDeletedProject } from '../../store/projectsSlice'
-import { signIn, signOut, useSession } from 'next-auth/client'
-import NewTask from './NewTask'
+import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Pusher from 'pusher-js'
-import Members from './Members'
+
 import Link from 'next/link'
 import Logo from '../../components/Logo'
-
+import Navbar from '../nav/Navbar'
 import { colors } from '../../styles/colors'
+import MembersModal from './MembersModal'
 
 export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
@@ -42,6 +42,7 @@ export default function ProjectBoard({ pusher }) {
   const { id = 0 } = query || {}
   const [colColors, setColColors] = useState(colors)
   const [i, setI] = useState(0)
+  const [show, setShow] = useState(false)
 
   console.log('project in projectboard', project)
 
@@ -189,7 +190,12 @@ export default function ProjectBoard({ pusher }) {
       </div>
       <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
       <div className="flex justify-between mb-4">
-        <span className="dark:text-gray-400">Members</span>
+        <button onClick={() => setShow(true)}>Project Members</button>
+ <MembersModal
+            show={show}
+            onClose={() => setShow(false)}
+            project={project}
+          />
         <button
           className=" text-red-600 dark:text-red-300 text-sm"
           onClick={deleteProject}
@@ -205,6 +211,7 @@ export default function ProjectBoard({ pusher }) {
       </div> */}
 
       {/* columns */}
+
 
       <div className="flex justify-start align-start h-4/5 overflow-x-scroll">
         <DragDropContext onDragEnd={onDragEnd}>
@@ -253,6 +260,7 @@ export default function ProjectBoard({ pusher }) {
         </DragDropContext>
         {/* {toggleTask && <NewTask />} */}
       </div>
+      <span id="membersModal"></span>
     </React.Fragment>
   )
 }
