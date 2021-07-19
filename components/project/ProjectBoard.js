@@ -178,29 +178,37 @@ export default function ProjectBoard({ pusher }) {
   return (
     <React.Fragment>
       <Logo />
-      <h2 id="tenor" className="leading-loose">
-        {project.name}
-      </h2>
+      {/* header */}
+      <div className="flex justify-between">
+        <h2 id="tenor" className="leading-loose">
+          {project.name}
+        </h2>
+        <span className="dark:text-gray-400 self-end text-xs italic mb-2">
+          Last updated on {updatedDate}
+        </span>
+      </div>
       <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
-      <span className="dark:text-gray-400 text-sm">
-        Last updated on {updatedDate}
-      </span>
-      <div className="flex overflow-hidden">
-        <div className="flex-col "></div>
-        <div className="flex flex-col h-screen w-5/6">
-          <div className="flex justify-end mt-2 mr-12">
-            <button
-              className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
-              onClick={deleteProject}
-            >
-              Delete Project
-            </button>
-          </div>
+      <div className="flex justify-between mb-4">
+        <span className="dark:text-gray-400">Members</span>
+        <button
+          className=" text-red-600 dark:text-red-300 text-sm"
+          onClick={deleteProject}
+        >
+          Delete Project
+        </button>
+      </div>
 
-          <div className="flex justify-end mt-2 mr-12">
-            <Link href={`/projects/${id}/members`}>Project Members</Link>
-          </div>
-          <DragDropContext onDragEnd={onDragEnd}>
+      {/* members logic */}
+      {/*
+      <div className="p-4 border border-gray-400 my-2">
+        <Link href={`/projects/${id}/members`}>Project Members -- TEMP</Link>
+      </div> */}
+
+      {/* columns */}
+
+      <div className="flex justify-start align-start h-4/5 overflow-x-scroll">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="flex justify-start">
             <Droppable
               droppableId="all-columns"
               direction="horizontal"
@@ -208,7 +216,7 @@ export default function ProjectBoard({ pusher }) {
             >
               {provided => (
                 <div
-                  className="flex w-full h-3/4 md:flex-row"
+                  className="flex md:flex-row"
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
@@ -241,9 +249,9 @@ export default function ProjectBoard({ pusher }) {
                 </div>
               )}
             </Droppable>
-          </DragDropContext>
-          {/* {toggleTask && <NewTask />} */}
-        </div>
+          </div>
+        </DragDropContext>
+        {/* {toggleTask && <NewTask />} */}
       </div>
     </React.Fragment>
   )

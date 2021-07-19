@@ -73,7 +73,26 @@ const Colors = () => {
       <div className="bg-purple-200"></div>
       <div className="bg-fuschia-200"></div>
       <div className="bg-pink-200"></div>
-      <div className="bg-rose-200"></div>{' '}
+      <div className="bg-rose-200"></div>
+      <div className="bg-gray-300"></div>
+      <div className="bg-warmGray-300"></div>
+      <div className="bg-red-300"></div>
+      <div className="bg-orange-300"></div>
+      <div className="bg-amber-300"></div>
+      <div className="bg-yellow-300"></div>
+      <div className="bg-lime-300"></div>
+      <div className="bg-green-300"></div>
+      <div className="bg-emerald-300"></div>
+      <div className="bg-teal-300"></div>
+      <div className="bg-cyan-300"></div>
+      <div className="bg-sky-300"></div>
+      <div className="bg-blue-300"></div>
+      <div className="bg-indigo-300"></div>
+      <div className="bg-violet-300"></div>
+      <div className="bg-purple-300"></div>
+      <div className="bg-fuschia-300"></div>
+      <div className="bg-pink-300"></div>
+      <div className="bg-rose-300"></div>
     </>
   )
 }
@@ -83,7 +102,7 @@ const Project = () => {
     <div className="flex h-screen bg-blue-100 dark:bg-gray-800">
       <Navbar />
       <Colors />
-      <div className="flex-col ml-24 mt-12 w-8/12">
+      <div className="flex-col ml-16 mt-6 w-3/4">
         <ProjectBoard pusher={pusher} />
       </div>
       <div id="modal"></div>
