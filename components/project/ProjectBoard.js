@@ -190,12 +190,14 @@ export default function ProjectBoard({ pusher }) {
       </div>
       <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
       <div className="flex justify-between mb-4">
-        <button onClick={() => setShow(true)}>Project Members</button>
- <MembersModal
-            show={show}
-            onClose={() => setShow(false)}
-            project={project}
-          />
+        <button onClick={() => setShow(true)} className="text-base">
+          Project Members
+        </button>
+        <MembersModal
+          show={show}
+          onClose={() => setShow(false)}
+          project={project}
+        />
         <button
           className=" text-red-600 dark:text-red-300 text-sm"
           onClick={deleteProject}
@@ -204,14 +206,7 @@ export default function ProjectBoard({ pusher }) {
         </button>
       </div>
 
-      {/* members logic */}
-      {/*
-      <div className="p-4 border border-gray-400 my-2">
-        <Link href={`/projects/${id}/members`}>Project Members -- TEMP</Link>
-      </div> */}
-
       {/* columns */}
-
 
       <div className="flex justify-start align-start h-4/5 overflow-x-scroll">
         <DragDropContext onDragEnd={onDragEnd}>
@@ -246,7 +241,8 @@ export default function ProjectBoard({ pusher }) {
                     ))}
                   <div>
                     <button
-                      className="border-dashed border-2 border-black-500 w-80 h-18 rounded-lg m-4 p-4 justify-end"
+                      id="tenor"
+                      className="border-dashed border-2 border-gray-400 w-64 h-12 rounded-lg p-2 justify-end text-base"
                       onClick={addColumn}
                     >
                       + Add New Column
