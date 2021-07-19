@@ -12,7 +12,6 @@ export default function NewTask(props) {
 
   const addTask = async e => {
     e.preventDefault()
-    if (task.length <= 1) return alert("Task isn't long enough")
     const body = { title, task, columnId, index }
     await dispatch(createTask(body))
     props.toggleTask()
@@ -20,27 +19,25 @@ export default function NewTask(props) {
   }
 
   return (
-    <form className="p-4 my-3 max-w-3xl mx-auto space-y-6 bg-gray-50 rounded-lg">
-      <label>
-        Title:
-        <input
-          className="w-full p-3 py-2 text-gray-700 border rounded-lg focus:outline-none rows=4 mb-3 focus:outline-none"
-          onChange={e => setTitle(e.target.value)}
-        ></input>
-      </label>
-      <label>
-        Task:
-        <textarea
-          className="w-full p-3  text-gray-700 border rounded-lg focus:outline-none rows=4 mt-2 focus:outline-none"
-          onChange={e => setTask(e.target.value)}
-        ></textarea>
-      </label>
+    <form className="flex flex-col mx-auto rounded-lg w-full">
+      <input
+        placeholder="Task Title"
+        className="text-sm w-full p-1 px-2 text-gray-700 rounded-lg focus:outline-none"
+        onChange={e => setTitle(e.target.value)}
+      ></input>
+
+      <textarea
+        placeholder="Task Body"
+        className="text-sm w-full p-1 px-2 text-gray-700 rounded-lg border-none focus:outline-none mt-2"
+        onChange={e => setTask(e.target.value)}
+      ></textarea>
+
       <button
         type="submit"
-        className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
+        className="bg-transparent text-sm text-white rounded p-4 py-2 focus:outline-none self-center"
         onClick={addTask}
       >
-        Add Task
+        + Add Task
       </button>
     </form>
   )

@@ -103,6 +103,8 @@ export default function Task({ task, index, setPin, taskEdit }) {
                 task={task}
                 show={showEditTask}
                 toggleEdit={toggleEdit}
+                colId={task.columnId}
+                taskId={task.id}
                 onClose={() => setShowEditTask(false)}
                 onKey={onKey}
               />

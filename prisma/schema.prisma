@@ -51,14 +51,14 @@ model VerificationRequest {
 }
 
 model Project {
-  id         Int           @id @default(autoincrement())
-  name       String
+  id   Int    @id @default(autoincrement())
+  name String
 
-  createdAt  DateTime      @default(now()) @map("created_at")
-  updatedAt  DateTime      @default(now()) @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
-  orgId      Int?
-  org        Org?           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId Int?
+  org   Org? @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
   columns    Column[]
   Invitation Invitation[]
@@ -66,14 +66,14 @@ model Project {
 }
 
 model UserProject {
-  id         Int          @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   userId    Int
   projectId Int?
   isAdmin   Boolean
   project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
- @@map("user_project")
+  @@map("user_project")
 }
 
 model Org {
@@ -87,11 +87,11 @@ model Org {
 }
 
 model UserOrg {
-  id   Int          @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   userId    Int
   orgId     Int?
   isCreator Boolean @default(false)
-  org       Org?     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  org       Org?    @relation(fields: [orgId], references: [id], onDelete: Cascade)
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_org")
@@ -109,15 +109,15 @@ model Column {
 
 model Task {
 
-  id       Int       @id @default(autoincrement())
-  title    String
-  body     String
-  columnId Int?
-  index    Int
-  pinned   Boolean   @default(false)
-  column   Column?    @relation(fields: [columnId], references: [id], onDelete: Cascade)
-  comments Comment[]
-  user     User[]
+  id        Int       @id @default(autoincrement())
+  title     String
+  body      String
+  columnId  Int?
+  index     Int
+  pinned    Boolean   @default(false)
+  column    Column?   @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+  user      User[]
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @map("updated_at")
 
@@ -130,8 +130,8 @@ model Comment {
   taskId    Int?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
-  tasks     Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks     Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {

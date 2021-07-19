@@ -178,12 +178,13 @@ export default function ProjectBoard({ pusher }) {
 
   return (
     <React.Fragment>
-      <Logo />
+      {/* <Logo /> */}
       {/* header */}
+
       <div className="flex justify-between">
-        <h2 id="tenor" className="leading-loose">
+        <h3 id="tenor" className="leading-loose text-navyblue">
           {project.name}
-        </h2>
+        </h3>
         <span className="dark:text-gray-400 self-end text-xs italic mb-2">
           Last updated on {updatedDate}
         </span>
@@ -207,7 +208,7 @@ export default function ProjectBoard({ pusher }) {
       </div>
 
       {/* columns */}
-      <div className="bg-white dark:bg-gray-700 p-4 rounded-md h-5/6 overflow-x-scroll">
+      <div className="rounded-md h-5/6 overflow-x-scroll">
         <div className="flex justify-start align-start h-full ">
           <DragDropContext onDragEnd={onDragEnd}>
             <div className="flex justify-start">

@@ -12,7 +12,6 @@ import { colors as COLORS } from '../../styles/colors'
 import Image from 'next/image'
 import dotsIcon from '../../public/assets/dotsIcon.svg'
 import xIcon from '../../public/assets/xIcon.svg'
-import ColumnDropdown from './ColumnDropdown'
 
 export default function Column(props) {
   const { setCol, delCol, addTask, column, colColor, setPin, taskEdit } = props
@@ -67,14 +66,14 @@ export default function Column(props) {
     >
       {provided => (
         <div
-          className={`bg-${colors[colorI]}-300 w-64 h-full rounded-lg mr-3 p-4 flex flex-col flex-grow`}
+          className={`bg-${colors[colorI]}-400 w-64 h-full rounded-lg mr-3 p-4 flex flex-col flex-grow`}
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
           <div className="flex flex-col h-full">
-            <div className="flex flex-row justify-between items-center mb-2">
+            <div className="flex flex-row justify-between items-center">
               <div
-                className="flex flex-row items-center"
+                className="flex flex-row items-center justify-between content-center mb-2"
                 {...provided.dragHandleProps}
               >
                 {isEditActive ? (
@@ -113,32 +112,41 @@ export default function Column(props) {
                   xmlns="http://www.w3.org/2000/svg"
                   className="ml-1 h-4 w-4 self-center"
                   viewBox="0 0 20 20"
-                  fill="gray"
+                  fill="white"
                   onClick={() => setEditActive(!isEditActive)}
                 >
                   <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                 </svg>
               </div>
-
-              <div className="flex justify-end items-center">
+              <div className="self-center">
                 <button
                   onClick={toggleNewTask}
                   value={props.value}
-                  className="mr-2 focus:outline-none "
+                  className="mr-2 focus:outline-none relative"
                 >
-                  <a>+</a>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 absolute -top-5 right-1"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1"
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
                 </button>
-                <div className="flex flex-col justify-center">
-                  <Image
-                    src={dotsIcon}
-                    alt="deleteIcon"
-                    className="self-center"
-                    width={20}
-                    height={20}
-                  />
-                </div>
 
-                {/* <ColumnDropdown column={column} colEdit={colEdit} /> */}
+                <Image
+                  src={xIcon}
+                  alt="deleteIcon"
+                  className="self-center text-gray-800"
+                  width={20}
+                  height={20}
+                />
 
                 {/* <button
                   onClick={() => {
@@ -192,10 +200,13 @@ export default function Column(props) {
             </div>
             {/* color change logic */}
 
-            <hr
-              className={`mt-2 border-8 rounded-md border-${colors[colorI]}-500 justify-self-end`}
+            <button
+              id="tenor"
+              className={`mt-2 w-full py-1 rounded-md bg-transparent justify-self-end text-sm text-white `}
               onClick={loopColor}
-            ></hr>
+            >
+              Toggle Color
+            </button>
           </div>
           <DeleteColumnModal
             isShowing={isShowing}
