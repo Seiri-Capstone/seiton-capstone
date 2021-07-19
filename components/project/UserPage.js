@@ -70,7 +70,7 @@ const UserPage = () => {
             </label>
             <input
               value={firstName || ''}
-              className="rounded-lg border-none w-full"
+              className="rounded-lg border-none w-full dark:text-gray-400"
               type="text"
               name="firstName"
               onChange={e => setFirstName(e.target.value)}
@@ -84,7 +84,7 @@ const UserPage = () => {
             <input
               name="emailState"
               value={emailState || ''}
-              className="rounded-lg border-none w-full"
+              className="rounded-lg border-none w-full dark:text-gray-400"
               type="text"
               onChange={e => setEmailState(e.target.value)}
               placeholder="Email"
@@ -97,7 +97,7 @@ const UserPage = () => {
             <input
               name="image"
               value={image || ''}
-              className="rounded-lg border-none w-full"
+              className="rounded-lg border-none w-full dark:text-gray-400"
               type="text"
               onChange={e => setImage(e.target.value)}
               placeholder="Image URL"
