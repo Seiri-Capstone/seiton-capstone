@@ -11,8 +11,7 @@ const Circle = ({ color = 'red', toggle }) => {
         toggle()
       }}
     >
-      {/* <circle cx="10" cy="10" r="10" /> */}
-      <hr className="border-2"></hr>
+      <circle cx="10" cy="10" r="10" />
     </svg>
   )
 }

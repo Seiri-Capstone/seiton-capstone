@@ -93,6 +93,24 @@ const Colors = () => {
       <div className="bg-fuschia-300"></div>
       <div className="bg-pink-300"></div>
       <div className="bg-rose-300"></div>
+      <div className="bg-warmGray-500"></div>
+      <div className="bg-red-500"></div>
+      <div className="bg-orange-500"></div>
+      <div className="bg-amber-500"></div>
+      <div className="bg-yellow-500"></div>
+      <div className="bg-lime-500"></div>
+      <div className="bg-green-500"></div>
+      <div className="bg-emerald-500"></div>
+      <div className="bg-teal-500"></div>
+      <div className="bg-cyan-500"></div>
+      <div className="bg-sky-500"></div>
+      <div className="bg-blue-500"></div>
+      <div className="bg-indigo-500"></div>
+      <div className="bg-violet-500"></div>
+      <div className="bg-purple-500"></div>
+      <div className="bg-fuschia-500"></div>
+      <div className="bg-pink-500"></div>
+      <div className="bg-rose-500"></div>
     </>
   )
 }

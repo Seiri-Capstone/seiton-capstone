@@ -155,7 +155,7 @@ into dropdown see columndropdown.js */}
 
           {/* color change logic */}
           <hr
-            className={`mt-2 border-4 rounded-sm border-${colors[colorI]}-500`}
+            className={`mt-2 border-4 rounded-sm border-${colors[colorI]}-500 mb-3`}
             onClick={loopColor}
           ></hr>
 
