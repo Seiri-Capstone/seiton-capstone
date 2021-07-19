@@ -46,25 +46,25 @@ export default function Task({ task, index, setPin, taskEdit }) {
       >
         {provided => (
           <div
-            className={`flex flex-col bg-gray-100 rounded-lg my-4 p-1 border-2 border-${color}-500`}
+            className={`flex flex-col bg-gray-100 rounded-lg mb-2 p-1 border-2 border-${color}-500`}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row items-center">
               <h3
                 onClick={() => setShowEditTask(true)}
-                className="text-xl font-bold pl-1 pt-4 pb-8"
+                className="text-sm px-4 tracking-wide flex-grow"
               >
                 {task.title}
               </h3>
-              <div>
+              <div className="flex-grow-0">
                 {task.pinned ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5 text-gray-700 dark:text-warmGray-300"
                     viewBox="0 0 20 20"
-                    fill="currentColor"
+                    fill="gray"
                   >
                     <path
                       fillRule="evenodd"
@@ -74,12 +74,14 @@ export default function Task({ task, index, setPin, taskEdit }) {
                   </svg>
                 ) : null}
               </div>
-              <TaskDropdownMenu
-                // taskShow={taskShow}
-                // setTaskShow={setTaskShow}
-                task={task}
-                taskEdit={taskEdit}
-              />
+              <span className="ml-2">
+                <TaskDropdownMenu
+                  // taskShow={taskShow}
+                  // setTaskShow={setTaskShow}
+                  task={task}
+                  taskEdit={taskEdit}
+                />
+              </span>
               <EditTaskModal
                 taskEdit={taskEdit}
                 task={task}
@@ -101,19 +103,33 @@ export default function Task({ task, index, setPin, taskEdit }) {
               ></div>
             </div> */}
             {/* user is an [] */}
-            <div className="flex">
-              <button
-                className={`task-btn text-${color}-500 border border-${color}-500`}
+            <hr className="m-2"></hr>
+
+            <div className="flex items-center justify-between px-2">
+              {/* <button
+                className={`h-3 w-12 rounded-md bg-${color}-500`}
                 onClick={() => {
                   const j = i === taskColors.length - 1 ? 0 : i + 1
                   setI(j)
                 }}
               >
-                Toggle Color
-              </button>
-              <button className="task-btn">
+              */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-4 w-4 text-${color}-500`}
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                onClick={() => {
+                  const j = i === taskColors.length - 1 ? 0 : i + 1
+                  setI(j)
+                }}
+              >
+                <circle cx="10" cy="10" r="10" />
+              </svg>
+              {/* </button> */}
+              {/* <button className="task-btn">
                 Comments {task.comments ? task.comments.length : null}
-              </button>
+              </button> */}
               <button
                 onClick={async () => {
                   await dispatch(pinTask(task))
@@ -124,17 +140,17 @@ export default function Task({ task, index, setPin, taskEdit }) {
                 {task.pinned ? 'Unpin' : 'Pin'}
               </button>
               <button
-                className="task-btn"
+                className="task-btn self-end text-xs"
                 onClick={() => setShowUser(!showUser)}
               >
-                Users ({user?.length})
+                Assigned to: ({user?.length})
               </button>
             </div>
             {showUser &&
               user?.map(u => (
-                <div className="text-sm" key={u.id}>
+                <span className="text-sm text-right pl-2" key={u.id}>
                   {u.name}
-                </div>
+                </span>
               ))}
             {/* <p className="text-sm font-bold text-gray-500">
               Comments{' '}

@@ -153,7 +153,7 @@ export default function Org() {
                 >
                   - {user.user.name}
                 </span>
-                {isCreator ? (
+                {isCreator && user.userId !== Number(session.user.sub) ? (
                   <button
                     className="text-red-600 dark:text-red-300 pl-2 text-sm"
                     onClick={() => removeUser(user.userId)}

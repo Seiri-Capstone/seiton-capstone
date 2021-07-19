@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import dynamic from 'next/dynamic'
 const ProjectBoard = dynamic(import('../../../components/project/ProjectBoard'))
 import Pusher from 'pusher-js'
+import Navbar from '../../../components/nav/Navbar'
 
 const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
   cluster: 'us2', // based on my website
@@ -9,10 +10,13 @@ const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
   auth: { params: { username: 'sey' } } // not important rn? only to show user
 })
 
-const Project = () => {
+{
+  /* This is to make sure the colors are built so we can use in different components */
+}
+const Colors = () => {
   return (
-    <div>
-      {/* This is to make sure the colors are built so we can use in different components */}
+    <>
+      {' '}
       <div className="text-gray-500"></div>
       <div className="text-warmGray-500"></div>
       <div className="text-red-500"></div>
@@ -70,10 +74,54 @@ const Project = () => {
       <div className="bg-fuschia-200"></div>
       <div className="bg-pink-200"></div>
       <div className="bg-rose-200"></div>
-      <div className="flex">
-        <div className="flex-col">
-          <ProjectBoard pusher={pusher} />
-        </div>
+      <div className="bg-gray-300"></div>
+      <div className="bg-warmGray-300"></div>
+      <div className="bg-red-300"></div>
+      <div className="bg-orange-300"></div>
+      <div className="bg-amber-300"></div>
+      <div className="bg-yellow-300"></div>
+      <div className="bg-lime-300"></div>
+      <div className="bg-green-300"></div>
+      <div className="bg-emerald-300"></div>
+      <div className="bg-teal-300"></div>
+      <div className="bg-cyan-300"></div>
+      <div className="bg-sky-300"></div>
+      <div className="bg-blue-300"></div>
+      <div className="bg-indigo-300"></div>
+      <div className="bg-violet-300"></div>
+      <div className="bg-purple-300"></div>
+      <div className="bg-fuschia-300"></div>
+      <div className="bg-pink-300"></div>
+      <div className="bg-rose-300"></div>
+      <div className="bg-warmGray-500"></div>
+      <div className="bg-red-500"></div>
+      <div className="bg-orange-500"></div>
+      <div className="bg-amber-500"></div>
+      <div className="bg-yellow-500"></div>
+      <div className="bg-lime-500"></div>
+      <div className="bg-green-500"></div>
+      <div className="bg-emerald-500"></div>
+      <div className="bg-teal-500"></div>
+      <div className="bg-cyan-500"></div>
+      <div className="bg-sky-500"></div>
+      <div className="bg-blue-500"></div>
+      <div className="bg-indigo-500"></div>
+      <div className="bg-violet-500"></div>
+      <div className="bg-purple-500"></div>
+      <div className="bg-fuschia-500"></div>
+      <div className="bg-pink-500"></div>
+      <div className="bg-rose-500"></div>
+    </>
+  )
+}
+
+const Project = () => {
+  return (
+    <div className="flex h-screen bg-blue-100 dark:bg-gray-800">
+      <Navbar />
+      <Colors />
+      <div className="flex-col ml-16 mt-6 w-3/4">
+        <ProjectBoard pusher={pusher} />
       </div>
       <div id="modal"></div>
     </div>

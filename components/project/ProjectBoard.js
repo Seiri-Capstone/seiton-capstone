@@ -15,6 +15,9 @@ import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Pusher from 'pusher-js'
+
+import Link from 'next/link'
+import Logo from '../../components/Logo'
 import Navbar from '../nav/Navbar'
 import { colors } from '../../styles/colors'
 import MembersModal from './MembersModal'
@@ -82,41 +85,6 @@ export default function ProjectBoard({ pusher }) {
     setMounted(true) // Mount for the first time
     return () => pusher.unsubscribe(`presence-channel-${id}`)
   }, [dispatch, id])
-
-  // useEffect(() => {
-  //   if (isColumnReordered) {
-  //     setIsColumnReordered(false)
-  //     axios.post('/api/pusher/reorder', { project })
-  //   }
-
-  //   if (isTaskReordered) {
-  //     setIsTaskReordered(false)
-  //     axios.post('/api/pusher/reorder', { project })
-  //   }
-
-  //   if (isTaskDiffColReordered) {
-  //     setIsTaskDiffColReordered(false)
-  //     axios.post('/api/pusher/reorder', { project })
-  //   }
-  // }, [isColumnReordered, isTaskReordered, isTaskDiffColReordered])
-
-  // useEffect(() => {
-  //   const channel = pusher.subscribe('presence-channel')
-
-  //   channel.bind('reorder', async project => {
-  //     console.log(`🟢  pusher:reorder succeeded `, project)
-  //     dispatch(reorderTaskCol(project))
-  //   })
-
-  //   return () => {
-  //     pusher.unsubscribe('presence-channel')
-  //   }
-  // }, [])
-
-  // const [task, setTask] = useState('')
-  // const [title, setTitle] = useState('')
-  // const columnId = props.props.column.id
-  // const index = props.props.column.tasks.length
 
   const deleteProject = () => {
     dispatch(fetchDeletedProject(id))
@@ -206,41 +174,48 @@ export default function ProjectBoard({ pusher }) {
     return
   }
 
+  const updatedDate = String(new Date(project.updatedAt)).substring(3, 15)
+
   return (
     <React.Fragment>
-      <div className="bg-rose-200"></div>
-      <div className="bg-red-200"></div>
-      <div className="bg-green-200"></div>
-      <div className="bg-purple-200"></div>
-
-      <div className="flex overflow-hidden">
-        <div className="flex-col ">
-          <Navbar />
-        </div>
-        <div className="flex flex-col h-screen w-5/6">
-          <h1 className="flex justify-center flexfont-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
-            {project.name}
-          </h1>
-
-          <div className="flex justify-end mt-2 mr-12">
-            <button
-              className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
-              onClick={deleteProject}
-            >
-              Delete Project
-            </button>
-          </div>
-
-          <div className="flex justify-end mt-2 mr-12">
-            <button onClick={() => setShow(true)}>Project Members</button>
-          </div>
-          <MembersModal
+      <Logo />
+      {/* header */}
+      <div className="flex justify-between">
+        <h2 id="tenor" className="leading-loose">
+          {project.name}
+        </h2>
+        <span className="dark:text-gray-400 self-end text-xs italic mb-2">
+          Last updated on {updatedDate}
+        </span>
+      </div>
+      <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
+      <div className="flex justify-between mb-4">
+        <button onClick={() => setShow(true)}>Project Members</button>
+ <MembersModal
             show={show}
             onClose={() => setShow(false)}
             project={project}
           />
+        <button
+          className=" text-red-600 dark:text-red-300 text-sm"
+          onClick={deleteProject}
+        >
+          Delete Project
+        </button>
+      </div>
 
-          <DragDropContext onDragEnd={onDragEnd}>
+      {/* members logic */}
+      {/*
+      <div className="p-4 border border-gray-400 my-2">
+        <Link href={`/projects/${id}/members`}>Project Members -- TEMP</Link>
+      </div> */}
+
+      {/* columns */}
+
+
+      <div className="flex justify-start align-start h-4/5 overflow-x-scroll">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="flex justify-start">
             <Droppable
               droppableId="all-columns"
               direction="horizontal"
@@ -248,7 +223,7 @@ export default function ProjectBoard({ pusher }) {
             >
               {provided => (
                 <div
-                  className="flex w-full h-3/4 md:flex-row"
+                  className="flex md:flex-row"
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
@@ -281,9 +256,9 @@ export default function ProjectBoard({ pusher }) {
                 </div>
               )}
             </Droppable>
-          </DragDropContext>
-          {/* {toggleTask && <NewTask />} */}
-        </div>
+          </div>
+        </DragDropContext>
+        {/* {toggleTask && <NewTask />} */}
       </div>
       <span id="membersModal"></span>
     </React.Fragment>
