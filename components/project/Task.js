@@ -9,7 +9,6 @@ import { setOptions, useSession } from 'next-auth/client'
 import { useDispatch } from 'react-redux'
 import { assignTask, pinTask } from '../../store/projectSlice'
 import { colors } from '../../styles/colors'
-import { comment } from 'postcss'
 
 export default function Task({ task, index, setPin, taskEdit }) {
   // const { isShowing, toggle } = useModal()
