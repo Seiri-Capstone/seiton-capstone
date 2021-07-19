@@ -37,10 +37,10 @@ export default function MyProjects() {
       <div className="mt-8 text-black max-w-prose">
         {projects.length === 0 && (
           <>
-            <h4 className="leading-loose">
+            <h4 className="leading-loose dark:text-white">
               Currently, you do not belong to any projects!
             </h4>
-            <p className="tracking-wide">
+            <p className="tracking-wide dark:text-gray-200">
               A new project must be created under an organization. Follow the
               instructions on the organization page to get started. To join an
               existing project, ask a current team mate for an invite!
