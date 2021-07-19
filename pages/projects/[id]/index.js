@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import dynamic from 'next/dynamic'
 const ProjectBoard = dynamic(import('../../../components/project/ProjectBoard'))
 import Pusher from 'pusher-js'
+import Navbar from '../../../components/nav/Navbar'
 
 const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
   cluster: 'us2', // based on my website
@@ -9,10 +10,13 @@ const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
   auth: { params: { username: 'sey' } } // not important rn? only to show user
 })
 
-const Project = () => {
+{
+  /* This is to make sure the colors are built so we can use in different components */
+}
+const Colors = () => {
   return (
-    <div>
-      {/* This is to make sure the colors are built so we can use in different components */}
+    <>
+      {' '}
       <div className="text-gray-500"></div>
       <div className="text-warmGray-500"></div>
       <div className="text-red-500"></div>
@@ -69,11 +73,18 @@ const Project = () => {
       <div className="bg-purple-200"></div>
       <div className="bg-fuschia-200"></div>
       <div className="bg-pink-200"></div>
-      <div className="bg-rose-200"></div>
-      <div className="flex">
-        <div className="flex-col">
-          <ProjectBoard pusher={pusher} />
-        </div>
+      <div className="bg-rose-200"></div>{' '}
+    </>
+  )
+}
+
+const Project = () => {
+  return (
+    <div className="flex h-screen bg-blue-100 dark:bg-gray-800">
+      <Navbar />
+      <Colors />
+      <div className="flex-col ml-24 mt-12 w-8/12">
+        <ProjectBoard pusher={pusher} />
       </div>
       <div id="modal"></div>
     </div>

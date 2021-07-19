@@ -70,7 +70,8 @@ export default function MyInvites() {
             Pending Invites
           </h3>
           <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
-          {receivedInvites.length === 0 &&
+          {pendingReceivedInvites.length === 0 &&
+            pendingSentInvites.length === 0 &&
             'You currently do not have any pending invitations.'}
 
           {pendingReceivedInvites.map(invite => (

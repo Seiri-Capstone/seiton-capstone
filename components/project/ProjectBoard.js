@@ -18,7 +18,8 @@ import axios from 'axios'
 import Pusher from 'pusher-js'
 import Members from './Members'
 import Link from 'next/link'
-import Navbar from '../nav/Navbar'
+import Logo from '../../components/Logo'
+
 import { colors } from '../../styles/colors'
 
 export default function ProjectBoard({ pusher }) {
@@ -83,41 +84,6 @@ export default function ProjectBoard({ pusher }) {
     setMounted(true) // Mount for the first time
     return () => pusher.unsubscribe(`presence-channel-${id}`)
   }, [dispatch, id])
-
-  // useEffect(() => {
-  //   if (isColumnReordered) {
-  //     setIsColumnReordered(false)
-  //     axios.post('/api/pusher/reorder', { project })
-  //   }
-
-  //   if (isTaskReordered) {
-  //     setIsTaskReordered(false)
-  //     axios.post('/api/pusher/reorder', { project })
-  //   }
-
-  //   if (isTaskDiffColReordered) {
-  //     setIsTaskDiffColReordered(false)
-  //     axios.post('/api/pusher/reorder', { project })
-  //   }
-  // }, [isColumnReordered, isTaskReordered, isTaskDiffColReordered])
-
-  // useEffect(() => {
-  //   const channel = pusher.subscribe('presence-channel')
-
-  //   channel.bind('reorder', async project => {
-  //     console.log(`🟢  pusher:reorder succeeded `, project)
-  //     dispatch(reorderTaskCol(project))
-  //   })
-
-  //   return () => {
-  //     pusher.unsubscribe('presence-channel')
-  //   }
-  // }, [])
-
-  // const [task, setTask] = useState('')
-  // const [title, setTitle] = useState('')
-  // const columnId = props.props.column.id
-  // const index = props.props.column.tasks.length
 
   const deleteProject = () => {
     dispatch(fetchDeletedProject(id))
@@ -207,22 +173,21 @@ export default function ProjectBoard({ pusher }) {
     return
   }
 
+  const updatedDate = String(new Date(project.updatedAt)).substring(3, 15)
+
   return (
     <React.Fragment>
-      <div className="bg-rose-200"></div>
-      <div className="bg-red-200"></div>
-      <div className="bg-green-200"></div>
-      <div className="bg-purple-200"></div>
-
+      <Logo />
+      <h2 id="tenor" className="leading-loose">
+        {project.name}
+      </h2>
+      <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
+      <span className="dark:text-gray-400 text-sm">
+        Last updated on {updatedDate}
+      </span>
       <div className="flex overflow-hidden">
-        <div className="flex-col ">
-          <Navbar />
-        </div>
+        <div className="flex-col "></div>
         <div className="flex flex-col h-screen w-5/6">
-          <h1 className="flex justify-center flexfont-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
-            {project.name}
-          </h1>
-
           <div className="flex justify-end mt-2 mr-12">
             <button
               className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
