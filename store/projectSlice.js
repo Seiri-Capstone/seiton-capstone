@@ -285,9 +285,10 @@ export const projectSlice = createSlice({
       })
     },
     [fetchRemoveUserProject.fulfilled]: (state, action) => {
-      state.users = state.users.filter(
-        user => user.userId !== action.payload[0].userId
-      )
+      state.users = state.users.filter(user => {
+        console.log('in reducer', action.payload)
+        return user.userId !== action.payload.id
+      })
     },
     [fetchAdminUserUpdate.fulfilled]: (state, action) => {
       state.users = state.users.map(user => {

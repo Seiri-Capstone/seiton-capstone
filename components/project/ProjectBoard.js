@@ -234,7 +234,11 @@ export default function ProjectBoard({ pusher }) {
           <div className="flex justify-end mt-2 mr-12">
             <button onClick={() => setShow(true)}>Project Members</button>
           </div>
-          <MembersModal show={show} onClose={() => setShow(false)} />
+          <MembersModal
+            show={show}
+            onClose={() => setShow(false)}
+            project={project}
+          />
 
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable

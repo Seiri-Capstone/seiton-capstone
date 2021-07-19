@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useRouter } from 'next/router'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import ReactDOM from 'react-dom'
 import {
-  fetchProject,
   fetchRemoveUserProject,
   fetchAdminUserUpdate
 } from '../../store/projectSlice'
@@ -16,31 +14,19 @@ import { injectStyle } from 'react-toastify/dist/inject-style'
 import x from '../../public/assets/xIcon.svg'
 import Transition from '../project/SideBarTransition'
 
-export default function MembersModal({ show, onClose }) {
-  const project = useSelector(state => state.project)
+export default function MembersModal({ show, onClose, project }) {
+  //   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
   const [session, loading] = useSession()
   const [showInvite, setShowInvite] = useState(false)
   const [searchEmail, setSearchEmail] = useState('')
-  const router = useRouter()
-  const { query = {} } = router || {}
-  const { id = 0 } = query || {}
-
   const users = project.users || []
-
-  useEffect(() => {
-    if (id) {
-      ;(async () => {
-        dispatch(fetchProject(id))
-      })()
-    }
-  }, [dispatch, id])
 
   const sessionUser = users.filter(user => user.userId === +session?.user.sub)
   const isAdmin = sessionUser.length > 0 ? sessionUser[0].isAdmin : false
 
   const removeUser = userId => {
-    const body = { userId: userId, projectId: id }
+    const body = { userId: userId, projectId: project.id }
     dispatch(fetchRemoveUserProject(body))
   }
 
