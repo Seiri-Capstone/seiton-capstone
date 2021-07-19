@@ -135,7 +135,7 @@ export default function EditTaskModal(props) {
                     </div>
                   ) : (
                     <div className="mx-auto">
-                      <h3 className="text-xl font-semibold mb-4">
+                      <h3 className="text-xl font-semibold mb-4 dark:text-black">
                         {task.title}
                       </h3>
                       <div

@@ -61,7 +61,7 @@ export default function Task({ task, index, setPin, taskEdit }) {
             <div className="flex flex-row pt-1 pr-1 justify-between items-start">
               <h3
                 onClick={() => setShowEditTask(true)}
-                className="text-sm pl-2 tracking-wide"
+                className="text-sm pl-2 tracking-wide dark:text-black"
               >
                 {task.title}
               </h3>

@@ -182,7 +182,10 @@ export default function ProjectBoard({ pusher }) {
       {/* header */}
 
       <div className="flex justify-between">
-        <h3 id="tenor" className="leading-loose text-navyblue">
+        <h3
+          id="tenor"
+          className="leading-loose text-navyblue dark:text-blue-300"
+        >
           {project.name}
         </h3>
         <span className="dark:text-gray-400 self-end text-xs italic mb-2">
