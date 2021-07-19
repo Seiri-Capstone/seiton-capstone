@@ -156,7 +156,11 @@ export default function Column(props) {
             <div className="h-full">
               <Droppable droppableId={`column-${column.id}`} type="task">
                 {provided => (
-                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="border-2 border-black"
+                  >
                     {column.tasks &&
                       column.tasks.map((task, index) => (
                         <>
