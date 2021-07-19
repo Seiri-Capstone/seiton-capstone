@@ -85,7 +85,7 @@ export default async function handler(req, res) {
             }
           })
 
-          res.status(200).json(user)
+          res.status(200).json({ id: userId })
         } else {
           res.status(403).json("you aren't authorized to make this request")
         }

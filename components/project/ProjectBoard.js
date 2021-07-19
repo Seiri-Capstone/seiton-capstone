@@ -11,15 +11,13 @@ import {
   createColumn
 } from '../../store/projectSlice'
 import { fetchDeletedProject } from '../../store/projectsSlice'
-import { signIn, signOut, useSession } from 'next-auth/client'
-import NewTask from './NewTask'
+import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Pusher from 'pusher-js'
-import Members from './Members'
-import Link from 'next/link'
 import Navbar from '../nav/Navbar'
 import { colors } from '../../styles/colors'
+import MembersModal from './MembersModal'
 
 export default function ProjectBoard({ pusher }) {
   const [session, loading] = useSession()
@@ -41,6 +39,7 @@ export default function ProjectBoard({ pusher }) {
   const { id = 0 } = query || {}
   const [colColors, setColColors] = useState(colors)
   const [i, setI] = useState(0)
+  const [show, setShow] = useState(false)
 
   console.log('project in projectboard', project)
 
@@ -233,8 +232,14 @@ export default function ProjectBoard({ pusher }) {
           </div>
 
           <div className="flex justify-end mt-2 mr-12">
-            <Link href={`/projects/${id}/members`}>Project Members</Link>
+            <button onClick={() => setShow(true)}>Project Members</button>
           </div>
+          <MembersModal
+            show={show}
+            onClose={() => setShow(false)}
+            project={project}
+          />
+
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
               droppableId="all-columns"
@@ -280,6 +285,7 @@ export default function ProjectBoard({ pusher }) {
           {/* {toggleTask && <NewTask />} */}
         </div>
       </div>
+      <span id="membersModal"></span>
     </React.Fragment>
   )
 }
