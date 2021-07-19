@@ -188,9 +188,9 @@ export default function ProjectBoard({ pusher }) {
           Last updated on {updatedDate}
         </span>
       </div>
-      <hr className="border-1 border-skyblue dark:border-gray-500 pb-4"></hr>
+      <hr className="border-1 border-skyblue dark:border-gray-500 pb-2"></hr>
       <div className="flex justify-between mb-4">
-        <button onClick={() => setShow(true)} className="text-base">
+        <button onClick={() => setShow(true)} className="text-sm">
           Project Members
         </button>
         <MembersModal
@@ -207,54 +207,55 @@ export default function ProjectBoard({ pusher }) {
       </div>
 
       {/* columns */}
-
-      <div className="flex justify-start align-start h-4/5 overflow-x-scroll">
-        <DragDropContext onDragEnd={onDragEnd}>
-          <div className="flex justify-start">
-            <Droppable
-              droppableId="all-columns"
-              direction="horizontal"
-              type="column"
-            >
-              {provided => (
-                <div
-                  className="flex md:flex-row"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {project.columns &&
-                    project.columns.map((column, index) => (
-                      <div key={column.id}>
-                        {/* onClick={() => setI(i + 1)}> */}
-                        <Column
-                          setCol={setIsColNameEdited}
-                          delCol={setIsColDeleted}
-                          addTask={setisTaskAdded}
-                          key={column.id}
-                          column={column}
-                          index={index}
-                          colColor={colColors[i]}
-                          setPin={setIsPinned}
-                          taskEdit={setIsTaskEdited}
-                        />
-                      </div>
-                    ))}
-                  <div>
-                    <button
-                      id="tenor"
-                      className="border-dashed border-2 border-gray-400 w-64 h-12 rounded-lg p-2 justify-end text-base"
-                      onClick={addColumn}
-                    >
-                      + Add New Column
-                    </button>
+      <div className="bg-white dark:bg-gray-700 p-4 rounded-md h-5/6 overflow-x-scroll">
+        <div className="flex justify-start align-start h-full ">
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div className="flex justify-start">
+              <Droppable
+                droppableId="all-columns"
+                direction="horizontal"
+                type="column"
+              >
+                {provided => (
+                  <div
+                    className="flex md:flex-row"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {project.columns &&
+                      project.columns.map((column, index) => (
+                        <div key={column.id}>
+                          {/* onClick={() => setI(i + 1)}> */}
+                          <Column
+                            setCol={setIsColNameEdited}
+                            delCol={setIsColDeleted}
+                            addTask={setisTaskAdded}
+                            key={column.id}
+                            column={column}
+                            index={index}
+                            colColor={colColors[i]}
+                            setPin={setIsPinned}
+                            taskEdit={setIsTaskEdited}
+                          />
+                        </div>
+                      ))}
+                    <div>
+                      <button
+                        id="tenor"
+                        className="border-dashed border-2 border-gray-400 w-64 h-12 rounded-lg p-2 justify-end text-base"
+                        onClick={addColumn}
+                      >
+                        + Add New Column
+                      </button>
+                    </div>
+                    {provided.placeholder}
                   </div>
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </div>
-        </DragDropContext>
-        {/* {toggleTask && <NewTask />} */}
+                )}
+              </Droppable>
+            </div>
+          </DragDropContext>
+          {/* {toggleTask && <NewTask />} */}
+        </div>
       </div>
       <span id="membersModal"></span>
     </React.Fragment>

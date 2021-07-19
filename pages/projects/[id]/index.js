@@ -120,7 +120,7 @@ const Project = () => {
     <div className="flex h-screen bg-blue-100 dark:bg-gray-800">
       <Navbar />
       <Colors />
-      <div className="flex-col ml-16 mt-6 w-3/4">
+      <div className="flex-col ml-8 mt-6 w-5/6">
         <ProjectBoard pusher={pusher} />
       </div>
       <div id="modal"></div>

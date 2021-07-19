@@ -12,6 +12,7 @@ import { colors as COLORS } from '../../styles/colors'
 import Image from 'next/image'
 import dotsIcon from '../../public/assets/dotsIcon.svg'
 import xIcon from '../../public/assets/xIcon.svg'
+import ColumnDropdown from './ColumnDropdown'
 
 export default function Column(props) {
   const { setCol, delCol, addTask, column, colColor, setPin, taskEdit } = props
@@ -71,9 +72,9 @@ export default function Column(props) {
           {...provided.draggableProps}
         >
           <div className="flex flex-col h-full">
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-between items-center mb-2">
               <div
-                className="flex flex-row items-center mb-2"
+                className="flex flex-row items-center"
                 {...provided.dragHandleProps}
               >
                 {isEditActive ? (
@@ -127,8 +128,19 @@ export default function Column(props) {
                 >
                   <a>+</a>
                 </button>
+                <div className="flex flex-col justify-center">
+                  <Image
+                    src={dotsIcon}
+                    alt="deleteIcon"
+                    className="self-center"
+                    width={20}
+                    height={20}
+                  />
+                </div>
 
-                <button
+                {/* <ColumnDropdown column={column} colEdit={colEdit} /> */}
+
+                {/* <button
                   onClick={() => {
                     setIsShowing(true)
                   }}
@@ -141,7 +153,7 @@ export default function Column(props) {
                     width={20}
                     height={20}
                   />
-                </button>
+                </button> */}
               </div>
             </div>
 
