@@ -5,6 +5,8 @@ import marked from 'marked'
 import Multiselect from 'multiselect-react-dropdown'
 import { fetchEditTask, assignTask } from '../../store/projectSlice'
 import Transition from './SideBarTransition'
+import Image from 'next/image'
+import xIcon from '../../public/assets/xIcon.svg'
 
 export default function EditTaskModal(props) {
   const { task, show, toggleEdit, onClose, onKey, taskEdit, colId, taskId } =
@@ -46,7 +48,7 @@ export default function EditTaskModal(props) {
     ? ReactDOM.createPortal(
         <div
           onKeyDown={onKey}
-          className="justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          className="justify-center items-center flex flex-col overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none -top-30"
         >
           <Transition
             appear={true}
@@ -60,20 +62,22 @@ export default function EditTaskModal(props) {
           >
             <div className="fixed inset-0 bg-black opacity-0" />
           </Transition>
-          <div className="relative w-2/5 h-2/3 my-6 mx-auto ">
+          <div className="relative w-2/5 h-2/3 p-4 ">
             {/*content*/}
-            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+            <div className="rounded-lg shadow-lg relative flex flex-col w-full bg-white p-2 outline-none focus:outline-none">
               {/*header*/}
-              <div className="flex-col items-start p-5 border-b border-solid rounded-t">
+              <div className="flex-col items-start p- rounded-t">
                 {/*body*/}
                 <div className="relative flex-auto">
-                  <div className="flex items-center justify-between rounded-b border-b mb-2">
+                  <div className="flex items-center justify-between p-2 px-2">
                     {/* Edit | Pencil */}
+
                     <button
-                      className="text-blue-500  font-bold uppercase text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="text-blue-500  font-bold capitalize tracking-wide text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 flex"
                       type="button"
                       onClick={() => setEditActive(!isEditActive)}
                     >
+                      Edit Task
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="ml-1 h-4 w-4 self-center"
@@ -86,106 +90,114 @@ export default function EditTaskModal(props) {
                     </button>
                     {/* Close X */}
                     <button
-                      className="text-red-500 font-bold uppercase text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="text-red-500 font-bold uppercase text-sm outline-none focus:outline-none pt-0.5 ease-linear transition-all duration-150"
                       type="button"
                       onClick={() => {
                         onClose()
                         toggleEdit()
                       }}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
+                      <Image
+                        src={xIcon}
+                        alt="deleteIcon"
+                        width={24}
+                        height={24}
+                      />
                     </button>
                   </div>
-                  {isEditActive ? (
-                    <div className="flex flex-col">
-                      <input
-                        className="text-xl font-semibold text-gray-800 border border-gray-500"
-                        onChange={e => {
-                          setTaskTitle(e.target.value)
-                        }}
-                        value={taskTitle}
-                      />
-                      <textarea
-                        // ref={input => input && input.focus()}
-                        className="my-4 text-sm leading-relaxed italic"
-                        name="body"
-                        value={taskBody}
-                        onChange={e => setTaskBody(e.target.value)}
-                        onKeyDown={e => {
-                          if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                  <div className="px-8">
+                    <div className="rounded-md p-2 px-4">
+                      {isEditActive ? (
+                        <div className="flex flex-col">
+                          <input
+                            className="text-base text-gray-800 border border-gray-500 p-2"
+                            onChange={e => {
+                              setTaskTitle(e.target.value)
+                            }}
+                            value={taskTitle}
+                          />
+                          <textarea
+                            // ref={input => input && input.focus()}
+                            className="my-4 text-sm leading-relaxed"
+                            name="body"
+                            value={taskBody}
+                            onChange={e => setTaskBody(e.target.value)}
+                            onKeyDown={e => {
+                              if (
+                                (e.metaKey || e.ctrlKey) &&
+                                e.key === 'Enter'
+                              ) {
+                                handleSave()
+                                onClose()
+                                toggleEdit()
+                              }
+                            }}
+                          ></textarea>
+                        </div>
+                      ) : (
+                        <div className="my-4">
+                          <h4
+                            id="tenor"
+                            className="tracking-normal dark:text-black"
+                          >
+                            {task.title}
+                          </h4>
+                          <hr className="mt-2"></hr>
+                          <div
+                            className="prose prose-sm mt-4"
+                            dangerouslySetInnerHTML={{
+                              __html: marked(taskBody)
+                            }}
+                          ></div>
+                        </div>
+                      )}
+                    </div>
+                    {/*footer*/}
+                    <br />
+                    <span id="tenor" className="dark:text-black">
+                      Assign Users:{' '}
+                    </span>
+                    <div className="">
+                      <form
+                        onSubmit={onSubmit}
+                        className="my-1 mx-auto text-sm"
+                      >
+                        <Multiselect
+                          options={users.map(({ userId, user }) => ({
+                            id: userId,
+                            name: user.name,
+                            email: user.email
+                          }))}
+                          selectedValues={users ? users[0] : {}}
+                          onSelect={onSelect}
+                          onRemove={onRemove}
+                          displayValue="name"
+                        />
+                        <button className="border border-blue-500 dark:border-gray-500 hover:bg-blue-500 dark:text-skyblue rounded-lg hover:text-white dark:hover:text-white  dark:hover:bg-gray-500 p-4 py-1 text-base shadow-smease-linear transition-all duration-150 mr-2 mt-2">
+                          Submit
+                        </button>
+                      </form>
+                    </div>
+                    <div className="flex justify-end">
+                      <div className="flex flex-col">
+                        <button
+                          className="bg-blue-500 dark:bg-gray-600 text-white hover:bg-skyblue dark:text-gray-300 rounded-lg dark:hover:bg-blue-500 p-4 py-1 text-base shadow-smease-linear transition-all duration-150 mr-2"
+                          type="button"
+                          onClick={() => {
                             handleSave()
                             onClose()
                             toggleEdit()
-                          }
-                        }}
-                      ></textarea>
+                          }}
+                        >
+                          Save
+                        </button>
+                        <div className="text-xs text-gray-500 m-2 mb-2">
+                          ⌘ or Ctrl Enter
+                        </div>
+                      </div>
+
                     </div>
-                  ) : (
-                    <div className="mx-auto">
-                      <h3 className="text-xl font-semibold mb-4 dark:text-black">
-                        {task.title}
-                      </h3>
-                      <div
-                        className="prose prose-sm"
-                        dangerouslySetInnerHTML={{
-                          __html: marked(taskBody)
-                        }}
-                      ></div>
-                    </div>
-                  )}
-                </div>
-                {/*footer*/}
-                <br />
-                Assign Users:{' '}
-                <div className="bg-red-600">
-                  <form
-                    onSubmit={onSubmit}
-                    className="bg-gray-100 border border-gray-400 relative w-100 h-40 my-6 mx-auto"
-                  >
-                    <Multiselect
-                      options={users.map(({ userId, user }) => ({
-                        id: userId,
-                        name: user.name,
-                        email: user.email
-                      }))}
-                      selectedValues={users ? users[0] : {}}
-                      onSelect={onSelect}
-                      onRemove={onRemove}
-                      displayValue="name"
-                    />
-                    <button className="border border-gray-200 p-1 text-gray-800">
-                      Submit
-                    </button>
-                  </form>
-                </div>
-                ,
-                <br />
-                <button
-                  className="text-blue-500  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                  type="button"
-                  onClick={() => {
-                    handleSave()
-                    onClose()
-                    toggleEdit()
-                  }}
-                >
-                  Save
-                </button>
-                <div className="inline text-xs text-gray-500">
-                  ⌘ or Ctrl Enter
+                  </div>
                 </div>
               </div>
             </div>
