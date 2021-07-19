@@ -82,13 +82,20 @@ export default function MembersModal({ show, onClose, project }) {
           <div className="flex justify-between">
             <h3 id="tenor"> Project Members</h3>
 
-            <Image
-              src={x}
-              alt="deleteIcon"
-              width={24}
-              height={24}
+            <button
+              type="button"
+              className=" flex justify-end mr-3 focus:outline-none"
+              data-dismiss="modal"
+              aria-label="Close"
               onClick={onClose}
-            />
+            >
+              <span
+                className=" flex justify-end outline-none  border-solid"
+                aria-hidden="true"
+              >
+                &times;
+              </span>
+            </button>
           </div>
           <hr className="border-1 border-skyblue dark:border-gray-500 pb-2"></hr>
           <div className="flex justify-between ">
