@@ -45,7 +45,7 @@ export default function MembersModal({ show, onClose, project }) {
   const handleSend = () => {
     const thunkArg = {
       receivedBy: null,
-      projectId: +id,
+      projectId: +project.id,
       orgId: project.orgId,
       searchEmail: searchEmail
     }
