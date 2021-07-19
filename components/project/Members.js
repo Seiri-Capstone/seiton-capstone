@@ -8,6 +8,8 @@ import {
 } from '../../store/projectSlice'
 import { useSession } from 'next-auth/client'
 import { fetchCreateInvite } from '../../store/invitationsSlice'
+import Image from 'next/image'
+import minusCircle from '../../public/assets/minusCircle.svg'
 import { toast } from 'react-toastify'
 import { injectStyle } from 'react-toastify/dist/inject-style'
 
@@ -15,6 +17,7 @@ export default function Members() {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
   const [session, loading] = useSession()
+  const [showInvite, setShowInvite] = useState(false)
   const [searchEmail, setSearchEmail] = useState('')
   const router = useRouter()
   const { query = {} } = router || {}
@@ -58,6 +61,7 @@ export default function Members() {
       searchEmail: searchEmail
     }
     dispatch(fetchCreateInvite(thunkArg))
+    setShowInvite(false)
     setSearchEmail('')
     notify()
   }
@@ -70,67 +74,90 @@ export default function Members() {
 
   return (
     <React.Fragment>
-      <h1 className="font-ibm text-6xl font-bold text-red-800 dark:text-red-200 text-center mt-8">
-        {project.name} / Members
-      </h1>
-
       <div>
-        <h1>Members</h1>
+        <h2 id="tenor" className="capitalize leading-loose">
+          Project Members
+        </h2>
 
         <section>
-          <h2>send invite to: </h2>
-          <button onClick={() => router.back()}>Go Back</button>
-          <label>Search by email</label>
-          <input
-            className="w-full p-3 py-2 text-gray-700 border rounded-lg rows=4 mb-3 focus:outline-none"
-            onChange={e => setSearchEmail(e.target.value)}
-            value={searchEmail}
-          ></input>
-
           <button
             type="submit"
-            className="bg-gray-300 text-gray-900 rounded hover:bg-gray-200 p-4 py-2 focus:outline-none"
-            onClick={handleSend}
+            className="text-sm pb-4"
+            onClick={() => setShowInvite(!showInvite)}
           >
-            Send Invite!
+            + Add New Member
           </button>
+          {/*   <button onClick={() => router.back()}>Go Back</button>*/}
+
+          {showInvite && (
+            <div>
+              <form className="max-w-full mx-auto rounded-lg flex flex-col">
+                <input
+                  className="w-full p-3 py-1 text-gray-700 dark:text-gray-300 border rounded-lg mb-3 shadow-sm"
+                  placeholder="Search by Email"
+                  onChange={e => setSearchEmail(e.target.value)}
+                ></input>
+                <button
+                  type="submit"
+                  className="bg-skyblue dark:bg-gray-600 text-white hover:bg-navyblue dark:text-gray-300 rounded-lg dark:hover:bg-skyblue p-4 py-1 mb-4 text-base shadow-sm"
+                  onClick={handleSend}
+                >
+                  Send Invite
+                </button>
+              </form>
+            </div>
+          )}
         </section>
 
         {users.map(user => (
-          <div key={user.userId} className="flex">
-            <h2>{user.user.name}</h2>
+          <div key={user.userId} className="flex pl-2 my-2">
+            <span
+              key={user.userId}
+              className="capitalize tracking-wide leading-relaxed"
+            >
+              - {user.user.name}
+            </span>
 
             {isAdmin ? (
-              <div>
+              <div className="mx-2 flex justify-center">
                 <select
                   onChange={e => handleAdminChange(e, user.userId)}
                   defaultValue={user.isAdmin ? true : false}
+                  className="bg-white rounded-lg py-1 text-xs lowercase "
                 >
                   <option
                     value={true}
                     defaultValue={user.isAdmin ? true : false}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                   >
                     Admin
                   </option>
                   <option
                     value={false}
                     defaultValue={user.isAdmin ? false : false}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                   >
                     Collaborater
                   </option>
                 </select>
 
-                <button
-                  className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white border border-red-500 hover:border-transparent rounded-full"
+                <Image
+                  src={minusCircle}
+                  alt="minusCircle"
+                  width={24}
+                  height={24}
                   onClick={() => removeUser(user.userId)}
-                >
-                  X
-                </button>
+                  className="hover:bg-red-500 ml-4"
+                />
               </div>
             ) : user.isAdmin ? (
-              <p>Admin</p>
+              <p className="text-xs lowercase pl-2 my-2 tracking-wider">
+                (admin)
+              </p>
             ) : (
-              <p>Collaborater</p>
+              <p className="text-xs lowercase pl-2 my-2 tracking-wider">
+                (collaborater)
+              </p>
             )}
           </div>
         ))}
