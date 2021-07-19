@@ -43,10 +43,10 @@ export default function MyOrgs() {
       <div className="mt-8 text-black max-w-prose">
         {orgs.length === 0 && (
           <>
-            <h4 className="leading-loose">
+            <h4 className="leading-loose dark:text-white">
               Currently, you do not belong to any organizations!
             </h4>
-            <p className="tracking-wide">
+            <p className="tracking-wide dark:text-gray-200">
               Create a new organization to get started, or check your
               invitations to see if you were invited to an existing
               organization.
