@@ -13,7 +13,7 @@ import minusCircle from '../../public/assets/minusCircle.svg'
 import { toast } from 'react-toastify'
 import { injectStyle } from 'react-toastify/dist/inject-style'
 
-export default function Members() {
+export default function Members({ show, onClose }) {
   const project = useSelector(state => state.project)
   const dispatch = useDispatch()
   const [session, loading] = useSession()
@@ -74,11 +74,10 @@ export default function Members() {
 
   return (
     <React.Fragment>
-      <div>
-        <h2 id="tenor" className="capitalize leading-loose">
-          Project Members
-        </h2>
-
+      <h2 id="tenor" className="capitalize leading-loose">
+        Project Members
+      </h2>
+      <div className="flex justify-between">
         <section>
           <button
             type="submit"
@@ -87,7 +86,6 @@ export default function Members() {
           >
             + Add New Member
           </button>
-          {/*   <button onClick={() => router.back()}>Go Back</button>*/}
 
           {showInvite && (
             <div>
@@ -147,7 +145,7 @@ export default function Members() {
                   width={24}
                   height={24}
                   onClick={() => removeUser(user.userId)}
-                  className="hover:bg-red-500 ml-4"
+                  title="Remove User" //hover over for text
                 />
               </div>
             ) : user.isAdmin ? (

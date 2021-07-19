@@ -73,11 +73,21 @@ export default async function handler(req, res) {
       try {
         const id = Number(req.query.id)
 
-        const deletedProject = await prisma.project.delete({
-          where: {
-            id: id
-          }
+        const sessionUser = await prisma.userProject.findMany({
+          where: { userId: +session.user.sub, projectId: id }
         })
+
+        if (sessionUser[0].isAdmin) {
+          console.log("you're a project admin")
+          const deletedProject = await prisma.project.delete({
+            where: {
+              id: id
+            }
+          })
+          res.status(200).json(deletedProject)
+        } else {
+          res.status(403).json("you're not authorized to make this request!")
+        }
 
         res.status(200).json(deletedProject)
       } catch (error) {
