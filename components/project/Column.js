@@ -140,28 +140,20 @@ export default function Column(props) {
                   </svg>
                 </button>
 
-                <Image
-                  src={xIcon}
-                  alt="deleteIcon"
-                  className="self-center text-gray-800"
-                  width={20}
-                  height={20}
-                />
-
-                {/* <button
+                <button
                   onClick={() => {
                     setIsShowing(true)
                   }}
-                  className="flex flex-col justify-center"
+                  className="self-center"
                 >
                   <Image
                     src={xIcon}
                     alt="deleteIcon"
-                    className="self-center"
+                    className="self-center text-gray-800"
                     width={20}
                     height={20}
                   />
-                </button> */}
+                </button>
               </div>
             </div>
 
