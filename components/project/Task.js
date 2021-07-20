@@ -153,7 +153,7 @@ export default function Task({ task, index, setPin, taskEdit }) {
                   await dispatch(pinTask(task))
                   await setPin(true)
                 }}
-                className="task-btn"
+                className="task-btn text-black"
               >
                 {task.pinned ? 'Unpin' : 'Pin'}
               </button>
@@ -174,7 +174,7 @@ export default function Task({ task, index, setPin, taskEdit }) {
                   />
                 ))
               ) : (
-                <span className="text-xs">(0)</span>
+                <span className="text-xs text-black">(0)</span>
               )}
             </div>
             {/* {showUser &&

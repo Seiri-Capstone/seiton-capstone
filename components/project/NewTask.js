@@ -22,7 +22,7 @@ export default function NewTask(props) {
     <form className="flex flex-col mx-auto rounded-lg w-full">
       <input
         placeholder="Task Title"
-        className="text-sm w-full p-1 px-2 text-gray-700 rounded-lg focus:outline-none"
+        className="text-sm w-full p-1 px-2 text-gray-700 rounded-lg focus:outline-none bg-white"
         onChange={e => setTitle(e.target.value)}
       ></input>
 
