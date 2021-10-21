@@ -1,8 +1,11 @@
-# Gracefully Hotter
+# Seiton
 
 ## About The Project
 
 Seiton is a project management tool that allows for seamless, real-time collaboration through customizable kanban boards. 
+
+!['Seiton'](https://i.imgur.com/V4CQNvn.png)
+
 
 ## Notable Libraries/Frameworks Used
 
@@ -20,3 +23,5 @@ Seiton is a project management tool that allows for seamless, real-time collabor
 - [Helen Sung](https://github.com/helsung)
 - [Sey Kim](https://github.com/iseykim)
 - [Leo Parshukov](https://github.com/leon86ka)
+
+
