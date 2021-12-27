@@ -6,7 +6,7 @@
 
 !['Seiton'](./seiton-home.png)
 
-![from_giphy](https://media.giphy.com/media/cZdjq5yeMpT8jFimxa/giphy.gif)
+<!-- ![from_giphy](https://media.giphy.com/media/cZdjq5yeMpT8jFimxa/giphy.gif) -->
 
 ![Gif](./readme.gif)
 
