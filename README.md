@@ -6,6 +6,8 @@
 
 !['Seiton'](./seiton-home.png)
 
+<iframe src="https://giphy.com/embed/cZdjq5yeMpT8jFimxa" width="960" height="540" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+
 ![Gif](./readme.gif)
 
 [Full Presentation](https://www.youtube.com/watch?v=AKf6ypBnmvc)
