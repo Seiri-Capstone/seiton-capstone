@@ -6,7 +6,7 @@
 
 !['Seiton'](./seiton-home.png)
 
-![Gif](./video.gif)
+![Gif](./readme.gif)
 
 ## Tech Stack
 
