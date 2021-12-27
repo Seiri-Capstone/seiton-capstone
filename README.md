@@ -6,7 +6,7 @@
 
 !['Seiton'](./seiton-home.png)
 
-<iframe src="https://giphy.com/embed/cZdjq5yeMpT8jFimxa" width="960" height="540" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+![from_giphy](https://media.giphy.com/media/cZdjq5yeMpT8jFimxa/giphy.gif)
 
 ![Gif](./readme.gif)
 
