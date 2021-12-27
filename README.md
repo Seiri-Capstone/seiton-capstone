@@ -2,6 +2,8 @@
 
 [Seiton](https://seiton-fsa.herokuapp.com/orgs) is a project management tool that allows for seamless, real-time collaboration through customizable kanban boards. Sign up in seconds via Google, invite your co-workers to your boards, and start collaborating in real-time as you wade through the chaotic fast-paced world of modern project cycles! 
 
+![Gif](./video.gif)
+
 !['Seiton'](https://i.imgur.com/V4CQNvn.png)
 
 ## Tech Stack
