@@ -1,8 +1,0 @@
-{
-  "Console Log Green": {
-    "scope": "javascript, javascriptreact, typescriptreact",
-    "body": "console.log(`🟢 $1` $0)",
-    "prefix": "clg",
-    "description": "console log green circle"
-  }
-}
