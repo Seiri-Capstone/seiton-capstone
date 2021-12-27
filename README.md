@@ -1,10 +1,12 @@
-# Seiton
+# Seiton 整頓
+
+> Seiton is part of the **5S**, a Japanese workplace organization method. Seiton means determining where and when items are needed, and placing them in a way that promotes efficient work flow. A worker should not have to hunt for necessary tools, or walk to another area to access often-used items. 
 
 [Seiton](https://seiton-fsa.herokuapp.com/orgs) is a project management tool that allows for seamless, real-time collaboration through customizable kanban boards. Sign up in seconds via Google, invite your co-workers to your boards, and start collaborating in real-time as you wade through the chaotic fast-paced world of modern project cycles! 
 
-![Gif](./video.gif)
+!['Seiton'](./seiton-home.png)
 
-!['Seiton'](https://i.imgur.com/V4CQNvn.png)
+![Gif](./video.gif)
 
 ## Tech Stack
 
