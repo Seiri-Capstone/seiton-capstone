@@ -26,9 +26,10 @@ We built our fullstack application with `Next.js`, utilizing `React` and `Redux 
 
 ## Contributors
 
-- [Swan Zhao](https://github.com/swan-zhao)
-- [Helen Sung](https://github.com/helsung)
+- Swan Zhao - [LinkedIn](https://www.linkedin.com/in/swan-zhao/) | [Github](https://github.com/swan-zhao)
+- Helen Sung - [LinkedIn](https://www.linkedin.com/in/helen-sung/) | [Github](https://github.com/helsung)
 - Sey Kim - [LinkedIn](https://www.linkedin.com/in/sey-kim/) | [Github](https://github.com/iseykim)
-- [Leo Parshukov](https://github.com/leon86ka)
+- Leo Parshukov - [LinkedIn](https://www.linkedin.com/in/leoparshukov/) | [Github](https://github.com/leon86ka)
+
 
 
